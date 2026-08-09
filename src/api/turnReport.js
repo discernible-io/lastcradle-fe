@@ -74,6 +74,24 @@ export function buildTurnReport({
     .filter((row) => row.energy !== 0 || row.water !== 0 || row.compute !== 0)
     .sort((a, b) => Math.abs(b.net) - Math.abs(a.net));
 
+  // Cradles present this cycle who never appear on an executed/pending transfer —
+  // show them so absence is obvious. State is the live snapshot, so for past
+  // cycles include anyone still alive now, or anyone who died on/after this turn
+  // (they were still in the arena during the cycle being viewed).
+  const participantIds = new Set(edges.flatMap((e) => [e.from, e.to]));
+  const presentThisTurn = agents.filter(
+    (a) =>
+      a.status === "alive" ||
+      (a.status === "dead" && a.diedAtTurn != null && a.diedAtTurn >= turn),
+  );
+  const nonParticipants = presentThisTurn
+    .filter((a) => a.id && !participantIds.has(a.id))
+    .map((a) => ({
+      agentId: a.id,
+      name: agentLabel(a, passportNameByRodit),
+    }))
+    .sort((a, b) => String(a.name).localeCompare(String(b.name)));
+
   let headline = `Cycle ${turn}`;
   if (eliminatedThisTurn.length > 0) {
     headline += ` — ${eliminatedThisTurn.length} cradle${eliminatedThisTurn.length === 1 ? "" : "s"} eliminated`;
@@ -91,6 +109,7 @@ export function buildTurnReport({
     quotes,
     edges,
     netArrows,
+    nonParticipants,
     agents,
     eliminations: eliminatedThisTurn.map((a) => ({
       id: a.id,

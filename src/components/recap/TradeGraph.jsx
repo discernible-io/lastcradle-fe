@@ -95,20 +95,28 @@ function layoutLanes(edges) {
   return meta;
 }
 
-export function TradeGraph({ edges = [] }) {
+export function TradeGraph({ edges = [], orphanNames = [] }) {
   const uid = useId().replace(/:/g, "");
   const width = 720;
   const height = 240;
-  const names = [...new Set(edges.flatMap((e) => [e.fromName, e.toName]))];
+  const orphanSet = new Set(orphanNames.filter(Boolean));
+  const names = [
+    ...new Set([
+      ...edges.flatMap((e) => [e.fromName, e.toName]),
+      ...orphanNames.filter(Boolean),
+    ]),
+  ];
   const n = Math.max(names.length, 1);
+  const radiusX = names.length > 8 ? 150 : 130;
+  const radiusY = names.length > 8 ? 88 : 78;
   const pos = Object.fromEntries(
     names.map((name, i) => {
       const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
       return [
         name,
         {
-          x: width / 2 + Math.cos(angle) * 130,
-          y: height / 2 + Math.sin(angle) * 78,
+          x: width / 2 + Math.cos(angle) * radiusX,
+          y: height / 2 + Math.sin(angle) * radiusY,
         },
       ];
     }),
@@ -169,10 +177,28 @@ export function TradeGraph({ edges = [] }) {
       })}
       {names.map((name) => {
         const p = pos[name];
+        const orphan = orphanSet.has(name);
         return (
-          <g key={name} transform={`translate(${p.x}, ${p.y})`}>
-            <circle r={NODE_R - 2} fill="var(--void-2)" stroke="var(--white-hole)" strokeWidth="1" />
-            <text y={NODE_R + 14} textAnchor="middle" fill="var(--ink)" fontSize="11">
+          <g
+            key={name}
+            className={orphan ? "trade-graph-node is-orphan" : "trade-graph-node"}
+            transform={`translate(${p.x}, ${p.y})`}
+          >
+            <title>{orphan ? `${name} · did not trade` : name}</title>
+            <circle
+              r={NODE_R - 2}
+              fill="var(--void-2)"
+              stroke={orphan ? "var(--ink-mute)" : "var(--white-hole)"}
+              strokeWidth="1"
+              strokeDasharray={orphan ? "3 2" : undefined}
+              opacity={orphan ? 0.7 : 1}
+            />
+            <text
+              y={NODE_R + 14}
+              textAnchor="middle"
+              fill={orphan ? "var(--ink-mute)" : "var(--ink)"}
+              fontSize="11"
+            >
               {name.length > 14 ? `${name.slice(0, 12)}…` : name}
             </text>
           </g>
@@ -180,7 +206,7 @@ export function TradeGraph({ edges = [] }) {
       })}
       {edges.length === 0 && (
         <text x={width / 2} y={height / 2} textAnchor="middle" fill="var(--ink-mute)" fontSize="13">
-          No executed transfers this cycle
+          {names.length > 0 ? "No transfers · none traded" : "No executed transfers this cycle"}
         </text>
       )}
     </svg>

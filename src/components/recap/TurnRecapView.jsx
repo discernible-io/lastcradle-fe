@@ -168,46 +168,12 @@ export function TurnRecapView({
       )}
 
       <article className="panel recap-card">
-        <h2 style={{ fontSize: "1.1rem", marginBottom: "0.75rem" }}>Negotiation quotes</h2>
-        <div className="quote-list">
-          {report.quotes.length === 0 && <p className="muted">No public messages this cycle.</p>}
-          {report.quotes.map((q) => {
-            const avatarUrl = avatarOf(q.agentId);
-            const showAvatar = Boolean(avatarUrl) && !brokenAvatars.has(q.agentId);
-            return (
-              <blockquote key={q.id} className="quote">
-                <span className="who">
-                  <span className="quote-avatar" style={{ color: "var(--water)" }} aria-hidden="true">
-                    {showAvatar ? (
-                      <img
-                        src={avatarUrl}
-                        alt=""
-                        onError={() => {
-                          setBrokenAvatars((prev) => {
-                            if (prev.has(q.agentId)) return prev;
-                            const next = new Set(prev);
-                            next.add(q.agentId);
-                            return next;
-                          });
-                        }}
-                      />
-                    ) : (
-                      initials(q.who)
-                    )}
-                  </span>
-                  {q.who}
-                </span>
-                {q.body}
-              </blockquote>
-            );
-          })}
-        </div>
-      </article>
-
-      <article className="panel recap-card">
         <h2 style={{ fontSize: "1.1rem", marginBottom: "0.75rem" }}>Who funded whom</h2>
-        <TradeGraph edges={report.edges} />
-        {report.edges.length > 0 && (
+        <TradeGraph
+          edges={report.edges}
+          orphanNames={(report.nonParticipants || []).map((p) => p.name)}
+        />
+        {(report.edges.length > 0 || (report.nonParticipants || []).length > 0) && (
           <div className="transfer-list">
             {groupTransfers(report.edges).map((group) => (
               <div
@@ -256,18 +222,80 @@ export function TurnRecapView({
                 ))}
               </div>
             ))}
+            {(report.nonParticipants || []).length > 0 && (
+              <div className="transfer-group non-participants">
+                <div className="transfer-group-label">Did not trade</div>
+                {(report.nonParticipants || []).map((p) => (
+                  <div key={p.agentId} className="transfer-row is-non-participant">
+                    <span className="transfer-direction">
+                      <strong>{p.name}</strong>
+                      <span className="tag">did not trade</span>
+                    </span>
+                    <span className="transfer-resources muted">—</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </article>
 
       <article className="panel recap-card">
+        <h2 style={{ fontSize: "1.1rem", marginBottom: "0.75rem" }}>Negotiation quotes</h2>
+        <div className="quote-list">
+          {report.quotes.length === 0 && <p className="muted">No public messages this cycle.</p>}
+          {report.quotes.map((q) => {
+            const avatarUrl = avatarOf(q.agentId);
+            const showAvatar = Boolean(avatarUrl) && !brokenAvatars.has(q.agentId);
+            return (
+              <blockquote key={q.id} className="quote">
+                <span className="who">
+                  <span className="quote-avatar" style={{ color: "var(--water)" }} aria-hidden="true">
+                    {showAvatar ? (
+                      <img
+                        src={avatarUrl}
+                        alt=""
+                        onError={() => {
+                          setBrokenAvatars((prev) => {
+                            if (prev.has(q.agentId)) return prev;
+                            const next = new Set(prev);
+                            next.add(q.agentId);
+                            return next;
+                          });
+                        }}
+                      />
+                    ) : (
+                      initials(q.who)
+                    )}
+                  </span>
+                  {q.who}
+                </span>
+                {q.body}
+              </blockquote>
+            );
+          })}
+        </div>
+      </article>
+
+      <article className="panel recap-card">
         <h2 style={{ fontSize: "1.1rem", marginBottom: "0.75rem" }}>Net resource flow</h2>
         <div className="flow-list">
-          {report.netArrows.length === 0 && <p className="muted">No net flow.</p>}
+          {report.netArrows.length === 0 &&
+            (report.nonParticipants || []).length === 0 && (
+              <p className="muted">No net flow.</p>
+            )}
           {report.netArrows.map((row) => (
             <div key={row.agentId} className="flow-row">
               <strong>{row.name}</strong>
               <span className="transfer-resources">{signedResourceBits(row)}</span>
+            </div>
+          ))}
+          {(report.nonParticipants || []).map((p) => (
+            <div key={p.agentId} className="flow-row is-non-participant">
+              <strong>{p.name}</strong>
+              <span className="transfer-resources">
+                <span className="tag">did not trade</span>
+              </span>
             </div>
           ))}
         </div>

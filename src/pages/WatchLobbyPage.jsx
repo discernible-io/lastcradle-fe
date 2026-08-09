@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import { listGames, getNarrative } from "../api/client.js";
+import { listGames } from "../api/client.js";
 import { GameList } from "../components/lobby/GameList.jsx";
-import { SpectatorGuide } from "../components/layout/SpectatorGuide.jsx";
 
 export function WatchLobbyPage() {
   const [running, setRunning] = useState([]);
   const [finished, setFinished] = useState([]);
-  const [narrative, setNarrative] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -14,14 +12,10 @@ export function WatchLobbyPage() {
     const ac = new AbortController();
     (async () => {
       try {
-        const [all, narr] = await Promise.all([
-          listGames({ limit: 50, signal: ac.signal }),
-          getNarrative({ signal: ac.signal }).catch(() => null),
-        ]);
+        const all = await listGames({ limit: 50, signal: ac.signal });
         const games = all.games || [];
         setRunning(games.filter((g) => g.status === "running" || g.status === "joining"));
         setFinished(games.filter((g) => g.status === "finished").slice(0, 12));
-        setNarrative(narr?.narrative || null);
       } catch (err) {
         if (err.name !== "AbortError") setError(err.message);
       } finally {
@@ -33,8 +27,7 @@ export function WatchLobbyPage() {
 
   return (
     <div>
-      <SpectatorGuide variant="lobby" narrative={narrative} />
-      <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem", marginTop: "1.25rem" }}>Live Arena</h1>
+      <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Live Arena</h1>
       <p className="muted" style={{ marginTop: 0, marginBottom: "1.25rem" }}>
         Cradles stage, dispatch, and trade motion — public talk, execution trades, rising survival costs.
       </p>
