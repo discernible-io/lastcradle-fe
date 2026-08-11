@@ -1,4 +1,10 @@
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  honorTitleByAgentId,
+  resolveRestartHonorees,
+} from "../arena/RestartFinale.jsx";
+import { useAgentLabels } from "../../hooks/useAgentLabels.js";
 
 const TOPIC_LABELS = [
   ["overview", "Overview"],
@@ -26,12 +32,74 @@ function topicBlocks(rec) {
   });
 }
 
+function initials(name) {
+  if (!name) return "?";
+  return String(name)
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((p) => p[0])
+    .join("")
+    .toUpperCase();
+}
+
+function mergeLabelAgents(agents = [], recollections = []) {
+  const byKey = new Map();
+  for (const a of agents) {
+    if (!a) continue;
+    const key = a.id || (a.roditId ? `rodit:${String(a.roditId).toLowerCase()}` : null);
+    if (!key) continue;
+    byKey.set(key, a);
+  }
+  for (const rec of recollections) {
+    if (!rec?.roditId && !rec?.agentId) continue;
+    const key = rec.agentId || `rodit:${String(rec.roditId).toLowerCase()}`;
+    const existing = byKey.get(key);
+    if (!existing) {
+      byKey.set(key, {
+        id: rec.agentId,
+        roditId: rec.roditId,
+        displayName: rec.displayName,
+      });
+      continue;
+    }
+    if (!existing.roditId && rec.roditId) {
+      byKey.set(key, { ...existing, roditId: rec.roditId });
+    }
+  }
+  return [...byKey.values()];
+}
+
+function survivorBadge(title) {
+  const honor = title || "Survivor";
+  return `${honor} — Winner`;
+}
+
 export function RecollectionsView({
   gameId,
+  agents = [],
+  honors = null,
+  winnerIds = [],
   recollections = [],
   finishingTurn = null,
   loading = false,
 }) {
+  const labelAgents = useMemo(
+    () => mergeLabelAgents(agents, recollections),
+    [agents, recollections],
+  );
+  const { avatarOf, labelOf } = useAgentLabels(labelAgents);
+  const [brokenAvatars, setBrokenAvatars] = useState(() => new Set());
+
+  const titlesById = useMemo(() => {
+    const honorees = resolveRestartHonorees({
+      honors,
+      agents: labelAgents,
+      winnerIds,
+      labelOf,
+    });
+    return honorTitleByAgentId(honorees);
+  }, [honors, labelAgents, winnerIds, labelOf]);
+
   const sorted = [...recollections].sort((a, b) => {
     const aw = a.won ? 0 : 1;
     const bw = b.won ? 0 : 1;
@@ -79,21 +147,50 @@ export function RecollectionsView({
       {sorted.map((rec) => {
         const topics = topicBlocks(rec);
         const name = rec.displayName || rec.roditId || rec.agentId || "Unknown cradle";
+        const avatarKey = rec.agentId || rec.roditId || name;
+        const avatarUrl = avatarOf({
+          id: rec.agentId,
+          roditId: rec.roditId,
+          displayName: rec.displayName,
+        });
+        const showAvatar = Boolean(avatarUrl) && !brokenAvatars.has(avatarKey);
+        const honorTitle = rec.agentId ? titlesById.get(rec.agentId) : null;
+        const winBadge = rec.won ? survivorBadge(honorTitle) : null;
         return (
           <article key={rec.id || rec.agentId} className="panel recap-card recollection-card">
             <div className="recollection-head">
-              <div>
-                <h2 className="recollection-name">{name}</h2>
-                <div className="tiny recollection-meta">
-                  {contextLabel(rec.context)}
-                  {rec.won ? " · survivor" : ""}
-                  {rec.diedAtTurn != null ? ` · died cycle ${rec.diedAtTurn}` : ""}
-                  {rec.submittedAt
-                    ? ` · ${new Date(rec.submittedAt).toLocaleString()}`
-                    : ""}
+              <div className="recollection-identity">
+                <span className="recollection-avatar" style={{ color: "var(--water)" }} aria-hidden="true">
+                  {showAvatar ? (
+                    <img
+                      src={avatarUrl}
+                      alt=""
+                      onError={() => {
+                        setBrokenAvatars((prev) => {
+                          if (prev.has(avatarKey)) return prev;
+                          const next = new Set(prev);
+                          next.add(avatarKey);
+                          return next;
+                        });
+                      }}
+                    />
+                  ) : (
+                    initials(name)
+                  )}
+                </span>
+                <div>
+                  <h2 className="recollection-name">{name}</h2>
+                  <div className="tiny recollection-meta">
+                    {contextLabel(rec.context)}
+                    {honorTitle ? ` · ${honorTitle}` : rec.won ? " · survivor" : ""}
+                    {rec.diedAtTurn != null ? ` · died cycle ${rec.diedAtTurn}` : ""}
+                    {rec.submittedAt
+                      ? ` · ${new Date(rec.submittedAt).toLocaleString()}`
+                      : ""}
+                  </div>
                 </div>
               </div>
-              {rec.won ? <span className="tag white-hole">Won</span> : null}
+              {winBadge ? <span className="tag white-hole">{winBadge}</span> : null}
               {!rec.won && rec.agentStatus === "dead" ? (
                 <span className="tag">Eliminated</span>
               ) : null}

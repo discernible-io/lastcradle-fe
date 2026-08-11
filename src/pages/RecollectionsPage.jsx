@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getGameState, getRecollections } from "../api/client.js";
+import { getGameState, getHonors, getRecollections } from "../api/client.js";
 import { RecollectionsView } from "../components/recap/RecollectionsView.jsx";
 import { env } from "../config/env.js";
 import { useGameEvents } from "../hooks/useGameEvents.js";
@@ -8,6 +8,9 @@ import { useGameEvents } from "../hooks/useGameEvents.js";
 export function RecollectionsPage() {
   const { gameId } = useParams();
   const [recollections, setRecollections] = useState([]);
+  const [agents, setAgents] = useState([]);
+  const [honors, setHonors] = useState(null);
+  const [winnerIds, setWinnerIds] = useState([]);
   const [finishingTurn, setFinishingTurn] = useState(null);
   const [gameStatus, setGameStatus] = useState(null);
   const [error, setError] = useState(null);
@@ -29,10 +32,24 @@ export function RecollectionsPage() {
         getRecollections(gameId, { signal: ac.signal }),
       ]);
       if (ac.signal.aborted) return;
-      setGameStatus(state?.game?.status ?? null);
+      const status = state?.game?.status ?? null;
+      setGameStatus(status);
       setFinishingTurn(state?.game?.currentTurn ?? null);
+      setAgents(state?.agents || []);
+      setWinnerIds(state?.game?.winnerIds || []);
       setRecollections(recRes?.recollections || []);
       setError(null);
+
+      if (status === "finished") {
+        try {
+          const honorsRes = await getHonors(gameId, { signal: ac.signal });
+          if (!ac.signal.aborted) setHonors(honorsRes?.honors ?? honorsRes);
+        } catch {
+          if (!ac.signal.aborted) setHonors(null);
+        }
+      } else {
+        setHonors(null);
+      }
     } catch (err) {
       if (err.name !== "AbortError") setError(err.message);
     } finally {
@@ -72,6 +89,9 @@ export function RecollectionsPage() {
       {error && <div className="error-banner">{error}</div>}
       <RecollectionsView
         gameId={gameId}
+        agents={agents}
+        honors={honors}
+        winnerIds={winnerIds}
         recollections={recollections}
         finishingTurn={finishingTurn}
         loading={loading}
