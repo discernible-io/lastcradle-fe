@@ -8,6 +8,7 @@ import { RecollectionsPage } from "./pages/RecollectionsPage.jsx";
 import { ContestsPage } from "./pages/ContestsPage.jsx";
 import { HallOfFamePage } from "./pages/HallOfFamePage.jsx";
 import { EnrollPage } from "./pages/EnrollPage.jsx";
+import { AboutPage } from "./pages/AboutPage.jsx";
 import { env } from "./config/env.js";
 import { useEffect } from "react";
 
@@ -85,6 +86,14 @@ export default function App() {
           element={
             <AppShell>
               <EnrollPage />
+            </AppShell>
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            <AppShell>
+              <AboutPage />
             </AppShell>
           }
         />
