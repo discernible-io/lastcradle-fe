@@ -22,6 +22,11 @@ export function AppShell({ children, bleed = false }) {
               {l.label}
             </NavLink>
           ))}
+          {env.discordInviteUrl && (
+            <a href={env.discordInviteUrl} target="_blank" rel="noreferrer">
+              Discord
+            </a>
+          )}
         </nav>
         <span className="deploy-chip">{env.deployLabel}</span>
       </header>

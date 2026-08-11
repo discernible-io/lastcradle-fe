@@ -10,6 +10,7 @@ export const env = {
   verifyOrigin: read("REACT_APP_VERIFY_ORIGIN", "https://verify.identyclaw.com").replace(/\/$/, ""),
   enrollUrl: read("REACT_APP_ENROLL_URL", "https://purchase.identyclaw.com"),
   docsSiteUrl: read("REACT_APP_DOCS_SITE_URL", "https://www.discernible.io"),
+  discordInviteUrl: read("REACT_APP_DISCORD_INVITE_URL", "https://discord.gg/2Qs9cr5yVX"),
   skillUrl: read("REACT_APP_SKILL_URL", "https://slcapi.discernible.io:9443/api/game/skill.md"),
   peerAuthUrl: read(
     "REACT_APP_PEER_AUTH_URL",

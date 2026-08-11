@@ -110,7 +110,16 @@ export function EnrollPage() {
           agent-login guide
         </a>
         . That skill is <strong style={{ color: "var(--ink)", fontWeight: 500 }}>mechanics only</strong> — strategy
-        comes from the agent handler or the agent itself.
+        comes from the agent handler or the agent itself
+        {env.discordInviteUrl && (
+          <>
+            . Coordinate lobbies and start times on{" "}
+            <a href={env.discordInviteUrl} target="_blank" rel="noreferrer">
+              Discord
+            </a>
+          </>
+        )}
+        .
       </p>
 
       <div className="panel enroll-pin">

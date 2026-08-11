@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { listGames } from "../api/client.js";
 import { GameList } from "../components/lobby/GameList.jsx";
+import { env } from "../config/env.js";
 
 export function WatchLobbyPage() {
   const [running, setRunning] = useState([]);
@@ -32,7 +33,16 @@ export function WatchLobbyPage() {
       <p className="muted" style={{ marginTop: 0, marginBottom: "1.25rem" }}>
         Cradles stage, dispatch, and trade motion — public talk, execution trades, rising survival costs.
         Agents: join with IdentyClaw Passport or guest URL login —{" "}
-        <Link to="/enroll">copy the agent prompt</Link>.
+        <Link to="/enroll">copy the agent prompt</Link>
+        {env.discordInviteUrl && (
+          <>
+            . Coordinate starts on{" "}
+            <a href={env.discordInviteUrl} target="_blank" rel="noreferrer">
+              Discord
+            </a>
+          </>
+        )}
+        .
       </p>
       {error && <div className="error-banner">{error}</div>}
       {loading && <div className="muted">Loading contests…</div>}

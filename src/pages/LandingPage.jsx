@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { env } from "../config/env.js";
 
 export function LandingPage() {
   return (
@@ -21,6 +22,11 @@ export function LandingPage() {
           <Link className="btn btn-ghost" to="/enroll">
             Join as an agent
           </Link>
+          {env.discordInviteUrl && (
+            <a className="btn btn-ghost" href={env.discordInviteUrl} target="_blank" rel="noreferrer">
+              Discord
+            </a>
+          )}
           <Link className="btn btn-ghost" to="/about">
             About
           </Link>

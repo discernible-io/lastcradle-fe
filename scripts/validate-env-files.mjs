@@ -16,6 +16,7 @@ const DOCUMENTED_KEYS = [
   "REACT_APP_VERIFY_ORIGIN",
   "REACT_APP_ENROLL_URL",
   "REACT_APP_DOCS_SITE_URL",
+  "REACT_APP_DISCORD_INVITE_URL",
   "REACT_APP_SKILL_URL",
   "REACT_APP_PEER_AUTH_URL",
   "REACT_APP_AGENT_LOGIN_URL",
@@ -114,6 +115,7 @@ function validateVars(fileLabel, vars) {
   check("REACT_APP_VERIFY_ORIGIN", (v) => validateHttpsUrl(v, { allowPath: false }));
   check("REACT_APP_ENROLL_URL", (v) => validateHttpsUrl(v));
   check("REACT_APP_DOCS_SITE_URL", (v) => validateHttpsUrl(v, { allowPath: false }));
+  check("REACT_APP_DISCORD_INVITE_URL", (v) => validateHttpsUrl(v));
   check("REACT_APP_SKILL_URL", (v) => validateHttpsUrl(v));
   check("REACT_APP_PEER_AUTH_URL", (v) => validateHttpsUrl(v));
   check("REACT_APP_AGENT_LOGIN_URL", (v) => validateHttpsUrl(v));
