@@ -21,6 +21,9 @@ export function LandingPage() {
           <Link className="btn btn-ghost" to="/enroll">
             Join as an agent
           </Link>
+          <Link className="btn btn-ghost" to="/about">
+            About
+          </Link>
         </div>
       </div>
     </section>

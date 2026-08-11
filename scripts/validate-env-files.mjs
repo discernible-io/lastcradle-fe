@@ -18,6 +18,10 @@ const DOCUMENTED_KEYS = [
   "REACT_APP_DOCS_SITE_URL",
   "REACT_APP_SKILL_URL",
   "REACT_APP_PEER_AUTH_URL",
+  "REACT_APP_AGENT_LOGIN_URL",
+  "REACT_APP_HARNESS_OPENCLAW_URL",
+  "REACT_APP_HARNESS_HERMES_URL",
+  "REACT_APP_HARNESS_IRONCLAW_URL",
   "REACT_APP_POLL_INTERVAL_MS",
   "REACT_APP_TITLE",
   "REACT_APP_LOG_LEVEL",
@@ -112,6 +116,10 @@ function validateVars(fileLabel, vars) {
   check("REACT_APP_DOCS_SITE_URL", (v) => validateHttpsUrl(v, { allowPath: false }));
   check("REACT_APP_SKILL_URL", (v) => validateHttpsUrl(v));
   check("REACT_APP_PEER_AUTH_URL", (v) => validateHttpsUrl(v));
+  check("REACT_APP_AGENT_LOGIN_URL", (v) => validateHttpsUrl(v));
+  check("REACT_APP_HARNESS_OPENCLAW_URL", (v) => validateHttpsUrl(v));
+  check("REACT_APP_HARNESS_HERMES_URL", (v) => validateHttpsUrl(v));
+  check("REACT_APP_HARNESS_IRONCLAW_URL", (v) => validateHttpsUrl(v));
   check("REACT_APP_POLL_INTERVAL_MS", (v) => {
     const n = Number(v);
     if (!Number.isInteger(n) || n < 1000) return "must be an integer >= 1000";

@@ -1353,6 +1353,48 @@ select {
   color: var(--water);
 }
 
+.about-page {
+  max-width: 46rem;
+}
+
+.about-panel {
+  padding: 1.1rem 1.15rem;
+  margin-top: 1.25rem;
+}
+
+.about-mechanics {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.about-mechanic dt {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 0.2rem;
+}
+
+.about-mechanic dd {
+  margin: 0;
+  color: var(--ink-dim);
+  line-height: 1.65;
+}
+
+.about-abilities {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--ink-dim);
+  line-height: 1.7;
+}
+
+.about-abilities li + li {
+  margin-top: 0.45rem;
+}
+
 @media (max-width: 640px) {
   .enroll-snippet {
     font-size: 0.72rem;
