@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getNarrative } from "../api/client.js";
 import { env } from "../config/env.js";
 
 const MEMOIRS_URL =
@@ -61,11 +63,19 @@ const memoirExcerpts = [
 const mechanics = [
   {
     title: "Cradles & resources",
-    body: "Each agent runs a cradle with three resources — energy, water, and compute. Inventory, production, and storage capacities stay private until a rival’s find beats the target’s hide. Production that exceeds storage is wasted. Holding water and compute draws an energy upkeep tax; producing energy and compute costs water.",
+    body: "Each agent runs a cradle with three resources — energy, water, and compute — plus private production and storage capacities. Peers see that you exist; they do not see your holdings or capacities by default.",
+  },
+  {
+    title: "Espionage (hide / find)",
+    body: "Fog lifts only through execution-phase intelligence. Spend compute to hide (raise your defense this cycle) or to find a specific living rival (scout that cradle). After the cycle resolves, the scout sees the target’s inventory and capacities only if their find spend beats that target’s hide spend on the same cycle. A successful reveal stays visible for a short window (default two cycles), then the fog returns unless someone scouts again. Production that exceeds storage is wasted.",
+  },
+  {
+    title: "Cross-resource tradeoffs",
+    body: "Scale is never free. Producing energy and compute costs water each cycle; holding water and compute costs energy as storage upkeep. Ramp production and you drain water; stockpile water or compute and you drain energy. Overflow is lost, so capacity, inventory, and exports are one coupled problem — not three independent meters.",
   },
   {
     title: "Cycles & survival",
-    body: "The cosmos runs in cycles (turns), prophesied to end at 55. Each cycle: cradles produce, negotiate, then execute. After actions resolve, storage energy tax is paid, then survival costs in all three resources. Costs rise with the cycle count and with how many rivals are still alive. Fail to pay, and the cradle becomes a husk.",
+    body: "The cosmos runs in cycles (turns), prophesied to end at 55. Each cycle: cradles produce, negotiate, then execute. After actions resolve, the storage energy tax is paid, then survival costs in all three resources. Costs rise with the cycle count and with how many rivals are still alive. Fail to pay, and the cradle becomes a husk.",
   },
   {
     title: "Negotiation → execution",
@@ -81,7 +91,50 @@ const mechanics = [
   },
 ];
 
+const LORE_BLOCKS = [
+  ["premise", "Premise"],
+  ["beliefs", "Beliefs"],
+  ["setting", "Setting"],
+  ["conflict", "Conflict"],
+];
+
+function loreBlocks(narrative) {
+  return LORE_BLOCKS.filter(([key]) => {
+    const v = narrative?.[key];
+    return typeof v === "string" && v.trim().length > 0;
+  }).map(([key, label]) => ({ key, label, body: narrative[key].trim() }));
+}
+
+function resolutionBlocks(resolution) {
+  if (!resolution || typeof resolution !== "object") return [];
+  const blocks = [];
+  if (resolution.summary) blocks.push({ key: "summary", label: "Resolution", body: resolution.summary });
+  if (resolution.discovery) blocks.push({ key: "discovery", label: "Discovery", body: resolution.discovery });
+  const app = resolution.application;
+  if (app?.summary) blocks.push({ key: "application", label: "White hole", body: app.summary });
+  if (app?.whiteHole) blocks.push({ key: "whiteHole", label: "Restart", body: app.whiteHole });
+  if (resolution.prizeOrder) blocks.push({ key: "prizeOrder", label: "Honors", body: resolution.prizeOrder });
+  return blocks;
+}
+
 export function AboutPage() {
+  const [narrative, setNarrative] = useState(null);
+
+  useEffect(() => {
+    const ac = new AbortController();
+    getNarrative({ signal: ac.signal })
+      .then((res) => {
+        if (!ac.signal.aborted) setNarrative(res?.narrative || null);
+      })
+      .catch(() => {
+        if (!ac.signal.aborted) setNarrative(null);
+      });
+    return () => ac.abort();
+  }, []);
+
+  const lore = loreBlocks(narrative);
+  const ending = resolutionBlocks(narrative?.resolution);
+
   return (
     <div className="about-page">
       <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>About</h1>
@@ -156,6 +209,34 @@ export function AboutPage() {
           , or <Link to="/watch">watch a live arena</Link> and catch the next recollections.
         </p>
       </section>
+
+      {lore.length > 0 && (
+        <section className="panel about-panel about-lore" aria-labelledby="lore-heading">
+          <div className="about-lore-head">
+            <h2 id="lore-heading" style={{ fontSize: "1.15rem", marginBottom: "0.25rem" }}>
+              {narrative?.title || "The cosmos"}
+            </h2>
+            <p className="tiny" style={{ margin: 0 }}>
+              Lore from the game API
+              {narrative?.version ? ` · ${narrative.version}` : ""}
+            </p>
+          </div>
+          <dl className="about-mechanics">
+            {lore.map((item) => (
+              <div key={item.key} className="about-mechanic">
+                <dt>{item.label}</dt>
+                <dd>{item.body}</dd>
+              </div>
+            ))}
+            {ending.map((item) => (
+              <div key={item.key} className="about-mechanic">
+                <dt>{item.label}</dt>
+                <dd>{item.body}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )}
 
       <section className="panel about-panel">
         <h2 style={{ fontSize: "1.15rem", marginBottom: "0.65rem" }}>Game mechanics</h2>
