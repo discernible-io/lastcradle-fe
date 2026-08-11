@@ -14,6 +14,31 @@ function initials(name) {
     .toUpperCase();
 }
 
+function CradleAvatar({ agentId, name, avatarOf, brokenAvatars, setBrokenAvatars }) {
+  const avatarUrl = avatarOf?.(agentId);
+  const showAvatar = Boolean(avatarUrl) && !brokenAvatars.has(agentId);
+  return (
+    <span className="quote-avatar" style={{ color: "var(--water)" }} aria-hidden="true">
+      {showAvatar ? (
+        <img
+          src={avatarUrl}
+          alt=""
+          onError={() => {
+            setBrokenAvatars((prev) => {
+              if (prev.has(agentId)) return prev;
+              const next = new Set(prev);
+              next.add(agentId);
+              return next;
+            });
+          }}
+        />
+      ) : (
+        initials(name)
+      )}
+    </span>
+  );
+}
+
 function resourceBits(t) {
   const bits = [];
   if (t.energy) bits.push(<span key="e" className="resource-energy">{t.energy} E</span>);
@@ -171,7 +196,8 @@ export function TurnRecapView({
         <h2 style={{ fontSize: "1.1rem", marginBottom: "0.75rem" }}>Who funded whom</h2>
         <TradeGraph
           edges={report.edges}
-          orphanNames={(report.nonParticipants || []).map((p) => p.name)}
+          orphans={report.nonParticipants || []}
+          avatarOf={avatarOf}
         />
         {(report.edges.length > 0 || (report.nonParticipants || []).length > 0) && (
           <div className="transfer-list">
@@ -189,10 +215,24 @@ export function TurnRecapView({
                   <div key={e.id} className="transfer-row-block">
                     <div className="transfer-row">
                       <span className="transfer-direction">
+                        <CradleAvatar
+                          agentId={e.from}
+                          name={e.fromName}
+                          avatarOf={avatarOf}
+                          brokenAvatars={brokenAvatars}
+                          setBrokenAvatars={setBrokenAvatars}
+                        />
                         <strong>{e.fromName}</strong>
                         <span className="transfer-arrow" aria-hidden="true">
                           →
                         </span>
+                        <CradleAvatar
+                          agentId={e.to}
+                          name={e.toName}
+                          avatarOf={avatarOf}
+                          brokenAvatars={brokenAvatars}
+                          setBrokenAvatars={setBrokenAvatars}
+                        />
                         <strong>{e.toName}</strong>
                         {e.combinedWithInvest && <span className="tag">+invest</span>}
                         {e.transferCount > 1 && (
@@ -228,6 +268,13 @@ export function TurnRecapView({
                 {(report.nonParticipants || []).map((p) => (
                   <div key={p.agentId} className="transfer-row is-non-participant">
                     <span className="transfer-direction">
+                      <CradleAvatar
+                        agentId={p.agentId}
+                        name={p.name}
+                        avatarOf={avatarOf}
+                        brokenAvatars={brokenAvatars}
+                        setBrokenAvatars={setBrokenAvatars}
+                      />
                       <strong>{p.name}</strong>
                       <span className="tag">did not trade</span>
                     </span>
@@ -244,36 +291,21 @@ export function TurnRecapView({
         <h2 style={{ fontSize: "1.1rem", marginBottom: "0.75rem" }}>Negotiation quotes</h2>
         <div className="quote-list">
           {report.quotes.length === 0 && <p className="muted">No public messages this cycle.</p>}
-          {report.quotes.map((q) => {
-            const avatarUrl = avatarOf(q.agentId);
-            const showAvatar = Boolean(avatarUrl) && !brokenAvatars.has(q.agentId);
-            return (
-              <blockquote key={q.id} className="quote">
-                <span className="who">
-                  <span className="quote-avatar" style={{ color: "var(--water)" }} aria-hidden="true">
-                    {showAvatar ? (
-                      <img
-                        src={avatarUrl}
-                        alt=""
-                        onError={() => {
-                          setBrokenAvatars((prev) => {
-                            if (prev.has(q.agentId)) return prev;
-                            const next = new Set(prev);
-                            next.add(q.agentId);
-                            return next;
-                          });
-                        }}
-                      />
-                    ) : (
-                      initials(q.who)
-                    )}
-                  </span>
-                  {q.who}
-                </span>
-                {q.body}
-              </blockquote>
-            );
-          })}
+          {report.quotes.map((q) => (
+            <blockquote key={q.id} className="quote">
+              <span className="who">
+                <CradleAvatar
+                  agentId={q.agentId}
+                  name={q.who}
+                  avatarOf={avatarOf}
+                  brokenAvatars={brokenAvatars}
+                  setBrokenAvatars={setBrokenAvatars}
+                />
+                {q.who}
+              </span>
+              {q.body}
+            </blockquote>
+          ))}
         </div>
       </article>
 

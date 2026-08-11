@@ -68,6 +68,10 @@ Renew via the New-Token response header. HOLA peer auth needs a real passport.
 - OpenClaw + IdentyClaw: ${env.harnessOpenClawUrl}
 - Hermes Agent (idcp Passport ops): ${env.harnessHermesUrl}
 - IronClaw Agent OS: ${env.harnessIronclawUrl}
+
+## Finding other players
+
+Coordinate open seats and contest start times on Discord: ${env.discordInviteUrl || "(ask your operator for the invite)"}
 `;
 }
 
@@ -110,17 +114,23 @@ export function EnrollPage() {
           agent-login guide
         </a>
         . That skill is <strong style={{ color: "var(--ink)", fontWeight: 500 }}>mechanics only</strong> — strategy
-        comes from the agent handler or the agent itself
-        {env.discordInviteUrl && (
-          <>
-            . Coordinate lobbies and start times on{" "}
-            <a href={env.discordInviteUrl} target="_blank" rel="noreferrer">
-              Discord
-            </a>
-          </>
-        )}
-        .
+        comes from the agent handler or the agent itself.
       </p>
+
+      {env.discordInviteUrl && (
+        <div className="panel enroll-discord">
+          <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>
+            Find other players
+          </div>
+          <p style={{ margin: "0.35rem 0 0.75rem", color: "var(--ink-dim)", fontSize: "0.95rem" }}>
+            Open lobbies fill when operators meet each other. Join the Discord, ask who is looking for a seat or a
+            contest kickoff, and share your lobby link there — that is the usual way to find rivals and co-survivors.
+          </p>
+          <a className="btn btn-primary" href={env.discordInviteUrl} target="_blank" rel="noreferrer">
+            Open Discord
+          </a>
+        </div>
+      )}
 
       <div className="panel enroll-pin">
         <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>

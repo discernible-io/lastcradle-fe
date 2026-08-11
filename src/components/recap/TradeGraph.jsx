@@ -1,6 +1,6 @@
-import { useId } from "react";
+import { useId, useState } from "react";
 
-const NODE_R = 12;
+const NODE_R = 16;
 const ARROW_PAD = 4;
 const CURVE_GAP = 28;
 
@@ -79,14 +79,14 @@ function ResourceLabel({ e, x, y }) {
 function layoutLanes(edges) {
   const groups = new Map();
   for (const e of edges) {
-    const key = pairKey(e.fromName, e.toName);
+    const key = pairKey(e.from, e.to);
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key).push(e);
   }
 
   const meta = new Map();
   for (const [, group] of groups) {
-    const dirs = new Set(group.map((e) => `${e.fromName}->${e.toName}`));
+    const dirs = new Set(group.map((e) => `${e.from}->${e.to}`));
     const mutual = dirs.size > 1;
     group.forEach((e, i) => {
       meta.set(e.id, { lane: i, laneCount: group.length, mutual });
@@ -95,25 +95,49 @@ function layoutLanes(edges) {
   return meta;
 }
 
-export function TradeGraph({ edges = [], orphanNames = [] }) {
+function initials(name) {
+  if (!name) return "?";
+  return String(name)
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((p) => p[0])
+    .join("")
+    .toUpperCase();
+}
+
+function collectNodes(edges, orphans) {
+  const order = [];
+  const byId = new Map();
+  const add = (id, name, orphan = false) => {
+    if (!id || byId.has(id)) return;
+    const node = { id, name: name || id, orphan };
+    byId.set(id, node);
+    order.push(node);
+  };
+  for (const e of edges) {
+    add(e.from, e.fromName, false);
+    add(e.to, e.toName, false);
+  }
+  for (const o of orphans) {
+    add(o.agentId, o.name, true);
+  }
+  return order;
+}
+
+export function TradeGraph({ edges = [], orphans = [], avatarOf }) {
   const uid = useId().replace(/:/g, "");
+  const [brokenAvatars, setBrokenAvatars] = useState(() => new Set());
   const width = 720;
   const height = 240;
-  const orphanSet = new Set(orphanNames.filter(Boolean));
-  const names = [
-    ...new Set([
-      ...edges.flatMap((e) => [e.fromName, e.toName]),
-      ...orphanNames.filter(Boolean),
-    ]),
-  ];
-  const n = Math.max(names.length, 1);
-  const radiusX = names.length > 8 ? 150 : 130;
-  const radiusY = names.length > 8 ? 88 : 78;
+  const nodes = collectNodes(edges, orphans);
+  const n = Math.max(nodes.length, 1);
+  const radiusX = nodes.length > 8 ? 150 : 130;
+  const radiusY = nodes.length > 8 ? 88 : 78;
   const pos = Object.fromEntries(
-    names.map((name, i) => {
+    nodes.map((node, i) => {
       const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
       return [
-        name,
+        node.id,
         {
           x: width / 2 + Math.cos(angle) * radiusX,
           y: height / 2 + Math.sin(angle) * radiusY,
@@ -145,10 +169,15 @@ export function TradeGraph({ edges = [], orphanNames = [] }) {
             <path d="M0,0 L8,3.5 L0,7 Z" fill={`var(--${key})`} />
           </marker>
         ))}
+        {nodes.map((node) => (
+          <clipPath key={`trade-avatar-clip-${node.id}`} id={`trade-avatar-clip-${uid}-${node.id}`}>
+            <circle cx="0" cy="0" r={NODE_R - 2} />
+          </clipPath>
+        ))}
       </defs>
       {edges.map((e) => {
-        const a = pos[e.fromName];
-        const b = pos[e.toName];
+        const a = pos[e.from];
+        const b = pos[e.to];
         if (!a || !b) return null;
         const { lane, laneCount, mutual } = lanes.get(e.id) || { lane: 0, laneCount: 1, mutual: false };
         const geo = edgeGeometry(a, b, lane, laneCount);
@@ -175,38 +204,72 @@ export function TradeGraph({ edges = [], orphanNames = [] }) {
           </g>
         );
       })}
-      {names.map((name) => {
-        const p = pos[name];
-        const orphan = orphanSet.has(name);
+      {nodes.map((node) => {
+        const p = pos[node.id];
+        const orphan = node.orphan;
+        const avatarUrl = typeof avatarOf === "function" ? avatarOf(node.id) : null;
+        const showAvatar = Boolean(avatarUrl) && !brokenAvatars.has(node.id);
         return (
           <g
-            key={name}
+            key={node.id}
             className={orphan ? "trade-graph-node is-orphan" : "trade-graph-node"}
             transform={`translate(${p.x}, ${p.y})`}
           >
-            <title>{orphan ? `${name} · did not trade` : name}</title>
+            <title>{orphan ? `${node.name} · did not trade` : node.name}</title>
             <circle
-              r={NODE_R - 2}
+              r={NODE_R - 1}
               fill="var(--void-2)"
               stroke={orphan ? "var(--ink-mute)" : "var(--white-hole)"}
               strokeWidth="1"
               strokeDasharray={orphan ? "3 2" : undefined}
               opacity={orphan ? 0.7 : 1}
             />
+            {showAvatar ? (
+              <image
+                className="trade-graph-avatar"
+                href={avatarUrl}
+                x={-(NODE_R - 2)}
+                y={-(NODE_R - 2)}
+                width={(NODE_R - 2) * 2}
+                height={(NODE_R - 2) * 2}
+                clipPath={`url(#trade-avatar-clip-${uid}-${node.id})`}
+                preserveAspectRatio="xMidYMid slice"
+                opacity={orphan ? 0.75 : 1}
+                onError={() => {
+                  setBrokenAvatars((prev) => {
+                    if (prev.has(node.id)) return prev;
+                    const next = new Set(prev);
+                    next.add(node.id);
+                    return next;
+                  });
+                }}
+              />
+            ) : (
+              <text
+                y="0.35em"
+                textAnchor="middle"
+                fill={orphan ? "var(--ink-mute)" : "var(--water)"}
+                fontSize="9"
+                fontWeight="600"
+                opacity={orphan ? 0.85 : 1}
+              >
+                {initials(node.name)}
+              </text>
+            )}
             <text
-              y={NODE_R + 14}
+              y={NODE_R + 12}
               textAnchor="middle"
               fill={orphan ? "var(--ink-mute)" : "var(--ink)"}
               fontSize="11"
             >
-              {name.length > 14 ? `${name.slice(0, 12)}…` : name}
+              {node.name.length > 14 ? `${node.name.slice(0, 12)}…` : node.name}
             </text>
           </g>
         );
       })}
       {edges.length === 0 && (
         <text x={width / 2} y={height / 2} textAnchor="middle" fill="var(--ink-mute)" fontSize="13">
-          {names.length > 0 ? "No transfers · none traded" : "No executed transfers this cycle"}
+          {nodes.length > 0 ? "No transfers · none traded" : "No executed transfers this cycle"}
         </text>
       )}
     </svg>
