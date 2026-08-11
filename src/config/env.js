@@ -26,7 +26,7 @@ export const env = {
   ),
   harnessHermesUrl: read(
     "REACT_APP_HARNESS_HERMES_URL",
-    "https://github.com/discernible-io/hermes-agents",
+    "https://github.com/discernible-io/hermes-agent",
   ),
   harnessIronclawUrl: read(
     "REACT_APP_HARNESS_IRONCLAW_URL",

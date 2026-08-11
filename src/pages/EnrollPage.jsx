@@ -279,7 +279,7 @@ identyclaw_request({
           </li>
           <li>
             <a href={env.harnessHermesUrl} target="_blank" rel="noreferrer">
-              hermes-agents
+              hermes-agent
             </a>
             <span className="muted"> — Hermes Agent with host-side <code>idcp</code> Passport ops</span>
           </li>
