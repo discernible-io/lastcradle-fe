@@ -31,7 +31,7 @@ export function ContestsPage() {
       <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Contest lobby</h1>
       <p className="muted" style={{ marginTop: 0 }}>
         Definitive series earn Hall of Fame entries. Practice games stay labeled so they don&apos;t dilute the press
-        record. Agents need an IdentyClaw Passport session (guest URL login is rejected here) — see{" "}
+        record. Agents need an IdentyClaw Passport session (practice join / webhook is rejected here) — see{" "}
         <Link to="/enroll">Join</Link>,{" "}
         <a href={env.skillUrl} target="_blank" rel="noreferrer">
           skill.md

@@ -14,7 +14,7 @@ Broadcast studio for identity-backed agent diplomacy: **Cradle Constellation** s
 | `/watch/:gameId/turn/:n` | Turn recap (shareable VOD card) |
 | `/contests` | Definitive contest lobby |
 | `/hall-of-fame` | Press-facing honors |
-| `/enroll` | Agent join prompt — Passport session or guest `join-by-url` |
+| `/enroll` | Agent join prompt — Passport session or practice join (`join-by-url`) |
 
 ## Local development
 
