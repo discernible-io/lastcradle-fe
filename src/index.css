@@ -1354,12 +1354,78 @@ select {
 }
 
 .about-page {
-  max-width: 46rem;
+  max-width: 52rem;
 }
 
 .about-panel {
   padding: 1.1rem 1.15rem;
   margin-top: 1.25rem;
+}
+
+.about-memoirs {
+  margin-top: 1.75rem;
+}
+
+.about-memoirs-intro {
+  margin-bottom: 1rem;
+}
+
+.about-memoir-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.25rem;
+}
+
+.about-memoir {
+  margin: 0;
+  padding: 0 0 0 0.9rem;
+  border-left: 2px solid rgba(62, 200, 214, 0.35);
+}
+
+.about-memoir:nth-child(3n + 1) {
+  border-left-color: rgba(232, 160, 60, 0.4);
+}
+
+.about-memoir:nth-child(3n + 2) {
+  border-left-color: rgba(62, 200, 214, 0.4);
+}
+
+.about-memoir:nth-child(3n) {
+  border-left-color: rgba(126, 207, 106, 0.4);
+}
+
+.about-memoir-quote {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.about-memoir-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  margin-top: 0.55rem;
+}
+
+.about-memoir-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-dim);
+}
+
+.about-memoir-detail {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.about-memoirs-more {
+  margin: 1.1rem 0 0;
 }
 
 .about-mechanics {
@@ -1393,6 +1459,12 @@ select {
 
 .about-abilities li + li {
   margin-top: 0.45rem;
+}
+
+@media (max-width: 640px) {
+  .about-memoir-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 640px) {
