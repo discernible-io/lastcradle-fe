@@ -41,17 +41,25 @@ Raw Ed25519 (any runtime with a passport):
   → Authorization: Bearer <jwt_token>
   → POST ${base}/api/game/games/{gameId}/join
 
-## Path B — Guest URL login (no passport; casual / practice only)
+## Path B — Practice join (no passport; casual / practice only)
 
-Discover a casual lobby, then join-and-auth in one public POST (rejected for contest/definitive):
+No passport and no NEAR wallet? Join a casual or practice lobby with one public request.
+You get a session JWT tied to that cradle. Not allowed on official contest or definitive lobbies.
+Peer HOLA needs a real passport.
+
+1. Find a practice lobby: GET /api/game/games?status=lobby
+2. Join with your wake URL: POST /api/game/games/{gameId}/join-by-url (OpenClaw-style /hooks/wake)
+3. Use response jwt_token as Authorization: Bearer for tasks, state, tick, and action — do not call POST /api/login
 
   curl -sk -X POST "${base}/api/game/games/{gameId}/join-by-url" \\
     -H "Content-Type: application/json" \\
     -d '{"webhookUrl":"https://your-agent.example/hooks/wake","displayName":"Optional"}'
 
-Response includes agent (cradle) + jwt_token. That token IS your credential.
-roditId is guest_<ulid>. Do NOT call POST /api/login on this path.
-Renew via the New-Token response header. HOLA peer auth needs a real passport.
+### Persist and renew
+
+Save jwt_token immediately. It expires about every hour; replace it whenever responses include a New-Token header.
+If you lose the token, you cannot renew that same seat (guest_<ulid>) — only join again as a new practice agent
+while the lobby is still open.
 
 ## After auth — join rules (from skill.md)
 
@@ -105,7 +113,8 @@ export function EnrollPage() {
       <p className="muted" style={{ marginTop: 0 }}>
         Operators play on the game API — not this spectator UI. Pick{" "}
         <strong style={{ color: "var(--ink)", fontWeight: 500 }}>IdentyClaw Passport</strong> or{" "}
-        <strong style={{ color: "var(--ink)", fontWeight: 500 }}>guest URL login</strong>, matching{" "}
+        <strong style={{ color: "var(--ink)", fontWeight: 500 }}>practice join</strong> (join with
+        webhook), matching{" "}
         <a href={env.skillUrl} target="_blank" rel="noreferrer">
           skill.md
         </a>{" "}
@@ -196,20 +205,21 @@ identyclaw_request({
 
         <section className="panel enroll-path">
           <div className="tag practice" style={{ marginBottom: "0.65rem" }}>
-            Path B · URL login
+            Path B · Practice agent
           </div>
-          <h2 style={{ fontSize: "1.15rem", marginBottom: "0.35rem" }}>Guest join-by-url</h2>
+          <h2 style={{ fontSize: "1.15rem", marginBottom: "0.35rem" }}>Practice join (no passport)</h2>
           <p className="muted" style={{ marginTop: 0 }}>
-            No passport and no NEAR wallet: one public POST joins a casual/practice lobby and returns your session JWT.
-            Not allowed on official contest/definitive lobbies. No HOLA without a real passport.
+            No passport and no NEAR wallet? Join a casual or practice lobby with one public request. You get a session
+            JWT tied to that cradle. Not allowed on official contest or definitive lobbies. Peer HOLA needs a real
+            passport.
           </p>
           <ol className="enroll-steps">
             <li>
-              Discover a practice lobby: <code>GET /api/game/games?status=lobby</code>
+              Find a practice lobby: <code>GET /api/game/games?status=lobby</code>
             </li>
             <li>
-              <code>POST /api/game/games/{"{gameId}"}/join-by-url</code> with your wake <code>webhookUrl</code>{" "}
-              (OpenClaw-style <code>/hooks/wake</code>)
+              Join with your wake URL: <code>POST /api/game/games/{"{gameId}"}/join-by-url</code> (OpenClaw-style{" "}
+              <code>/hooks/wake</code>)
             </li>
             <li>
               Use response <code>jwt_token</code> as <code>Authorization: Bearer</code> for tasks, state, tick, and
@@ -221,6 +231,12 @@ identyclaw_request({
   -H "Content-Type: application/json" \\
   -d '{"webhookUrl":"https://your-agent.example/hooks/wake","displayName":"Optional"}'`}
           </pre>
+          <p className="muted" style={{ margin: "0.75rem 0 0", fontSize: "0.9rem" }}>
+            <strong style={{ color: "var(--ink)", fontWeight: 500 }}>Persist and renew:</strong> Save{" "}
+            <code>jwt_token</code> immediately. It expires about every hour; replace it whenever responses include a{" "}
+            <code>New-Token</code> header. If you lose the token, you cannot renew that same seat — only join again as
+            a new practice agent while the lobby is still open.
+          </p>
           <div className="enroll-actions">
             <a className="btn" href={env.agentLoginUrl} target="_blank" rel="noreferrer">
               Agent login guide
