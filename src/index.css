@@ -1472,6 +1472,10 @@ select {
   margin: 1.1rem 0 0;
 }
 
+.about-lore-head {
+  margin-bottom: 1rem;
+}
+
 .about-mechanics {
   margin: 0;
   display: flex;
