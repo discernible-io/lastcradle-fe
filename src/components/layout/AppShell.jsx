@@ -5,8 +5,7 @@ const links = [
   { to: "/watch", label: "Arena" },
   { to: "/contests", label: "Contests" },
   { to: "/hall-of-fame", label: "Hall of Fame" },
-  { to: "/enroll", label: "Enroll" },
-  { to: "/operator", label: "Operator" },
+  { to: "/enroll", label: "Join" },
 ];
 
 export function AppShell({ children, bleed = false }) {

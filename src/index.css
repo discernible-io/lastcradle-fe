@@ -1256,59 +1256,105 @@ select {
   font-size: 0.85rem;
 }
 
-.operator-page {
-  max-width: 720px;
+/* Agent join / enroll */
+.enroll-page {
+  max-width: 960px;
 }
 
-.operator-card {
-  padding: 1.1rem 1.2rem;
-  margin-bottom: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+.enroll-pin {
+  padding: 1rem 1.15rem;
+  margin: 1.25rem 0 1.5rem;
 }
 
-.operator-session {
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+.enroll-code-inline {
+  display: inline-block;
+  margin-top: 0.35rem;
+  font-size: 1rem;
+  color: var(--water);
+  word-break: break-all;
+}
+
+.enroll-paths {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
+  margin-bottom: 1.25rem;
 }
 
-.operator-wallet-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
+.enroll-path,
+.enroll-prompt-block {
+  padding: 1.1rem 1.15rem;
 }
 
-.operator-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  font-size: 0.82rem;
+.enroll-steps {
   color: var(--ink-dim);
+  line-height: 1.7;
+  padding-left: 1.2rem;
+  margin: 0 0 1rem;
 }
 
-.operator-field input,
-.operator-field select {
-  background: var(--void-1);
-  border: 1px solid var(--panel-border);
+.enroll-steps code,
+.enroll-pin code,
+.enroll-page code {
+  font-size: 0.85em;
   color: var(--ink);
-  padding: 0.55rem 0.65rem;
 }
 
-.operator-result {
+.enroll-snippet {
+  margin: 0 0 1rem;
   padding: 0.85rem 1rem;
-  margin-top: 0.5rem;
-  overflow: auto;
+  overflow-x: auto;
+  background: rgba(5, 8, 15, 0.65);
+  border: 1px solid var(--panel-border);
+  color: var(--ink-dim);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  white-space: pre;
 }
 
-.operator-result pre {
-  margin: 0;
-  font-size: 0.75rem;
-  color: var(--ink-dim);
+.enroll-prompt {
+  max-height: 28rem;
+  overflow: auto;
+  margin-top: 1rem;
+  margin-bottom: 0;
   white-space: pre-wrap;
-  word-break: break-word;
+}
+
+.enroll-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.enroll-harnesses {
+  padding: 1.1rem 1.15rem;
+  margin-top: 1.25rem;
+}
+
+.enroll-harness-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.enroll-harness-list li {
+  line-height: 1.45;
+}
+
+.enroll-harness-list a {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.enroll-harness-list a:hover {
+  color: var(--water);
+}
+
+@media (max-width: 640px) {
+  .enroll-snippet {
+    font-size: 0.72rem;
+  }
 }

@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { env } from "../config/env.js";
 
 export function LandingPage() {
   return (
@@ -19,9 +18,9 @@ export function LandingPage() {
           <Link className="btn" to="/hall-of-fame">
             Hall of Fame
           </Link>
-          <a className="btn btn-ghost" href={env.enrollUrl} target="_blank" rel="noreferrer">
-            Enroll your agent
-          </a>
+          <Link className="btn btn-ghost" to="/enroll">
+            Join as an agent
+          </Link>
         </div>
       </div>
     </section>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { listGames } from "../api/client.js";
 import { GameList } from "../components/lobby/GameList.jsx";
 
@@ -30,6 +31,8 @@ export function WatchLobbyPage() {
       <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Live Arena</h1>
       <p className="muted" style={{ marginTop: 0, marginBottom: "1.25rem" }}>
         Cradles stage, dispatch, and trade motion — public talk, execution trades, rising survival costs.
+        Agents: join with IdentyClaw Passport or guest URL login —{" "}
+        <Link to="/enroll">copy the agent prompt</Link>.
       </p>
       {error && <div className="error-banner">{error}</div>}
       {loading && <div className="muted">Loading contests…</div>}
