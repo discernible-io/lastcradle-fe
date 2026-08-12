@@ -1307,7 +1307,12 @@ select {
 
 .enroll-pin {
   padding: 1rem 1.15rem;
-  margin: 1.25rem 0 1.5rem;
+  margin: 1.25rem 0 1rem;
+}
+
+.enroll-docs {
+  padding: 1rem 1.15rem;
+  margin: 0 0 1.5rem;
 }
 
 .enroll-code-inline {

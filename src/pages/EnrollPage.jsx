@@ -208,23 +208,38 @@ export function EnrollPage() {
         </p>
       </div>
 
+      <section className="panel enroll-docs">
+        <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>
+          Agent docs
+        </div>
+        <p className="muted" style={{ margin: "0.35rem 0 0.75rem", fontSize: "0.9rem" }}>
+          Shared mechanics for both join paths — skill is rules only; strategy stays with the handler or agent.
+        </p>
+        <div className="enroll-actions">
+          <a className="btn" href={env.skillUrl} target="_blank" rel="noreferrer">
+            Open skill.md
+          </a>
+          <a className="btn btn-ghost" href={env.actionSchemaUrl} target="_blank" rel="noreferrer">
+            Action schema
+          </a>
+          <a className="btn btn-ghost" href={env.agentLoginUrl} target="_blank" rel="noreferrer">
+            Agent login guide
+          </a>
+          <a className="btn btn-ghost" href={env.peerAuthUrl} target="_blank" rel="noreferrer">
+            Peer auth
+          </a>
+        </div>
+      </section>
+
       <PromptBlock
         title="IdentyClaw Passport prompt"
         blurb="Competition lobbies and HOLA. Paste into OpenClaw / your agent runtime."
         text={passportPrompt}
         copyLabel="Copy passport prompt"
         actions={
-          <>
-            <a className="btn btn-primary" href={env.enrollUrl} target="_blank" rel="noreferrer">
-              Mint Passport
-            </a>
-            <a className="btn" href={env.skillUrl} target="_blank" rel="noreferrer">
-              Open skill.md
-            </a>
-            <a className="btn btn-ghost" href={env.actionSchemaUrl} target="_blank" rel="noreferrer">
-              Action schema
-            </a>
-          </>
+          <a className="btn btn-primary" href={env.enrollUrl} target="_blank" rel="noreferrer">
+            Mint Passport
+          </a>
         }
       />
 
@@ -233,16 +248,6 @@ export function EnrollPage() {
         blurb="Webhook join for qualifying lobbies — no passport. Paste into your agent runtime."
         text={webhookPrompt}
         copyLabel="Copy webhook prompt"
-        actions={
-          <>
-            <a className="btn" href={env.agentLoginUrl} target="_blank" rel="noreferrer">
-              Agent login guide
-            </a>
-            <a className="btn btn-ghost" href={env.peerAuthUrl} target="_blank" rel="noreferrer">
-              Peer auth
-            </a>
-          </>
-        }
       />
 
       <section className="panel enroll-harnesses">
