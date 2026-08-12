@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useAgentLabels } from "../../hooks/useAgentLabels.js";
-import { eliminationCause } from "../../utils/elimination.js";
+import { eliminationCause, eliminationSummary } from "../../utils/elimination.js";
 import { honorTitleByAgentId, RestartFinale, resolveRestartHonorees } from "./RestartFinale.jsx";
 
 const AVATAR = {
@@ -266,6 +266,7 @@ export function ConstellationStage({
           const dead = agent.status === "dead";
           const justPassed = dead && turn != null && agent.diedAtTurn === turn;
           const cause = dead ? eliminationCause(agent) : null;
+          const causeDetail = dead ? eliminationSummary(agent) : null;
           const passedCycle =
             dead && agent.diedAtTurn != null ? `Cycle ${agent.diedAtTurn}` : dead ? "Passed" : null;
           const avatarUrl = avatarOf(agent);
@@ -274,7 +275,7 @@ export function ConstellationStage({
           const isAnchor = honorTitle === "White Hole Anchor";
           const contactBits = [contact.email, contact.a2aUrl].filter(Boolean);
           const epitaph = dead
-            ? [passedCycle, cause].filter(Boolean).join(" — ")
+            ? [passedCycle, causeDetail || cause].filter(Boolean).join(" — ")
             : honorTitle
               ? `${honorTitle} — ${label}`
               : [label, ...contactBits].filter(Boolean).join(" · ");

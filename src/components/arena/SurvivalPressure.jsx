@@ -1,4 +1,5 @@
 import { useAgentLabels } from "../../hooks/useAgentLabels.js";
+import { survivalPressurePercent } from "../../utils/cyclePressure.js";
 import { resolveRestartHonorees } from "./RestartFinale.jsx";
 
 export function SurvivalPressure({ state, honors = null }) {
@@ -7,7 +8,7 @@ export function SurvivalPressure({ state, honors = null }) {
   const turn = state?.game?.currentTurn || 0;
   const living = state?.livingAgentCount ?? agents.filter((a) => a.status === "alive").length ?? 0;
   const finished = state?.game?.status === "finished";
-  const pressure = Math.min(100, Math.round((turn / 55) * 70 + Math.max(0, living - 2) * 8));
+  const pressure = survivalPressurePercent(state?.game, turn, living);
   const survivalText = state?.narrative?.survival?.summary;
   const honorees = finished
     ? resolveRestartHonorees({
@@ -55,11 +56,17 @@ export function SurvivalPressure({ state, honors = null }) {
     );
   }
 
+  const finishAt = Number(state?.game?.finishSurvivorCount);
+  const survivorHint =
+    Number.isFinite(finishAt) && finishAt > 0 ? ` · finish ≤${finishAt}` : "";
+
   return (
     <div className="panel survival-pressure">
       <div className="pressure-header" style={{ padding: 0, border: "none", marginBottom: "0.35rem" }}>
         <span>Survival pressure</span>
-        <span className="tiny">{living} living</span>
+        <span className="tiny">
+          {living} living{survivorHint}
+        </span>
       </div>
       <div className="pressure-meter" aria-label={`Pressure ${pressure}%`}>
         <span style={{ width: `${pressure}%` }} />

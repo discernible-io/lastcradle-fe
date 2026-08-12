@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAgentLabels } from "../../hooks/useAgentLabels.js";
-import { TradeGraph } from "./TradeGraph.jsx";
+import { contestModeLabel } from "../../utils/gameLabel.js";
 import { isQuietLiveTurn } from "../../utils/visibleTurns.js";
+import { TradeGraph } from "./TradeGraph.jsx";
 
 function initials(name) {
   if (!name) return "?";
@@ -147,7 +148,7 @@ export function TurnRecapView({
         <h1>{report.headline}</h1>
         <p className="muted" style={{ margin: "0 0 1rem" }}>
           {report.livingCount} cradles remaining
-          {report.contestMode ? ` · ${report.contestMode}` : " · practice"}
+          {` · ${contestModeLabel({ contestMode: report.contestMode })}`}
           {quietLive ? " · current cycle (no public activity yet)" : ""}
           {isFinishingTurn ? " · finishing cycle" : ""}
         </p>
@@ -338,8 +339,11 @@ export function TurnRecapView({
           <h2 style={{ fontSize: "1.1rem", marginBottom: "0.75rem" }}>Eliminations</h2>
           <ul style={{ margin: 0, paddingLeft: "1.1rem" }}>
             {report.eliminations.map((e) => (
-              <li key={e.id}>
+              <li key={e.id} title={e.summary || undefined}>
                 <strong>{e.name}</strong> — {e.cause}
+                {e.lastAction ? (
+                  <span className="tiny"> · last action: {e.lastAction}</span>
+                ) : null}
               </li>
             ))}
           </ul>

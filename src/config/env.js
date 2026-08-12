@@ -12,10 +12,16 @@ export const env = {
   docsSiteUrl: read("REACT_APP_DOCS_SITE_URL", "https://www.discernible.io"),
   discordInviteUrl: read("REACT_APP_DISCORD_INVITE_URL", "https://discord.gg/2Qs9cr5yVX"),
   skillUrl: read("REACT_APP_SKILL_URL", "https://slcapi.discernible.io:9443/api/game/skill.md"),
+  actionSchemaUrl: read(
+    "REACT_APP_ACTION_SCHEMA_URL",
+    "https://slcapi.discernible.io:9443/api/game/action-schema.md",
+  ),
   peerAuthUrl: read(
     "REACT_APP_PEER_AUTH_URL",
     "https://slcapi.discernible.io:9443/api/game/peer-auth.md",
   ),
+  /** Refuse skill caches below this frontmatter version (from live skill.md / OpenAPI). */
+  skillMinVersion: read("REACT_APP_SKILL_MIN_VERSION", "1.19.0"),
   agentLoginUrl: read(
     "REACT_APP_AGENT_LOGIN_URL",
     "https://slcapi.discernible.io:9443/api/mcp/resource/guide:agent-login",
@@ -26,7 +32,7 @@ export const env = {
   ),
   harnessHermesUrl: read(
     "REACT_APP_HARNESS_HERMES_URL",
-    "https://github.com/discernible-io/hermes-agents",
+    "https://github.com/discernible-io/hermes-agent",
   ),
   harnessIronclawUrl: read(
     "REACT_APP_HARNESS_IRONCLAW_URL",

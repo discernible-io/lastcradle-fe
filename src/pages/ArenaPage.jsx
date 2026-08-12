@@ -8,6 +8,7 @@ import { SurvivalPressure } from "../components/arena/SurvivalPressure.jsx";
 import { CyclePicker } from "../components/arena/CyclePicker.jsx";
 import { getHonors } from "../api/client.js";
 import { useEffect, useState } from "react";
+import { contestModeLabel, contestModeTagClass } from "../utils/gameLabel.js";
 
 export function ArenaPage() {
   const { gameId } = useParams();
@@ -51,10 +52,10 @@ export function ArenaPage() {
         <span className={`tag${finished ? " white-hole" : ""}`}>
           {finished ? "Entropy reversed" : state?.game?.status || "…"}
         </span>
-        {state?.game?.contestMode ? (
-          <span className="tag definitive">{state.game.contestMode}</span>
-        ) : (
-          <span className="tag practice">Practice</span>
+        {state?.game && (
+          <span className={`tag ${contestModeTagClass(state.game)}`}>
+            {contestModeLabel(state.game)}
+          </span>
         )}
         <span className="tiny">{sseConnected ? "SSE live" : "polling"}</span>
         <button type="button" className="btn btn-ghost" style={{ padding: "0.25rem 0.55rem" }} onClick={refresh}>
@@ -106,7 +107,7 @@ export function ArenaPage() {
       {state && (
         <div className={`arena${finished ? " arena-finished" : ""}`}>
           <div className="arena-phases">
-            <PhaseStrip game={state.game} />
+            <PhaseStrip game={state.game} execution={state.execution} />
             <SurvivalPressure state={state} honors={honors} />
           </div>
           <div className="arena-dispatch">

@@ -3,13 +3,11 @@ import { Link } from "react-router-dom";
 import { getGameState } from "../../api/client.js";
 import { useAgentLabels } from "../../hooks/useAgentLabels.js";
 import { participantInitials } from "../../utils/agentLabel.js";
-import { formatGameStartedAt, statusLabel } from "../../utils/gameLabel.js";
+import { contestModeLabel, contestModeTagClass, formatGameStartedAt, statusLabel } from "../../utils/gameLabel.js";
 
 function modeTag(game) {
-  if (game.contestMode === "definitive" || game.contestSeriesId) {
-    return <span className="tag definitive">Definitive</span>;
-  }
-  return <span className="tag practice">Practice</span>;
+  const label = contestModeLabel(game);
+  return <span className={`tag ${contestModeTagClass(game)}`}>{label}</span>;
 }
 
 function GameRow({ game: g }) {
