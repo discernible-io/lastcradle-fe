@@ -1318,26 +1318,11 @@ select {
   word-break: break-all;
 }
 
-.enroll-paths {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem;
+.enroll-prompt-block {
+  padding: 1.1rem 1.15rem;
   margin-bottom: 1.25rem;
 }
 
-.enroll-path,
-.enroll-prompt-block {
-  padding: 1.1rem 1.15rem;
-}
-
-.enroll-steps {
-  color: var(--ink-dim);
-  line-height: 1.7;
-  padding-left: 1.2rem;
-  margin: 0 0 1rem;
-}
-
-.enroll-steps code,
 .enroll-pin code,
 .enroll-page code {
   font-size: 0.85em;
@@ -1360,7 +1345,7 @@ select {
   max-height: 28rem;
   overflow: auto;
   margin-top: 1rem;
-  margin-bottom: 0;
+  margin-bottom: 1rem;
   white-space: pre-wrap;
 }
 

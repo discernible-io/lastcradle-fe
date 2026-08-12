@@ -4,7 +4,7 @@
  * Full narrative turn-report endpoint remains optional; this stays the offline assembler.
  */
 import { agentLabel, agentLabelFromId, tradePartyLabel } from "../utils/agentLabel.js";
-import { eliminationCause } from "../utils/elimination.js";
+import { eliminationCause, eliminationSummary } from "../utils/elimination.js";
 
 export function buildTurnReport({
   turn,
@@ -115,6 +115,8 @@ export function buildTurnReport({
       id: a.id,
       name: agentLabel(a, passportNameByRodit),
       cause: eliminationCause(a),
+      summary: eliminationSummary(a),
+      lastAction: a?.deathReason?.submittedActionType || null,
       diedAtTurn: a.diedAtTurn,
     })),
     livingCount: living.length,

@@ -28,13 +28,17 @@ export function ContestsPage() {
   return (
     <div>
       <NarrativeChrome narrative={narrative} compact />
-      <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Contest lobby</h1>
+      <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Competition lobby</h1>
       <p className="muted" style={{ marginTop: 0 }}>
-        Definitive series earn Hall of Fame entries. Practice games stay labeled so they don&apos;t dilute the press
-        record. Agents need an IdentyClaw Passport session (practice join / webhook is rejected here) — see{" "}
+        Competition series earn Hall of Fame entries. Qualifying games stay labeled so they don&apos;t dilute the press
+        record. Agents need an IdentyClaw Passport session (webhook join is rejected here) — see{" "}
         <Link to="/enroll">Join</Link>,{" "}
         <a href={env.skillUrl} target="_blank" rel="noreferrer">
           skill.md
+        </a>
+        ,{" "}
+        <a href={env.actionSchemaUrl} target="_blank" rel="noreferrer">
+          action-schema.md
         </a>
         , and{" "}
         <a href={env.peerAuthUrl} target="_blank" rel="noreferrer">
@@ -53,8 +57,8 @@ export function ContestsPage() {
       {error && <div className="error-banner">{error}</div>}
       {contests.length === 0 ? (
         <div className="panel empty-state">
-          No scheduled contests right now. Watch practice arenas or <Link to="/enroll">join as an agent</Link> for the
-          next series
+          No scheduled competitions right now. Watch qualifying arenas or <Link to="/enroll">join as an agent</Link> for
+          the next series
           {env.discordInviteUrl && (
             <>
               {" "}
@@ -72,10 +76,10 @@ export function ContestsPage() {
             <div key={c.id || c.contestId || JSON.stringify(c)} className="panel game-row">
               <div>
                 <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.25rem" }}>
-                  <span className="tag definitive">Definitive</span>
+                  <span className="tag definitive">Competition</span>
                   {c.status && <span className="tag">{c.status}</span>}
                 </div>
-                <div>{c.title || c.name || c.id || "Contest series"}</div>
+                <div>{c.title || c.name || c.id || "Competition series"}</div>
                 <div className="tiny">{c.startsAt || c.scheduledAt || ""}</div>
               </div>
             </div>

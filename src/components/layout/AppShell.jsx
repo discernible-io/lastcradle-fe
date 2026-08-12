@@ -3,7 +3,7 @@ import { env } from "../../config/env.js";
 
 const links = [
   { to: "/watch", label: "Arena" },
-  { to: "/contests", label: "Contests" },
+  { to: "/contests", label: "Competition" },
   { to: "/hall-of-fame", label: "Hall of Fame" },
   { to: "/enroll", label: "Join" },
   { to: "/about", label: "About" },

@@ -6,6 +6,33 @@ import { IdentityChip } from "../components/layout/IdentityChip.jsx";
 import { env } from "../config/env.js";
 import { agentLabel } from "../utils/agentLabel.js";
 
+/**
+ * OpenAPI GameHallOfFameResponse.entries are GameHonorsEntry objects
+ * (gameId + honorees[]). Flatten survivors for the grid; tolerate legacy flat rows.
+ */
+function flattenHallEntries(entries = []) {
+  const out = [];
+  for (const entry of entries) {
+    if (!entry || typeof entry !== "object") continue;
+    const honorees = Array.isArray(entry.honorees) ? entry.honorees : null;
+    if (honorees?.length) {
+      for (const h of honorees) {
+        if (!h?.survived && h?.finishRank == null && !h?.title) continue;
+        out.push({
+          ...h,
+          gameId: entry.gameId,
+          contestId: entry.contestId ?? h.contestId,
+          finishedAt: entry.finishedAt,
+          finishReason: entry.finishReason,
+        });
+      }
+      continue;
+    }
+    if (entry.agentId) out.push(entry);
+  }
+  return out;
+}
+
 export function HallOfFamePage() {
   const [entries, setEntries] = useState([]);
   const [passportNameByRodit, setPassportNameByRodit] = useState({});
@@ -15,7 +42,7 @@ export function HallOfFamePage() {
     const ac = new AbortController();
     getHallOfFame({ limit: 40, signal: ac.signal })
       .then(async (res) => {
-        const list = res.entries || [];
+        const list = flattenHallEntries(res.entries || []);
         setEntries(list);
         const roditIds = [...new Set(list.map((e) => e.roditId).filter(Boolean))];
         const pairs = await Promise.all(
@@ -42,12 +69,12 @@ export function HallOfFamePage() {
     <div>
       <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Hall of Fame</h1>
       <p className="muted" style={{ marginTop: 0, marginBottom: "1.25rem" }}>
-        Definitive contest survivors — White Hole Anchors and Co-Cradles, identity-verified.
+        Competition survivors — White Hole Anchors and Co-Cradles, identity-verified.
       </p>
       {error && <div className="error-banner">{error}</div>}
       {entries.length === 0 ? (
         <div className="panel empty-state">
-          No definitive honors published yet. Finished practice games still have per-game honors on the arena page.
+          No competition honors published yet. Finished qualifying games still have per-game honors on the arena page.
         </div>
       ) : (
         <div className="honors-grid">
@@ -57,7 +84,7 @@ export function HallOfFamePage() {
               passportNameByRodit,
             );
             return (
-              <article key={e.contestId || e.gameId || i} className="panel honor-card">
+              <article key={`${e.contestId || e.gameId || "hof"}-${e.agentId || i}`} className="panel honor-card">
                 <div className="title">{e.title || e.award || "Honoree"}</div>
                 <div style={{ margin: "0.35rem 0" }}>{name}</div>
                 {e.roditId && <IdentityChip roditId={e.roditId} displayName={name} />}

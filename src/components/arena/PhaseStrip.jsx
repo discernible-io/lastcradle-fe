@@ -1,4 +1,14 @@
 import { useEffect, useState } from "react";
+import { cycleCapLabel } from "../../utils/cyclePressure.js";
+
+/** Public GameSubmissionStatus from GET .../state during execution. */
+function executionProgressLabel(execution) {
+  if (!execution || typeof execution !== "object") return null;
+  const living = Number(execution.livingCount);
+  const submitted = Number(execution.submittedCount);
+  if (!Number.isFinite(living) || living <= 0 || !Number.isFinite(submitted)) return null;
+  return `${submitted}/${living} submitted`;
+}
 
 function useCountdown(targetIso) {
   const [left, setLeft] = useState(null);
@@ -40,7 +50,7 @@ function normalizePhase(phase) {
   return p;
 }
 
-export function PhaseStrip({ game }) {
+export function PhaseStrip({ game, execution = null }) {
   const phase = normalizePhase(game?.phase);
   const status = game?.status;
   const endsAt =
@@ -50,6 +60,8 @@ export function PhaseStrip({ game }) {
         ? game?.executionEndsAt
         : null;
   const left = useCountdown(endsAt);
+  const submitProgress =
+    phase === "execution" && status === "running" ? executionProgressLabel(execution) : null;
 
   return (
     <div className="panel phase-strip">
@@ -62,7 +74,13 @@ export function PhaseStrip({ game }) {
           <div key={step.id} className={`phase-step${active ? " active" : ""}`}>
             <div className="label">{step.label}</div>
             <div className="countdown">
-              {active && status === "running" ? fmt(left) : active && status === "finished" ? "restart" : ""}
+              {active && status === "running"
+                ? step.id === "execution" && submitProgress
+                  ? `${fmt(left)} · ${submitProgress}`
+                  : fmt(left)
+                : active && status === "finished"
+                  ? "restart"
+                  : ""}
             </div>
           </div>
         );
@@ -70,9 +88,7 @@ export function PhaseStrip({ game }) {
       <div className="phase-step" style={{ flex: "0 0 auto", opacity: 1, minWidth: "7rem" }}>
         <div className="label">{status === "finished" ? "Restart" : "Cycle"}</div>
         <div className="countdown">
-          {status === "finished"
-            ? `Cycle ${game?.currentTurn ?? "—"}`
-            : `${game?.currentTurn ?? "—"} / 55`}
+          {status === "finished" ? `Cycle ${game?.currentTurn ?? "—"}` : cycleCapLabel(game)}
         </div>
       </div>
     </div>

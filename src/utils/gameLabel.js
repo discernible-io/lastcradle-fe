@@ -22,3 +22,21 @@ export function statusLabel(status) {
   if (!s) return "Unknown";
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
+
+/**
+ * Display labels are Qualifying | Competition.
+ * Wire contestMode remains practice | definitive | contest (nullable treated as qualifying).
+ */
+export function contestModeLabel(game) {
+  const mode = String(game?.contestMode || "").toLowerCase();
+  if (mode === "definitive" || mode === "contest" || game?.contestSeriesId) {
+    return "Competition";
+  }
+  return "Qualifying";
+}
+
+export function contestModeTagClass(game) {
+  const label = contestModeLabel(game);
+  if (label === "Competition") return "definitive";
+  return "practice";
+}

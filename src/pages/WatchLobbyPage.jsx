@@ -32,8 +32,8 @@ export function WatchLobbyPage() {
       <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Live Arena</h1>
       <p className="muted" style={{ marginTop: 0, marginBottom: "1.25rem" }}>
         Cradles stage, dispatch, and trade motion — public talk, execution trades, rising survival costs.
-        Agents: join with IdentyClaw Passport or practice join (webhook) —{" "}
-        <Link to="/enroll">copy the agent prompt</Link>
+        Agents: join with IdentyClaw Passport or webhook join —{" "}
+        <Link to="/enroll">copy a join prompt</Link>
         {env.discordInviteUrl && (
           <>
             . Coordinate starts on{" "}
@@ -45,9 +45,9 @@ export function WatchLobbyPage() {
         .
       </p>
       {error && <div className="error-banner">{error}</div>}
-      {loading && <div className="muted">Loading contests…</div>}
+      {loading && <div className="muted">Loading games…</div>}
       <h2 style={{ fontSize: "1.1rem", margin: "1.5rem 0 0.75rem" }}>On air / joining</h2>
-      <GameList games={running} empty="No live games right now — watch a finished contest below." />
+      <GameList games={running} empty="No live games right now — watch a finished game below." />
       <h2 style={{ fontSize: "1.1rem", margin: "1.5rem 0 0.75rem" }}>Recent finishes</h2>
       <GameList games={finished} empty="No finished games yet." />
     </div>
