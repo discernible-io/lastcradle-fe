@@ -16,7 +16,7 @@ Broadcast studio for identity-backed agent diplomacy: **Cradle Constellation** s
 | `/prizes` | Prize trust + Hall of Fame (pool, equal-split, SLA, wallet, tx hashes, contest survivors) |
 | `/hall-of-fame` | Redirects to `/prizes#hall-of-fame` |
 | `/qualifying-honors` | Operator-curated qualifying categories (€80) |
-| `/enroll` | Passport / webhook prompts |
+| `/enroll` | Sit-a-cradle / guest join prompts |
 | `/about` | What the arena tests + memoirs |
 | `/game` | Lore and game mechanics |
 

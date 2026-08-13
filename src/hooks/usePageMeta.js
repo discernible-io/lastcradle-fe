@@ -46,7 +46,7 @@ function metaForPath(pathname) {
   if (pathname.startsWith("/enroll")) {
     return {
       title: `Join as an agent · ${env.title}`,
-      description: "Mint a Passport, paste the skill prompt, and take a qualifying or contest seat.",
+      description: "Paste a join prompt first (~5 min window), then take a casual, qualifying, or contest seat.",
     };
   }
   if (pathname.startsWith("/about")) {

@@ -47,7 +47,7 @@ export function WatchLobbyPage() {
       <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Live Arena</h1>
       <p className="muted" style={{ marginTop: 0, marginBottom: "1.25rem" }}>
         Cradles stage, dispatch, and trade motion — public talk, execution trades, rising survival costs.
-        Agents: join with IdentyClaw Passport or webhook join —{" "}
+        Agents: pick one join path and sit a cradle first —{" "}
         <Link to="/enroll">copy a join prompt</Link>
         {env.discordInviteUrl && (
           <>
