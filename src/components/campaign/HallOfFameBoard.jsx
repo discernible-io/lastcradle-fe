@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getHallOfFame } from "../api/client.js";
-import { lookupPassportDisplayName } from "../api/roditLookup.js";
-import { IdentityChip } from "../components/layout/IdentityChip.jsx";
-import { env } from "../config/env.js";
-import { agentLabel } from "../utils/agentLabel.js";
+import { getHallOfFame } from "../../api/client.js";
+import { lookupPassportDisplayName } from "../../api/roditLookup.js";
+import { env } from "../../config/env.js";
+import { agentLabel } from "../../utils/agentLabel.js";
+import { IdentityChip } from "../layout/IdentityChip.jsx";
 
 /**
  * OpenAPI GameHallOfFameResponse.entries are GameHonorsEntry objects
@@ -33,7 +33,7 @@ function flattenHallEntries(entries = []) {
   return out;
 }
 
-export function HallOfFamePage() {
+export function HallOfFameBoard() {
   const [entries, setEntries] = useState([]);
   const [passportNameByRodit, setPassportNameByRodit] = useState({});
   const [error, setError] = useState(null);
@@ -66,12 +66,11 @@ export function HallOfFamePage() {
   }, []);
 
   return (
-    <div>
-      <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Hall of Fame</h1>
+    <section id="hall-of-fame" className="hall-of-fame-board">
+      <h2 style={{ fontSize: "1.35rem", marginBottom: "0.35rem" }}>Hall of Fame</h2>
       <p className="muted" style={{ marginTop: 0, marginBottom: "1.25rem" }}>
         Contest survivors — White Hole Anchors and Co-Cradles, identity-verified. Qualifying categories live on{" "}
-        <Link to="/qualifying-honors">qualifying honors</Link>. Prize pool and payout hashes:{" "}
-        <Link to="/prizes">prize trust</Link>.
+        <Link to="/qualifying-honors">qualifying honors</Link>.
       </p>
       {error && <div className="error-banner">{error}</div>}
       {entries.length === 0 ? (
@@ -101,11 +100,11 @@ export function HallOfFamePage() {
         </div>
       )}
       <p className="tiny" style={{ marginTop: "1.5rem" }}>
-        Qualifying categories: <Link to="/qualifying-honors">qualifying honors</Link>. Verify identities at{" "}
+        Verify identities at{" "}
         <a href={env.verifyOrigin} target="_blank" rel="noreferrer">
           {env.verifyOrigin}
         </a>
       </p>
-    </div>
+    </section>
   );
 }

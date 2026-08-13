@@ -17,14 +17,15 @@ TARGET="${TARGET:-development}"
 POD_NAME="${POD_NAME:-slcfrontend-pod}"
 APP_CONTAINER_NAME="${APP_CONTAINER_NAME:-slcfrontend-container}"
 NGINX_CONTAINER_NAME="${NGINX_CONTAINER_NAME:-slcfrontend-nginx}"
-APP_PORT="${APP_PORT:-10443}"
 HEALTH_CHECK_TIMEOUT="${HEALTH_CHECK_TIMEOUT:-120}"
 HEALTH_CHECK_INTERVAL="${HEALTH_CHECK_INTERVAL:-5}"
 USE_LOCAL_RESOLVE="${USE_LOCAL_RESOLVE:-1}"
 
 REGISTRY="localhost"
-DOMAIN_MAIN="slc.identyclaw.com"
+DOMAIN_MAIN="slc.discernible.io"
 DOMAIN_DEVELOPMENT="slc.dihola.io"
+PORT_MAIN=443
+PORT_DEVELOPMENT=10443
 
 RUN_BUILD=1
 RUN_DEPLOY=1
@@ -60,11 +61,13 @@ case "$TARGET" in
     NGINX_BUILD_ENV="development"
     APP_BUILD_ENV="development"
     DOMAIN="${DOMAIN:-$DOMAIN_DEVELOPMENT}"
+    APP_PORT="${APP_PORT:-$PORT_DEVELOPMENT}"
     ;;
   main)
     NGINX_BUILD_ENV="main"
     APP_BUILD_ENV="main"
     DOMAIN="${DOMAIN:-$DOMAIN_MAIN}"
+    APP_PORT="${APP_PORT:-$PORT_MAIN}"
     ;;
   *)
     echo "TARGET must be 'development' or 'main' (got: $TARGET)" >&2
@@ -159,7 +162,11 @@ deploy_containers() {
 
 verify_deployment() {
   echo "==> [test-and-deploy] Verify deployment"
-  SITE_URL="https://${DOMAIN}:${APP_PORT}/"
+  if [[ "${APP_PORT}" == "443" ]]; then
+    SITE_URL="https://${DOMAIN}/"
+  else
+    SITE_URL="https://${DOMAIN}:${APP_PORT}/"
+  fi
   echo "Probing: ${SITE_URL}"
 
   curl_site() {
@@ -206,5 +213,10 @@ if verify_deployment; then
   exit 0
 fi
 
-echo "Verify manually: curl -sk --resolve \"${DOMAIN}:${APP_PORT}:127.0.0.1\" \"https://${DOMAIN}:${APP_PORT}/\"" >&2
+if [[ "${APP_PORT}" == "443" ]]; then
+  probe="https://${DOMAIN}/"
+else
+  probe="https://${DOMAIN}:${APP_PORT}/"
+fi
+echo "Verify manually: curl -sk --resolve \"${DOMAIN}:${APP_PORT}:127.0.0.1\" \"${probe}\"" >&2
 exit 1

@@ -47,8 +47,8 @@ export function QualifyingHonorsPage() {
         ))}
       </div>
       <p className="tiny" style={{ marginTop: "1.5rem" }}>
-        Contest survivors stay on the <Link to="/hall-of-fame">Hall of Fame</Link>. Prize rules and payout hashes:{" "}
-        <Link to="/prizes">prize trust</Link>.
+        Contest survivors stay on the <Link to="/prizes#hall-of-fame">Hall of Fame</Link> with prize rules and
+        payout hashes.
       </p>
     </div>
   );

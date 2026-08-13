@@ -6,11 +6,11 @@ import { ArenaPage } from "./pages/ArenaPage.jsx";
 import { TurnRecapPage } from "./pages/TurnRecapPage.jsx";
 import { RecollectionsPage } from "./pages/RecollectionsPage.jsx";
 import { ContestsPage } from "./pages/ContestsPage.jsx";
-import { HallOfFamePage } from "./pages/HallOfFamePage.jsx";
 import { QualifyingHonorsPage } from "./pages/QualifyingHonorsPage.jsx";
 import { PrizesPage } from "./pages/PrizesPage.jsx";
 import { EnrollPage } from "./pages/EnrollPage.jsx";
 import { AboutPage } from "./pages/AboutPage.jsx";
+import { GamePage } from "./pages/GamePage.jsx";
 import { usePageMeta } from "./hooks/usePageMeta.js";
 import { captureUtm } from "./utils/utm.js";
 import { useEffect } from "react";
@@ -85,14 +85,7 @@ export default function App() {
             </AppShell>
           }
         />
-        <Route
-          path="/hall-of-fame"
-          element={
-            <AppShell>
-              <HallOfFamePage />
-            </AppShell>
-          }
-        />
+        <Route path="/hall-of-fame" element={<Navigate to="/prizes#hall-of-fame" replace />} />
         <Route
           path="/qualifying-honors"
           element={
@@ -114,6 +107,14 @@ export default function App() {
           element={
             <AppShell>
               <AboutPage />
+            </AppShell>
+          }
+        />
+        <Route
+          path="/game"
+          element={
+            <AppShell>
+              <GamePage />
             </AppShell>
           }
         />

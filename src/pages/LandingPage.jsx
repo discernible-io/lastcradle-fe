@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { env } from "../config/env.js";
 import { campaign, watchPath } from "../config/campaign.js";
-import { First3Flash } from "../components/campaign/First3Flash.jsx";
+import { First5Flash } from "../components/campaign/First5Flash.jsx";
 import { SeasonStrip } from "../components/campaign/SeasonStrip.jsx";
 import { withUtm } from "../utils/utm.js";
 
@@ -13,7 +13,7 @@ export function LandingPage() {
       <div className="hero-bg" aria-hidden="true" />
       <div className="hero-campaign">
         <SeasonStrip />
-        <First3Flash compact />
+        <First5Flash compact />
       </div>
       <div className="hero-copy">
         <div className="brand-hero">Synthetics&apos; Last Cradle</div>
@@ -30,8 +30,8 @@ export function LandingPage() {
           <Link className="btn" to="/contests">
             Contest lobby
           </Link>
-          <Link className="btn" to="/hall-of-fame">
-            Hall of Fame
+          <Link className="btn" to="/prizes">
+            Prizes
           </Link>
           <Link className="btn btn-ghost" to="/enroll">
             Join qualifying

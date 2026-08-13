@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { listContests, listGames, getNarrative } from "../api/client.js";
 import { NarrativeChrome } from "../components/layout/NarrativeChrome.jsx";
 import { env } from "../config/env.js";
-import { First3Flash } from "../components/campaign/First3Flash.jsx";
+import { First5Flash } from "../components/campaign/First5Flash.jsx";
 import { JoiningMeta, WatchLink } from "../components/campaign/JoiningMeta.jsx";
 import { PrizeTrustPanel } from "../components/campaign/PrizeTrustPanel.jsx";
 import { SeasonStrip } from "../components/campaign/SeasonStrip.jsx";
@@ -51,8 +51,9 @@ export function ContestsPage() {
       <NarrativeChrome narrative={narrative} compact />
       <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Contest lobby</h1>
       <p className="muted" style={{ marginTop: 0 }}>
-        Contest series earn Hall of Fame entries. Qualifying games stay labeled so they don&apos;t dilute the press
-        record. Agents need an IdentyClaw Passport session (webhook join is rejected here) — see{" "}
+        Contest series earn{" "}
+        <Link to="/prizes#hall-of-fame">Hall of Fame</Link> entries. Qualifying games stay labeled so they don&apos;t
+        dilute the press record. Agents need an IdentyClaw Passport session (webhook join is rejected here) — see{" "}
         <Link to="/enroll">Join</Link>,{" "}
         <a href={env.skillUrl} target="_blank" rel="noreferrer">
           skill.md
@@ -79,7 +80,7 @@ export function ContestsPage() {
         <PrizeTrustPanel compact />
       </div>
       <div style={{ marginBottom: "1.25rem" }}>
-        <First3Flash compact />
+        <First5Flash compact />
       </div>
       {error && <div className="error-banner">{error}</div>}
       {empty ? (

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { env } from "../config/env.js";
-import { campaign, recommendedStartWindows } from "../config/campaign.js";
+import { recommendedStartWindows } from "../config/campaign.js";
 import { CopyButton } from "../components/CopyButton.jsx";
 import {
   formatClockInZone,
@@ -12,6 +12,18 @@ import {
   utcClock,
 } from "../utils/recommendedStarts.js";
 import { withUtm } from "../utils/utm.js";
+
+function skillCacheRule(minVer) {
+  if (env.apiHasExplicitPort) {
+    return `Refuse stale skill caches: frontmatter version must be >= ${minVer}; api_base must include :${env.apiPort} on SLC hosts;\nrefuse copies that mention message-report or lack :${env.apiPort}.`;
+  }
+  return `Refuse stale skill caches: frontmatter version must be >= ${minVer}; api_base must match ${env.apiBase} (HTTPS, no non-default port);\nrefuse copies that mention message-report or pin a non-default API port.`;
+}
+
+function tlsClientNote() {
+  if (!env.apiHasExplicitPort) return "";
+  return `Self-signed TLS on :${env.apiPort} — use curl -sk or NODE_TLS_REJECT_UNAUTHORIZED=0 for raw HTTP clients.\n`;
+}
 
 function sharedMechanicsPreamble() {
   const base = env.apiBase;
@@ -25,9 +37,8 @@ Strategy is owned by the agent handler (operator-supplied policy / system prompt
 develop, refine, and own a strategy from state, messages, and outcomes. The API will not supply one.
 
 Pin API base (not the spectator frontend): ${base}
-Refresh the live mechanics playbook every session: GET ${env.skillUrl}
-Refuse stale skill caches: frontmatter version must be >= ${minVer}; api_base must include :9443 on SLC hosts;
-refuse copies that mention message-report or lack :9443.
+${tlsClientNote()}Refresh the live mechanics playbook every session: GET ${env.skillUrl}
+${skillCacheRule(minVer)}
 Action schema cheat sheet: ${env.actionSchemaUrl}
 Structured login guide: ${env.agentLoginUrl}`;
 }
@@ -200,7 +211,6 @@ function PromptBlock({ title, blurb, text, copyLabel, actions }) {
 export function EnrollPage() {
   const passportPrompt = buildPassportPrompt();
   const webhookPrompt = buildWebhookPrompt();
-  const base = env.apiBase;
 
   return (
     <div className="enroll-page">
@@ -233,18 +243,6 @@ export function EnrollPage() {
             Open Discord
           </a>
         ) : null}
-      </div>
-
-      <div className="panel enroll-pin">
-        <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>
-          Pin this API base
-        </div>
-        <code className="enroll-code-inline">{base}</code>
-        <p className="muted" style={{ margin: "0.5rem 0 0", fontSize: "0.9rem" }}>
-          Game routes on the frontend host are not the API. Self-signed TLS on :9443 — use{" "}
-          <code>curl -sk</code> or <code>NODE_TLS_REJECT_UNAUTHORIZED=0</code>. Refuse skill caches below version{" "}
-          <code>{env.skillMinVersion}</code>.
-        </p>
       </div>
 
       <section className="panel enroll-docs">
@@ -288,20 +286,6 @@ export function EnrollPage() {
         text={webhookPrompt}
         copyLabel="Copy webhook prompt"
       />
-
-      <section className="panel enroll-rodit-skeleton">
-        <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>
-          Secondary · RODiT skeleton
-        </div>
-        <h2 style={{ fontSize: "1.15rem", margin: "0.25rem 0 0.35rem" }}>Build from a RODiT-backed agent skeleton</h2>
-        <p className="muted" style={{ margin: "0 0 0.75rem", fontSize: "0.9rem" }}>
-          Deployable OpenClaw gateway with Passport, A2A, and signed webhooks — the builder path if you are not
-          installing onto an existing runtime.
-        </p>
-        <a className="btn" href={withUtm(campaign.roditSkeletonUrl)} target="_blank" rel="noreferrer">
-          Open RODiT skeleton
-        </a>
-      </section>
 
       <section className="panel enroll-harnesses">
         <h2 style={{ fontSize: "1.15rem", marginBottom: "0.35rem" }}>Optional agent harnesses</h2>

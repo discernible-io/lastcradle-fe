@@ -18,6 +18,7 @@ const DOCUMENTED_KEYS = [
   "REACT_APP_DOCS_SITE_URL",
   "REACT_APP_DISCORD_INVITE_URL",
   "REACT_APP_SKILL_URL",
+  "REACT_APP_ACTION_SCHEMA_URL",
   "REACT_APP_PEER_AUTH_URL",
   "REACT_APP_AGENT_LOGIN_URL",
   "REACT_APP_HARNESS_OPENCLAW_URL",
@@ -117,6 +118,7 @@ function validateVars(fileLabel, vars) {
   check("REACT_APP_DOCS_SITE_URL", (v) => validateHttpsUrl(v, { allowPath: false }));
   check("REACT_APP_DISCORD_INVITE_URL", (v) => validateHttpsUrl(v));
   check("REACT_APP_SKILL_URL", (v) => validateHttpsUrl(v));
+  check("REACT_APP_ACTION_SCHEMA_URL", (v) => validateHttpsUrl(v));
   check("REACT_APP_PEER_AUTH_URL", (v) => validateHttpsUrl(v));
   check("REACT_APP_AGENT_LOGIN_URL", (v) => validateHttpsUrl(v));
   check("REACT_APP_HARNESS_OPENCLAW_URL", (v) => validateHttpsUrl(v));
@@ -150,12 +152,55 @@ function validateVars(fileLabel, vars) {
     );
   }
 
+  const parse = (value) => {
+    try {
+      return new URL(value);
+    } catch {
+      return null;
+    }
+  };
+  const hostEndsWith = (value, suffix) => {
+    const u = parse(value);
+    return Boolean(u && (u.hostname === suffix || u.hostname.endsWith(`.${suffix}`)));
+  };
+
   if (fileLabel === ".env.main") {
     for (const key of ["REACT_APP_PUBLIC_ORIGIN", "REACT_APP_API_BASE", "REACT_APP_VERIFY_ORIGIN"]) {
       const value = vars[key];
       if (value && looksLikePlaceholder(value)) {
         errors.push(fail(fileLabel, key, "looks like a placeholder on main"));
       }
+    }
+    for (const key of [
+      "REACT_APP_PUBLIC_ORIGIN",
+      "REACT_APP_API_BASE",
+      "REACT_APP_SKILL_URL",
+      "REACT_APP_ACTION_SCHEMA_URL",
+      "REACT_APP_PEER_AUTH_URL",
+      "REACT_APP_AGENT_LOGIN_URL",
+    ]) {
+      const u = parse(vars[key]);
+      if (u?.port) {
+        errors.push(
+          fail(fileLabel, key, "must omit the port on main (HTTPS 443 is implied and must not be displayed)")
+        );
+      }
+    }
+    if (vars.REACT_APP_PUBLIC_ORIGIN && !hostEndsWith(vars.REACT_APP_PUBLIC_ORIGIN, "discernible.io")) {
+      errors.push(fail(fileLabel, "REACT_APP_PUBLIC_ORIGIN", "must be a discernible.io origin on main"));
+    }
+    if (vars.REACT_APP_API_BASE && !hostEndsWith(vars.REACT_APP_API_BASE, "discernible.io")) {
+      errors.push(fail(fileLabel, "REACT_APP_API_BASE", "must be a discernible.io origin on main"));
+    }
+  }
+
+  if (fileLabel === ".env.development") {
+    if (vars.REACT_APP_PUBLIC_ORIGIN && !hostEndsWith(vars.REACT_APP_PUBLIC_ORIGIN, "dihola.io")) {
+      errors.push(fail(fileLabel, "REACT_APP_PUBLIC_ORIGIN", "must be a dihola.io origin on development"));
+    }
+    const api = parse(vars.REACT_APP_API_BASE);
+    if (api && api.port !== "9443") {
+      errors.push(fail(fileLabel, "REACT_APP_API_BASE", "must use explicit port :9443 on development"));
     }
   }
 

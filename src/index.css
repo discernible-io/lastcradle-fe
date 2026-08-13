@@ -1407,22 +1407,9 @@ select {
   }
 }
 
-.enroll-pin {
-  padding: 1rem 1.15rem;
-  margin: 1.25rem 0 1rem;
-}
-
 .enroll-docs {
   padding: 1rem 1.15rem;
-  margin: 0 0 1.5rem;
-}
-
-.enroll-code-inline {
-  display: inline-block;
-  margin-top: 0.35rem;
-  font-size: 1rem;
-  color: var(--water);
-  word-break: break-all;
+  margin: 1.25rem 0 1.5rem;
 }
 
 .enroll-prompt-block {
@@ -1430,7 +1417,6 @@ select {
   margin-bottom: 1.25rem;
 }
 
-.enroll-pin code,
 .enroll-page code {
   font-size: 0.85em;
   color: var(--ink);
@@ -1496,6 +1482,10 @@ select {
 .about-panel {
   padding: 1.1rem 1.15rem;
   margin-top: 1.25rem;
+}
+
+.about-panel .about-mechanics {
+  gap: 1.25rem;
 }
 
 .about-memoirs {
@@ -1601,6 +1591,82 @@ select {
   margin-top: 0.45rem;
 }
 
+.about-mechanic dd p {
+  margin: 0 0 0.65rem;
+}
+
+.about-mechanic dd p:last-child {
+  margin-bottom: 0;
+}
+
+.about-ability-points {
+  margin: 0 0 0.65rem;
+  padding-left: 1.15rem;
+  color: var(--ink-dim);
+  line-height: 1.65;
+}
+
+.about-ability-points li + li {
+  margin-top: 0.4rem;
+}
+
+.about-ability-points strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.about-table-wrap {
+  overflow-x: auto;
+  margin: 0 0 0.75rem;
+}
+
+.about-identity-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.about-identity-table th,
+.about-identity-table td {
+  text-align: left;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--panel-border);
+  vertical-align: top;
+}
+
+.about-identity-table thead th {
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  font-weight: 600;
+  background: rgba(244, 247, 255, 0.04);
+}
+
+.about-identity-table tbody th {
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  width: 32%;
+}
+
+.about-identity-table td {
+  color: var(--ink-dim);
+}
+
+.about-one-line {
+  margin: 1.15rem 0 0;
+  padding: 0.85rem 0 0 0.95rem;
+  border-left: 2px solid rgba(232, 160, 60, 0.45);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.5;
+}
+
 @media (max-width: 640px) {
   .about-memoir-grid {
     grid-template-columns: 1fr;
@@ -1653,8 +1719,7 @@ select {
 }
 
 .prize-trust,
-.first3-flash,
-.enroll-rodit-skeleton {
+.first5-flash {
   padding: 1rem 1.15rem;
 }
 
@@ -1683,7 +1748,7 @@ select {
 }
 
 .prize-tx-list,
-.first3-winners,
+.first5-winners,
 .qualifying-honor-winners {
   margin: 0.4rem 0 0;
   padding-left: 1.1rem;
@@ -1710,10 +1775,11 @@ select {
   background: rgba(8, 14, 24, 0.55);
 }
 
-.enroll-rodit-skeleton {
-  margin: 1.25rem 0 0;
-}
-
 .prizes-page .season-strip {
   margin-bottom: 0;
+}
+
+.hall-of-fame-board {
+  margin-top: 1.75rem;
+  scroll-margin-top: 4.5rem;
 }

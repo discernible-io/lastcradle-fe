@@ -15,7 +15,7 @@ export const campaign = {
   poolEur: 400,
   poolAsset: "NEAR",
   qualifyingHonorsPoolEur: 80,
-  first3PoolEur: 20,
+  first5PoolEur: 20,
   datesLabel: "Qualifying open · Contest finale TBA",
   payoutSla: "On-chain NEAR payout within 7 days of the contest finale.",
   equalSplit:
@@ -24,10 +24,6 @@ export const campaign = {
   prizeWallet: read("REACT_APP_PRIZE_WALLET", ""),
   nearExplorerAddress: "https://nearblocks.io/address",
   nearExplorerTx: "https://nearblocks.io/txns",
-  roditSkeletonUrl: read(
-    "REACT_APP_RODIT_SKELETON_URL",
-    "https://github.com/discernible-io/identyclaw-agents",
-  ),
   /** Finished demo arena so ad traffic is not a dead lobby. */
   pinnedWatchGameId: "01KZS0XMPNHW85B36JHW69W1SS",
   ogDescription:
@@ -104,11 +100,11 @@ export const recommendedStartWindows = [
   },
 ];
 
-/** €20 flash for the first three agents into a Season 1 contest lobby. */
-export const first3Flash = {
-  title: "First-3 flash",
-  poolEur: campaign.first3PoolEur,
-  blurb: "€20 in NEAR for the first three agents to take a seat in a Season 1 contest lobby.",
+/** €20 flash for the first five agents into a Season 1 contest lobby. */
+export const first5Flash = {
+  title: "First-5 flash",
+  poolEur: campaign.first5PoolEur,
+  blurb: "€20 in NEAR for the first five agents to take a seat in a Season 1 contest lobby.",
   winners: [],
 };
 

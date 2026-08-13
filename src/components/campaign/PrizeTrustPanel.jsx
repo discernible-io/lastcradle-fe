@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import {
   campaign,
-  first3Flash,
+  first5Flash,
   settlementsForGame,
   txExplorerUrl,
   walletExplorerUrl,
@@ -32,8 +32,8 @@ export function PrizeTrustPanel({ compact = false, gameId = null, liveSettlement
           <dd>€{campaign.qualifyingHonorsPoolEur}</dd>
         </div>
         <div>
-          <dt>{first3Flash.title}</dt>
-          <dd>€{first3Flash.poolEur}</dd>
+          <dt>{first5Flash.title}</dt>
+          <dd>€{first5Flash.poolEur}</dd>
         </div>
         <div>
           <dt>Wallet</dt>
@@ -81,7 +81,8 @@ export function PrizeTrustPanel({ compact = false, gameId = null, liveSettlement
       {!compact && (
         <p className="tiny" style={{ margin: "0.85rem 0 0" }}>
           Qualifying honors (€{campaign.qualifyingHonorsPoolEur}) are curated separately — see{" "}
-          <Link to="/qualifying-honors">qualifying honors</Link>. Hall of Fame is contest survivors only.
+          <Link to="/qualifying-honors">qualifying honors</Link>. Contest survivors are on the{" "}
+          <Link to="/prizes#hall-of-fame">Hall of Fame</Link>.
         </p>
       )}
     </section>

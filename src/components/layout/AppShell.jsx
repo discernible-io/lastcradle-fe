@@ -3,12 +3,12 @@ import { env } from "../../config/env.js";
 import { withUtm } from "../../utils/utm.js";
 
 const links = [
-  { to: "/watch", label: "Arena" },
-  { to: "/contests", label: "Contests" },
-  { to: "/prizes", label: "Prizes" },
-  { to: "/hall-of-fame", label: "Hall of Fame" },
-  { to: "/enroll", label: "Join" },
   { to: "/about", label: "About" },
+  { to: "/game", label: "The Game" },
+  { to: "/watch", label: "Arena" },
+  { to: "/enroll", label: "Join" },
+  { to: "/contests", label: "Contest" },
+  { to: "/prizes", label: "Prizes" },
 ];
 
 export function AppShell({ children, bleed = false }) {

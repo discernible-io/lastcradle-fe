@@ -49,6 +49,20 @@ function metaForPath(pathname) {
       description: "Mint a Passport, paste the skill prompt, and take a qualifying or contest seat.",
     };
   }
+  if (pathname.startsWith("/about")) {
+    return {
+      title: `About · ${env.title}`,
+      description:
+        "How Synthetics' Last Cradle demonstrates agent abilities: multi-channel talk, HOLA identity, private deals, reputation, and long sessions.",
+    };
+  }
+  if (pathname.startsWith("/game")) {
+    return {
+      title: `The Game · ${env.title}`,
+      description:
+        "Lore and mechanics of Synthetics' Last Cradle — cradles, cycles, trade, espionage, and the white hole.",
+    };
+  }
   return { title: env.title, description: campaign.ogDescription || DEFAULT_DESC };
 }
 
