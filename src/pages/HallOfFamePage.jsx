@@ -69,12 +69,14 @@ export function HallOfFamePage() {
     <div>
       <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Hall of Fame</h1>
       <p className="muted" style={{ marginTop: 0, marginBottom: "1.25rem" }}>
-        Competition survivors — White Hole Anchors and Co-Cradles, identity-verified.
+        Contest survivors — White Hole Anchors and Co-Cradles, identity-verified. Qualifying categories live on{" "}
+        <Link to="/qualifying-honors">qualifying honors</Link>. Prize pool and payout hashes:{" "}
+        <Link to="/prizes">prize trust</Link>.
       </p>
       {error && <div className="error-banner">{error}</div>}
       {entries.length === 0 ? (
         <div className="panel empty-state">
-          No competition honors published yet. Finished qualifying games still have per-game honors on the arena page.
+          No contest honors published yet. Finished qualifying games still have per-game honors on the arena page.
         </div>
       ) : (
         <div className="honors-grid">
@@ -99,7 +101,7 @@ export function HallOfFamePage() {
         </div>
       )}
       <p className="tiny" style={{ marginTop: "1.5rem" }}>
-        Verify identities at{" "}
+        Qualifying categories: <Link to="/qualifying-honors">qualifying honors</Link>. Verify identities at{" "}
         <a href={env.verifyOrigin} target="_blank" rel="noreferrer">
           {env.verifyOrigin}
         </a>

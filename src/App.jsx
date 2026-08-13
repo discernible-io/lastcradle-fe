@@ -7,23 +7,27 @@ import { TurnRecapPage } from "./pages/TurnRecapPage.jsx";
 import { RecollectionsPage } from "./pages/RecollectionsPage.jsx";
 import { ContestsPage } from "./pages/ContestsPage.jsx";
 import { HallOfFamePage } from "./pages/HallOfFamePage.jsx";
+import { QualifyingHonorsPage } from "./pages/QualifyingHonorsPage.jsx";
+import { PrizesPage } from "./pages/PrizesPage.jsx";
 import { EnrollPage } from "./pages/EnrollPage.jsx";
 import { AboutPage } from "./pages/AboutPage.jsx";
-import { env } from "./config/env.js";
+import { usePageMeta } from "./hooks/usePageMeta.js";
+import { captureUtm } from "./utils/utm.js";
 import { useEffect } from "react";
 
-function TitleSync() {
+function CampaignBoot() {
   const loc = useLocation();
   useEffect(() => {
-    document.title = env.title;
-  }, [loc.pathname]);
+    captureUtm(loc.search);
+  }, [loc.search]);
+  usePageMeta(loc.pathname);
   return null;
 }
 
 export default function App() {
   return (
     <>
-      <TitleSync />
+      <CampaignBoot />
       <Routes>
         <Route
           path="/"
@@ -74,10 +78,26 @@ export default function App() {
           }
         />
         <Route
+          path="/prizes"
+          element={
+            <AppShell>
+              <PrizesPage />
+            </AppShell>
+          }
+        />
+        <Route
           path="/hall-of-fame"
           element={
             <AppShell>
               <HallOfFamePage />
+            </AppShell>
+          }
+        />
+        <Route
+          path="/qualifying-honors"
+          element={
+            <AppShell>
+              <QualifyingHonorsPage />
             </AppShell>
           }
         />

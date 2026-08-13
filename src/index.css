@@ -202,6 +202,7 @@ select {
   padding: 0.12rem 0.4rem;
 }
 
+.tag.qualifying,
 .tag.practice {
   color: var(--ink-dim);
 }
@@ -224,11 +225,23 @@ select {
 /* Landing hero */
 .hero {
   min-height: calc(100vh - 3.5rem);
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   position: relative;
   overflow: hidden;
-  padding: 2rem 1.5rem 4rem;
+  padding: 1.25rem 1.5rem 4rem;
+}
+
+.hero-campaign {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 56rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
 }
 
 .hero-bg {
@@ -1328,6 +1341,17 @@ select {
   margin-bottom: 1.25rem;
 }
 
+.enroll-bootstrap {
+  border-color: rgba(62, 200, 214, 0.35);
+}
+
+.enroll-bootstrap-snippet {
+  max-height: none;
+  overflow: visible;
+  font-size: 0.88rem;
+  color: var(--ink);
+}
+
 .enroll-pin code,
 .enroll-page code {
   font-size: 0.85em;
@@ -1509,4 +1533,115 @@ select {
   .enroll-snippet {
     font-size: 0.72rem;
   }
+}
+
+/* Season 1 campaign */
+.season-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.25rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.05rem;
+  background: linear-gradient(135deg, rgba(62, 200, 214, 0.12), rgba(232, 160, 60, 0.1));
+  border: 1px solid rgba(62, 200, 214, 0.28);
+}
+
+.season-strip-kicker {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--white-hole);
+}
+
+.season-strip-dates {
+  margin: 0.15rem 0 0;
+  color: var(--ink-dim);
+  font-size: 0.88rem;
+}
+
+.season-strip-wallet {
+  margin: 0.2rem 0 0;
+}
+
+.season-strip-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.season-strip.is-compact {
+  padding: 0.7rem 0.9rem;
+  margin-bottom: 1.15rem;
+}
+
+.prize-trust,
+.first3-flash,
+.enroll-clawhub,
+.enroll-rodit-skeleton {
+  padding: 1rem 1.15rem;
+}
+
+.prize-trust-kicker {
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.prize-trust-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.65rem 1rem;
+  margin: 0 0 0.85rem;
+}
+
+.prize-trust-meta dt {
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.prize-trust-meta dd {
+  margin: 0.15rem 0 0;
+  font-size: 0.9rem;
+}
+
+.prize-tx-list,
+.first3-winners,
+.qualifying-honor-winners {
+  margin: 0.4rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.joining-meta {
+  margin-top: 0.35rem;
+}
+
+.share-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-left: auto;
+}
+
+.restart-prize-proof {
+  pointer-events: auto;
+  margin-top: 0.65rem;
+  max-width: 28rem;
+}
+
+.restart-prize-proof .prize-trust {
+  background: rgba(8, 14, 24, 0.55);
+}
+
+.enroll-clawhub,
+.enroll-rodit-skeleton {
+  margin: 1.1rem 0 0;
+}
+
+.enroll-rodit-skeleton {
+  margin-top: 1.25rem;
+}
+
+.prizes-page .season-strip {
+  margin-bottom: 0;
 }

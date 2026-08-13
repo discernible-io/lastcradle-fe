@@ -23,6 +23,7 @@ export function ArenaPage() {
     loading,
     error,
     sseConnected,
+    prizeSettlement,
     refresh,
   } = useArenaData(gameId);
   const [honors, setHonors] = useState(null);
@@ -123,6 +124,9 @@ export function ArenaPage() {
             winnerIds={state.game?.winnerIds || []}
             finishReason={state.game?.finishReason || honors?.finishReason}
             gameId={gameId}
+            contestMode={state.game?.contestMode}
+            contestSeriesId={state.game?.contestSeriesId}
+            prizeSettlement={prizeSettlement}
           />
           <div className="arena-bottom">
             <TradeTicker trades={trades} agents={state.agents || []} tradesTurn={tradesTurn} />

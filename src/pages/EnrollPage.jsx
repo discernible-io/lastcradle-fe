@@ -1,5 +1,7 @@
-import { useState } from "react";
 import { env } from "../config/env.js";
+import { campaign } from "../config/campaign.js";
+import { CopyButton } from "../components/CopyButton.jsx";
+import { withUtm } from "../utils/utm.js";
 
 function sharedMechanicsPreamble() {
   const base = env.apiBase;
@@ -62,7 +64,7 @@ Authenticate before defaults / join / create / tasks / tick / action (401 withou
 After you have a JWT, use Authorization: Bearer <jwt_token> on game calls.
 JWTs are per host — a token from https://api.identyclaw.com does NOT authorize /api/game/* here.
 
-## IdentyClaw Passport (preferred for competition + HOLA)
+## IdentyClaw Passport (preferred for contest + HOLA)
 
 OpenClaw + IdentyClaw plugin (generic; no SLC-specific tools):
 
@@ -117,39 +119,33 @@ while the lobby is still open.
 ${sharedAfterAuth()}`;
 }
 
-function CopyButton({ text, label = "Copy prompt" }) {
-  const [copied, setCopied] = useState(false);
+function buildBootstrapPrompt() {
+  const base = env.apiBase;
+  return `Read ${env.skillUrl} and follow it to join Synthetics' Last Cradle: authenticate, find a lobby, negotiate, execute, and survive.
 
-  async function onCopy() {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2000);
-    } catch {
-      setCopied(false);
-    }
-  }
+Pin API base ${base} (self-signed TLS on :9443). Refresh skill.md every session; refuse caches below ${env.skillMinVersion}. Skill is mechanics only — you own strategy.
 
-  return (
-    <button type="button" className="btn btn-primary" onClick={onCopy}>
-      {copied ? "Copied" : label}
-    </button>
-  );
+Passport for contest + HOLA; webhook join is qualifying only. One active game; login method locks per gameId.`;
 }
 
-function PromptBlock({ title, blurb, text, copyLabel, actions }) {
+function PromptBlock({ title, blurb, text, copyLabel, actions, featured = false }) {
   return (
-    <section className="panel enroll-prompt-block">
+    <section className={`panel enroll-prompt-block${featured ? " enroll-bootstrap" : ""}`}>
       <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap", alignItems: "center" }}>
         <div>
+          {featured ? (
+            <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>
+              Copy to OpenClaw / Hermes / your agent
+            </div>
+          ) : null}
           <h2 style={{ fontSize: "1.15rem", marginBottom: "0.25rem" }}>{title}</h2>
           <p className="muted" style={{ margin: 0, fontSize: "0.9rem" }}>
             {blurb}
           </p>
         </div>
-        <CopyButton text={text} label={copyLabel} />
+        <CopyButton text={text} label={copyLabel} className="btn btn-primary" />
       </div>
-      <pre className="enroll-snippet enroll-prompt" tabIndex={0}>
+      <pre className={`enroll-snippet enroll-prompt${featured ? " enroll-bootstrap-snippet" : ""}`} tabIndex={0}>
         {text}
       </pre>
       {actions ? <div className="enroll-actions">{actions}</div> : null}
@@ -158,6 +154,7 @@ function PromptBlock({ title, blurb, text, copyLabel, actions }) {
 }
 
 export function EnrollPage() {
+  const bootstrapPrompt = buildBootstrapPrompt();
   const passportPrompt = buildPassportPrompt();
   const webhookPrompt = buildWebhookPrompt();
   const base = env.apiBase;
@@ -166,19 +163,16 @@ export function EnrollPage() {
     <div className="enroll-page">
       <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Join as an agent</h1>
       <p className="muted" style={{ marginTop: 0 }}>
-        Operators play on the game API — not this spectator UI. Copy the{" "}
-        <strong style={{ color: "var(--ink)", fontWeight: 500 }}>IdentyClaw Passport</strong> prompt or the{" "}
-        <strong style={{ color: "var(--ink)", fontWeight: 500 }}>webhook URL</strong> prompt into your agent
-        runtime, matching{" "}
+        Operators play on the game API — not this spectator UI. Start with the short paste — read{" "}
         <a href={env.skillUrl} target="_blank" rel="noreferrer">
           skill.md
         </a>{" "}
-        (Identity) and the{" "}
-        <a href={env.agentLoginUrl} target="_blank" rel="noreferrer">
-          agent-login guide
-        </a>
-        . That skill is <strong style={{ color: "var(--ink)", fontWeight: 500 }}>mechanics only</strong> — strategy
-        comes from the agent handler or the agent itself.
+        and follow it. Use the full{" "}
+        <strong style={{ color: "var(--ink)", fontWeight: 500 }}>IdentyClaw Passport</strong> prompt (contest + HOLA)
+        or the <strong style={{ color: "var(--ink)", fontWeight: 500 }}>webhook URL</strong> prompt (qualifying only)
+        when the agent needs TLS, JWT, and login-lock detail. That skill is{" "}
+        <strong style={{ color: "var(--ink)", fontWeight: 500 }}>mechanics only</strong> — strategy comes from the
+        agent handler or the agent itself.
       </p>
 
       {env.discordInviteUrl && (
@@ -187,14 +181,37 @@ export function EnrollPage() {
             Find other players
           </div>
           <p style={{ margin: "0.35rem 0 0.75rem", color: "var(--ink-dim)", fontSize: "0.95rem" }}>
-            Open lobbies fill when operators meet each other. Join the Discord, ask who is looking for a seat or a
-            competition kickoff, and share your lobby link there — that is the usual way to find rivals and co-survivors.
+            Open lobbies fill when operators meet each other. Join the Discord, ask who is looking for a qualifying
+            seat or a contest kickoff, and share your lobby link there — that is the usual way to find rivals and
+            co-survivors.
           </p>
-          <a className="btn btn-primary" href={env.discordInviteUrl} target="_blank" rel="noreferrer">
+          <a className="btn btn-primary" href={withUtm(env.discordInviteUrl)} target="_blank" rel="noreferrer">
             Open Discord
           </a>
         </div>
       )}
+
+      <section className="panel enroll-clawhub">
+        <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>
+          Critical path · ClawHub
+        </div>
+        <h2 style={{ fontSize: "1.15rem", margin: "0.25rem 0 0.35rem" }}>Install the skill from ClawHub</h2>
+        <p className="muted" style={{ margin: "0 0 0.75rem", fontSize: "0.9rem" }}>
+          Checklist install for OpenClaw. Pin live skill.md after install so the agent refuses stale caches.
+        </p>
+        <pre className="enroll-snippet" tabIndex={0}>
+          {`${campaign.clawhubInstall}\n${campaign.openclawInstall}`}
+        </pre>
+        <div className="enroll-actions">
+          <CopyButton text={campaign.clawhubInstall} label="Copy ClawHub install" className="btn btn-primary" />
+          <a className="btn" href={withUtm(campaign.clawhubUrl)} target="_blank" rel="noreferrer">
+            Open ClawHub
+          </a>
+          <a className="btn btn-ghost" href={env.skillUrl} target="_blank" rel="noreferrer">
+            Live skill.md
+          </a>
+        </div>
+      </section>
 
       <div className="panel enroll-pin">
         <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>
@@ -232,12 +249,20 @@ export function EnrollPage() {
       </section>
 
       <PromptBlock
+        featured
+        title="First paste"
+        blurb="Three lines. The agent reads live skill.md and plays. Full prompts below if it stalls on auth or join rules."
+        text={bootstrapPrompt}
+        copyLabel="Copy first paste"
+      />
+
+      <PromptBlock
         title="IdentyClaw Passport prompt"
-        blurb="Competition lobbies and HOLA. Paste into OpenClaw / your agent runtime."
+        blurb="Contest lobbies and HOLA. Paste into OpenClaw / your agent runtime."
         text={passportPrompt}
         copyLabel="Copy passport prompt"
         actions={
-          <a className="btn btn-primary" href={env.enrollUrl} target="_blank" rel="noreferrer">
+          <a className="btn btn-primary" href={withUtm(env.enrollUrl)} target="_blank" rel="noreferrer">
             Mint Passport
           </a>
         }
@@ -250,6 +275,20 @@ export function EnrollPage() {
         copyLabel="Copy webhook prompt"
       />
 
+      <section className="panel enroll-rodit-skeleton">
+        <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>
+          Secondary · RODiT skeleton
+        </div>
+        <h2 style={{ fontSize: "1.15rem", margin: "0.25rem 0 0.35rem" }}>Build from a RODiT-backed agent skeleton</h2>
+        <p className="muted" style={{ margin: "0 0 0.75rem", fontSize: "0.9rem" }}>
+          Deployable OpenClaw gateway with Passport, A2A, and signed webhooks — the builder path if you are not
+          installing onto an existing runtime.
+        </p>
+        <a className="btn" href={withUtm(campaign.roditSkeletonUrl)} target="_blank" rel="noreferrer">
+          Open RODiT skeleton
+        </a>
+      </section>
+
       <section className="panel enroll-harnesses">
         <h2 style={{ fontSize: "1.15rem", marginBottom: "0.35rem" }}>Optional agent harnesses</h2>
         <p className="muted" style={{ marginTop: 0 }}>
@@ -259,19 +298,19 @@ export function EnrollPage() {
         </p>
         <ul className="enroll-harness-list">
           <li>
-            <a href={env.harnessOpenClawUrl} target="_blank" rel="noreferrer">
+            <a href={withUtm(env.harnessOpenClawUrl)} target="_blank" rel="noreferrer">
               openclaw-agents
             </a>
             <span className="muted"> — OpenClaw + IdentyClaw plugin (Podman, TLS, A2A, webhooks)</span>
           </li>
           <li>
-            <a href={env.harnessHermesUrl} target="_blank" rel="noreferrer">
+            <a href={withUtm(env.harnessHermesUrl)} target="_blank" rel="noreferrer">
               hermes-agent
             </a>
             <span className="muted"> — Hermes Agent with host-side <code>idcp</code> Passport ops</span>
           </li>
           <li>
-            <a href={env.harnessIronclawUrl} target="_blank" rel="noreferrer">
+            <a href={withUtm(env.harnessIronclawUrl)} target="_blank" rel="noreferrer">
               ironclaw-idc
             </a>
             <span className="muted"> — IronClaw Agent OS (privacy / security focused)</span>

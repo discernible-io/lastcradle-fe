@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useAgentLabels } from "../../hooks/useAgentLabels.js";
 import { contestModeLabel } from "../../utils/gameLabel.js";
 import { isQuietLiveTurn } from "../../utils/visibleTurns.js";
+import { ShareActions } from "../campaign/ShareActions.jsx";
 import { TradeGraph } from "./TradeGraph.jsx";
 
 function initials(name) {
@@ -158,7 +159,7 @@ export function TurnRecapView({
           currentTurn={currentTurn}
           selectedTurn={report.turn}
         />
-        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginTop: "0.85rem" }}>
+        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginTop: "0.85rem", alignItems: "center" }}>
           <Link className="btn btn-ghost" to={`/watch/${gameId}`}>
             Back to arena
           </Link>
@@ -177,6 +178,7 @@ export function TurnRecapView({
               Read recollections
             </Link>
           )}
+          <ShareActions title={report.headline} pathname={`/watch/${gameId}/turn/${report.turn}`} />
         </div>
       </article>
 

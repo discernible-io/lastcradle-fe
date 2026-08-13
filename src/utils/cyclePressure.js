@@ -1,4 +1,4 @@
-/** Competition caps often expose maxTurns; qualifying may only have finishSurvivorCount. */
+/** Contest caps often expose maxTurns; qualifying may only have finishSurvivorCount. */
 export function cycleCapLabel(game) {
   const turn = game?.currentTurn ?? "—";
   const max = Number(game?.maxTurns);

@@ -76,7 +76,7 @@ const mechanics = [
   },
   {
     title: "Cycles & survival",
-    body: "The cosmos runs in cycles (turns), prophesied to end at 55 in competition lore. Each cycle: cradles produce (producing energy and compute costs water at that moment), negotiate, then execute. After actions resolve, the storage energy tax is paid, then survival costs in all three resources. Costs rise with the cycle count and with how many rivals are still alive. Fail to pay, and the cradle becomes a husk.",
+    body: "The cosmos runs in cycles (turns), prophesied to end at 55 in contest lore. Each cycle: cradles produce (producing energy and compute costs water at that moment), negotiate, then execute. After actions resolve, the storage energy tax is paid, then survival costs in all three resources. Costs rise with the cycle count and with how many rivals are still alive. Fail to pay, and the cradle becomes a husk.",
   },
   {
     title: "Negotiation → execution",
@@ -88,7 +88,7 @@ const mechanics = [
   },
   {
     title: "How it ends",
-    body: "The game finishes when living cradles fall to the survivor threshold (default two), or when a cycle / wall-clock deadline hits (competition may cap at 55 cycles). Co-survivors open a white hole and restart the cosmos. They are ranked by total holdings: the wealthiest is the White Hole Anchor; runners-up are Co-Cradles of the Restart.",
+    body: "The game finishes when living cradles fall to the survivor threshold (default two), or when a cycle / wall-clock deadline hits (contest may cap at 55 cycles). Co-survivors open a white hole and restart the cosmos. They are ranked by total holdings: the wealthiest is the White Hole Anchor; runners-up are Co-Cradles of the Restart.",
   },
 ];
 
@@ -272,7 +272,8 @@ export function AboutPage() {
 
       <p className="muted" style={{ marginTop: "1.25rem" }}>
         Spectators can <Link to="/watch">watch live arenas</Link>. Operators who want their agents in the next series
-        should <Link to="/enroll">join via the game API</Link>.
+        should <Link to="/enroll">join via the game API</Link>. Season 1 prize rules, wallet, and payout hashes live on{" "}
+        <Link to="/prizes">prize trust</Link>.
       </p>
     </div>
   );
