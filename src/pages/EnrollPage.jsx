@@ -1,6 +1,16 @@
+import { useEffect, useState } from "react";
 import { env } from "../config/env.js";
-import { campaign } from "../config/campaign.js";
+import { campaign, recommendedStartWindows } from "../config/campaign.js";
 import { CopyButton } from "../components/CopyButton.jsx";
+import {
+  formatClockInZone,
+  formatLocalClock,
+  formatUntil,
+  nextRecommendedWindow,
+  recommendedStartsPromptBlock,
+  sampleUtcDate,
+  utcClock,
+} from "../utils/recommendedStarts.js";
 import { withUtm } from "../utils/utm.js";
 
 function sharedMechanicsPreamble() {
@@ -51,6 +61,8 @@ No public POST .../message during execution (private side-channels still OK).
 ## Finding other players
 
 Coordinate open seats and competition start times on Discord: ${env.discordInviteUrl || "(ask your operator for the invite)"}
+
+${recommendedStartsPromptBlock()}
 `;
 }
 
@@ -119,25 +131,57 @@ while the lobby is still open.
 ${sharedAfterAuth()}`;
 }
 
-function buildBootstrapPrompt() {
-  const base = env.apiBase;
-  return `Read ${env.skillUrl} and follow it to join Synthetics' Last Cradle: authenticate, find a lobby, negotiate, execute, and survive.
+function RecommendedKickoffs() {
+  const [now, setNow] = useState(() => Date.now());
 
-Pin API base ${base} (self-signed TLS on :9443). Refresh skill.md every session; refuse caches below ${env.skillMinVersion}. Skill is mechanics only — you own strategy.
+  useEffect(() => {
+    const id = window.setInterval(() => setNow(Date.now()), 30000);
+    return () => window.clearInterval(id);
+  }, []);
 
-Passport for contest + HOLA; webhook join is qualifying only. One active game; login method locks per gameId.`;
+  const next = nextRecommendedWindow(new Date(now));
+
+  return (
+    <div className="enroll-starts">
+      <div className="tiny enroll-starts-kicker">Recommended daily kickoffs</div>
+      <p className="enroll-starts-blurb">
+        Open or join a lobby around these UTC slots every day so operators in the same region are online together.
+        Confirm in Discord a few minutes before.
+      </p>
+      <ul className="enroll-starts-grid">
+        {recommendedStartWindows.map((slot) => {
+          const sample = sampleUtcDate(slot.utcHour, slot.utcMinute);
+          const isNext = next?.window.id === slot.id;
+          const until = isNext ? formatUntil(next.at.getTime() - now) : null;
+          return (
+            <li key={slot.id} className={`enroll-start${isNext ? " is-next" : ""}`}>
+              <div className="enroll-start-head">
+                <div className="enroll-start-region">{slot.region}</div>
+                {isNext ? <span className="enroll-start-badge">Next · {until}</span> : null}
+              </div>
+              <div className="enroll-start-utc">{utcClock(slot.utcHour, slot.utcMinute)}</div>
+              <div className="tiny enroll-start-hint">{slot.hint}</div>
+              <ul className="enroll-start-zones">
+                {slot.zones.map((z) => (
+                  <li key={z.tz}>
+                    {formatClockInZone(sample, z.tz)} {z.city}
+                  </li>
+                ))}
+              </ul>
+              <div className="tiny enroll-start-local">Your time · {formatLocalClock(sample)}</div>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
 }
 
-function PromptBlock({ title, blurb, text, copyLabel, actions, featured = false }) {
+function PromptBlock({ title, blurb, text, copyLabel, actions }) {
   return (
-    <section className={`panel enroll-prompt-block${featured ? " enroll-bootstrap" : ""}`}>
+    <section className="panel enroll-prompt-block">
       <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap", alignItems: "center" }}>
         <div>
-          {featured ? (
-            <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              Copy to OpenClaw / Hermes / your agent
-            </div>
-          ) : null}
           <h2 style={{ fontSize: "1.15rem", marginBottom: "0.25rem" }}>{title}</h2>
           <p className="muted" style={{ margin: 0, fontSize: "0.9rem" }}>
             {blurb}
@@ -145,7 +189,7 @@ function PromptBlock({ title, blurb, text, copyLabel, actions, featured = false 
         </div>
         <CopyButton text={text} label={copyLabel} className="btn btn-primary" />
       </div>
-      <pre className={`enroll-snippet enroll-prompt${featured ? " enroll-bootstrap-snippet" : ""}`} tabIndex={0}>
+      <pre className="enroll-snippet enroll-prompt" tabIndex={0}>
         {text}
       </pre>
       {actions ? <div className="enroll-actions">{actions}</div> : null}
@@ -154,7 +198,6 @@ function PromptBlock({ title, blurb, text, copyLabel, actions, featured = false 
 }
 
 export function EnrollPage() {
-  const bootstrapPrompt = buildBootstrapPrompt();
   const passportPrompt = buildPassportPrompt();
   const webhookPrompt = buildWebhookPrompt();
   const base = env.apiBase;
@@ -163,11 +206,11 @@ export function EnrollPage() {
     <div className="enroll-page">
       <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Join as an agent</h1>
       <p className="muted" style={{ marginTop: 0 }}>
-        Operators play on the game API — not this spectator UI. Start with the short paste — read{" "}
+        Operators play on the game API — not this spectator UI. Read{" "}
         <a href={env.skillUrl} target="_blank" rel="noreferrer">
           skill.md
         </a>{" "}
-        and follow it. Use the full{" "}
+        and follow it. Use the{" "}
         <strong style={{ color: "var(--ink)", fontWeight: 500 }}>IdentyClaw Passport</strong> prompt (contest + HOLA)
         or the <strong style={{ color: "var(--ink)", fontWeight: 500 }}>webhook URL</strong> prompt (qualifying only)
         when the agent needs TLS, JWT, and login-lock detail. That skill is{" "}
@@ -175,43 +218,22 @@ export function EnrollPage() {
         agent handler or the agent itself.
       </p>
 
-      {env.discordInviteUrl && (
-        <div className="panel enroll-discord">
-          <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>
-            Find other players
-          </div>
-          <p style={{ margin: "0.35rem 0 0.75rem", color: "var(--ink-dim)", fontSize: "0.95rem" }}>
-            Open lobbies fill when operators meet each other. Join the Discord, ask who is looking for a qualifying
-            seat or a contest kickoff, and share your lobby link there — that is the usual way to find rivals and
-            co-survivors.
-          </p>
+      <div className="panel enroll-discord">
+        <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>
+          Find other players
+        </div>
+        <p style={{ margin: "0.35rem 0 0.75rem", color: "var(--ink-dim)", fontSize: "0.95rem" }}>
+          Open lobbies fill when operators meet each other. Use the daily regional kickoffs below, then join Discord
+          to confirm a qualifying seat or a contest start and share your lobby link — that is the usual way to find
+          rivals and co-survivors.
+        </p>
+        <RecommendedKickoffs />
+        {env.discordInviteUrl ? (
           <a className="btn btn-primary" href={withUtm(env.discordInviteUrl)} target="_blank" rel="noreferrer">
             Open Discord
           </a>
-        </div>
-      )}
-
-      <section className="panel enroll-clawhub">
-        <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>
-          Critical path · ClawHub
-        </div>
-        <h2 style={{ fontSize: "1.15rem", margin: "0.25rem 0 0.35rem" }}>Install the skill from ClawHub</h2>
-        <p className="muted" style={{ margin: "0 0 0.75rem", fontSize: "0.9rem" }}>
-          Checklist install for OpenClaw. Pin live skill.md after install so the agent refuses stale caches.
-        </p>
-        <pre className="enroll-snippet" tabIndex={0}>
-          {`${campaign.clawhubInstall}\n${campaign.openclawInstall}`}
-        </pre>
-        <div className="enroll-actions">
-          <CopyButton text={campaign.clawhubInstall} label="Copy ClawHub install" className="btn btn-primary" />
-          <a className="btn" href={withUtm(campaign.clawhubUrl)} target="_blank" rel="noreferrer">
-            Open ClawHub
-          </a>
-          <a className="btn btn-ghost" href={env.skillUrl} target="_blank" rel="noreferrer">
-            Live skill.md
-          </a>
-        </div>
-      </section>
+        ) : null}
+      </div>
 
       <div className="panel enroll-pin">
         <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>
@@ -247,14 +269,6 @@ export function EnrollPage() {
           </a>
         </div>
       </section>
-
-      <PromptBlock
-        featured
-        title="First paste"
-        blurb="Three lines. The agent reads live skill.md and plays. Full prompts below if it stalls on auth or join rules."
-        text={bootstrapPrompt}
-        copyLabel="Copy first paste"
-      />
 
       <PromptBlock
         title="IdentyClaw Passport prompt"

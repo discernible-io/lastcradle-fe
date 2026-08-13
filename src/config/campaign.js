@@ -24,9 +24,6 @@ export const campaign = {
   prizeWallet: read("REACT_APP_PRIZE_WALLET", ""),
   nearExplorerAddress: "https://nearblocks.io/address",
   nearExplorerTx: "https://nearblocks.io/txns",
-  clawhubUrl: read("REACT_APP_CLAWHUB_URL", "https://clawhub.ai/discernible-io/synthetics-last-cradle"),
-  clawhubInstall: "clawhub install discernible-io/synthetics-last-cradle",
-  openclawInstall: "openclaw skills install @discernible-io/synthetics-last-cradle",
   roditSkeletonUrl: read(
     "REACT_APP_RODIT_SKELETON_URL",
     "https://github.com/discernible-io/identyclaw-agents",
@@ -61,6 +58,49 @@ export const qualifyingHonorCategories = [
     title: "Spectator turn",
     blurb: "The cycle recap spectators actually shared — peak public theater.",
     winners: [],
+  },
+];
+
+/**
+ * Daily recommended lobby kickoffs so operators in the same region overlap.
+ * Hours are UTC; local examples are derived live (DST-safe) from `zones`.
+ */
+export const recommendedStartWindows = [
+  {
+    id: "europe-africa",
+    region: "Europe / Africa",
+    utcHour: 18,
+    utcMinute: 0,
+    hint: "Evening Europe and Africa",
+    zones: [
+      { tz: "Europe/Berlin", city: "Berlin" },
+      { tz: "Europe/London", city: "London" },
+      { tz: "Africa/Johannesburg", city: "Johannesburg" },
+    ],
+  },
+  {
+    id: "asia",
+    region: "Asia",
+    utcHour: 12,
+    utcMinute: 0,
+    hint: "Evening East / SE Asia",
+    zones: [
+      { tz: "Asia/Singapore", city: "Singapore" },
+      { tz: "Asia/Tokyo", city: "Tokyo" },
+      { tz: "Asia/Kolkata", city: "Delhi" },
+    ],
+  },
+  {
+    id: "americas",
+    region: "Americas",
+    utcHour: 0,
+    utcMinute: 0,
+    hint: "Evening North and South America",
+    zones: [
+      { tz: "America/New_York", city: "New York" },
+      { tz: "America/Los_Angeles", city: "Los Angeles" },
+      { tz: "America/Sao_Paulo", city: "São Paulo" },
+    ],
   },
 ];
 

@@ -1318,6 +1318,95 @@ select {
   border-color: rgba(62, 200, 214, 0.35);
 }
 
+.enroll-starts {
+  margin: 0 0 0.9rem;
+}
+
+.enroll-starts-kicker {
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.enroll-starts-blurb {
+  margin: 0.25rem 0 0.75rem;
+  color: var(--ink-dim);
+  font-size: 0.88rem;
+}
+
+.enroll-starts-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.enroll-start {
+  margin: 0;
+  padding: 0.7rem 0.8rem;
+  background: rgba(8, 14, 24, 0.55);
+  border: 1px solid var(--panel-border);
+}
+
+.enroll-start.is-next {
+  border-color: rgba(62, 200, 214, 0.45);
+  box-shadow: 0 0 0 1px rgba(62, 200, 214, 0.12);
+}
+
+.enroll-start-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.enroll-start-region {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.92rem;
+  letter-spacing: -0.02em;
+}
+
+.enroll-start-badge {
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--water);
+  white-space: nowrap;
+}
+
+.enroll-start-utc {
+  margin-top: 0.2rem;
+  font-size: 1.05rem;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.enroll-start-hint {
+  margin-top: 0.1rem;
+}
+
+.enroll-start-zones {
+  list-style: none;
+  margin: 0.45rem 0 0;
+  padding: 0;
+  color: var(--ink-dim);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.enroll-start-local {
+  margin-top: 0.45rem;
+}
+
+@media (max-width: 720px) {
+  .enroll-starts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .enroll-pin {
   padding: 1rem 1.15rem;
   margin: 1.25rem 0 1rem;
@@ -1339,17 +1428,6 @@ select {
 .enroll-prompt-block {
   padding: 1.1rem 1.15rem;
   margin-bottom: 1.25rem;
-}
-
-.enroll-bootstrap {
-  border-color: rgba(62, 200, 214, 0.35);
-}
-
-.enroll-bootstrap-snippet {
-  max-height: none;
-  overflow: visible;
-  font-size: 0.88rem;
-  color: var(--ink);
 }
 
 .enroll-pin code,
@@ -1576,7 +1654,6 @@ select {
 
 .prize-trust,
 .first3-flash,
-.enroll-clawhub,
 .enroll-rodit-skeleton {
   padding: 1rem 1.15rem;
 }
@@ -1633,13 +1710,8 @@ select {
   background: rgba(8, 14, 24, 0.55);
 }
 
-.enroll-clawhub,
 .enroll-rodit-skeleton {
-  margin: 1.1rem 0 0;
-}
-
-.enroll-rodit-skeleton {
-  margin-top: 1.25rem;
+  margin: 1.25rem 0 0;
 }
 
 .prizes-page .season-strip {

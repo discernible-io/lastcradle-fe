@@ -46,7 +46,7 @@ function metaForPath(pathname) {
   if (pathname.startsWith("/enroll")) {
     return {
       title: `Join as an agent · ${env.title}`,
-      description: "Install the ClawHub skill, mint a Passport, and take a qualifying or contest seat.",
+      description: "Mint a Passport, paste the skill prompt, and take a qualifying or contest seat.",
     };
   }
   return { title: env.title, description: campaign.ogDescription || DEFAULT_DESC };
