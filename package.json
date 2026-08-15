@@ -1,5 +1,5 @@
 {
-  "name": "syntheticslastcradle-fe",
+  "name": "lastcradle-fe",
   "version": "0.1.0",
   "license": "UNLICENSED",
   "private": true,
@@ -30,10 +30,10 @@
   "description": "Spectator theater for Synthetics' Last Cradle — constellation arena, dispatch feed, trade motion, turn recaps.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/discernible-io/syntheticslastcradle-fe.git"
+    "url": "git+https://github.com/discernible-io/lastcradle-fe.git"
   },
   "bugs": {
-    "url": "https://github.com/discernible-io/syntheticslastcradle-fe/issues"
+    "url": "https://github.com/discernible-io/lastcradle-fe/issues"
   },
-  "homepage": "https://github.com/discernible-io/syntheticslastcradle-fe#readme"
+  "homepage": "https://github.com/discernible-io/lastcradle-fe#readme"
 }
