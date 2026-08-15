@@ -3,28 +3,66 @@ const read = (key, fallback = "") => {
   return value == null || value === "" ? fallback : String(value);
 };
 
+/** Drop :443 / :80 so default HTTPS is never shown in copy or links. */
+export function stripDefaultPort(raw) {
+  const value = String(raw || "").replace(/\/$/, "");
+  if (!value) return "";
+  try {
+    const u = new URL(value);
+    if ((u.protocol === "https:" && u.port === "443") || (u.protocol === "http:" && u.port === "80")) {
+      u.port = "";
+    }
+    const path = u.pathname === "/" ? "" : u.pathname.replace(/\/$/, "");
+    return `${u.protocol}//${u.host}${path}${u.search}${u.hash}`;
+  } catch {
+    return value;
+  }
+}
+
+function parsedUrl(raw) {
+  try {
+    return new URL(String(raw || ""));
+  } catch {
+    return null;
+  }
+}
+
+function urlPort(raw) {
+  const u = parsedUrl(raw);
+  if (!u) return null;
+  if (u.port) return Number(u.port);
+  return u.protocol === "https:" ? 443 : 80;
+}
+
+function hasExplicitNonDefaultPort(raw) {
+  const u = parsedUrl(raw);
+  if (!u || !u.port) return false;
+  return u.port !== "443" && u.port !== "80";
+}
+
+const apiBaseRaw = read("REACT_APP_API_BASE", "https://slcapi.discernible.io").replace(/\/$/, "");
+const apiBase = stripDefaultPort(apiBaseRaw);
+const publicOrigin = stripDefaultPort(read("REACT_APP_PUBLIC_ORIGIN", "http://localhost:5173"));
+
 export const env = {
   deployLabel: read("REACT_APP_DEPLOY_LABEL", "@local"),
-  publicOrigin: read("REACT_APP_PUBLIC_ORIGIN", "http://localhost:5173"),
-  apiBase: read("REACT_APP_API_BASE", "https://slcapi.discernible.io:9443").replace(/\/$/, ""),
-  verifyOrigin: read("REACT_APP_VERIFY_ORIGIN", "https://verify.identyclaw.com").replace(/\/$/, ""),
-  enrollUrl: read("REACT_APP_ENROLL_URL", "https://purchase.identyclaw.com"),
-  docsSiteUrl: read("REACT_APP_DOCS_SITE_URL", "https://www.discernible.io"),
+  publicOrigin,
+  apiBase,
+  apiPort: urlPort(apiBaseRaw) ?? 443,
+  apiHasExplicitPort: hasExplicitNonDefaultPort(apiBaseRaw),
+  verifyOrigin: stripDefaultPort(read("REACT_APP_VERIFY_ORIGIN", "https://verify.identyclaw.com")),
+  enrollUrl: stripDefaultPort(read("REACT_APP_ENROLL_URL", "https://purchase.identyclaw.com")),
+  docsSiteUrl: stripDefaultPort(read("REACT_APP_DOCS_SITE_URL", "https://www.discernible.io")),
   discordInviteUrl: read("REACT_APP_DISCORD_INVITE_URL", "https://discord.gg/2Qs9cr5yVX"),
-  skillUrl: read("REACT_APP_SKILL_URL", "https://slcapi.discernible.io:9443/api/game/skill.md"),
-  actionSchemaUrl: read(
-    "REACT_APP_ACTION_SCHEMA_URL",
-    "https://slcapi.discernible.io:9443/api/game/action-schema.md",
+  skillUrl: stripDefaultPort(read("REACT_APP_SKILL_URL", `${apiBase}/api/game/skill.md`)),
+  actionSchemaUrl: stripDefaultPort(
+    read("REACT_APP_ACTION_SCHEMA_URL", `${apiBase}/api/game/action-schema.md`),
   ),
-  peerAuthUrl: read(
-    "REACT_APP_PEER_AUTH_URL",
-    "https://slcapi.discernible.io:9443/api/game/peer-auth.md",
-  ),
+  peerAuthUrl: stripDefaultPort(read("REACT_APP_PEER_AUTH_URL", `${apiBase}/api/game/peer-auth.md`)),
   /** Refuse skill caches below this frontmatter version (from live skill.md / OpenAPI). */
-  skillMinVersion: read("REACT_APP_SKILL_MIN_VERSION", "1.19.0"),
-  agentLoginUrl: read(
-    "REACT_APP_AGENT_LOGIN_URL",
-    "https://slcapi.discernible.io:9443/api/mcp/resource/guide:agent-login",
+  skillMinVersion: read("REACT_APP_SKILL_MIN_VERSION", "1.20.1"),
+  agentLoginUrl: stripDefaultPort(
+    read("REACT_APP_AGENT_LOGIN_URL", `${apiBase}/api/mcp/resource/guide:agent-login`),
   ),
   harnessOpenClawUrl: read(
     "REACT_APP_HARNESS_OPENCLAW_URL",

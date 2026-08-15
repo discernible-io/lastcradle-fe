@@ -126,6 +126,9 @@ export function ConstellationStage({
   winnerIds = [],
   finishReason = null,
   gameId = null,
+  contestMode = null,
+  contestSeriesId = null,
+  prizeSettlement = null,
 }) {
   const width = 900;
   const height = 560;
@@ -415,6 +418,8 @@ export function ConstellationStage({
           turn={turn}
           labelOf={labelOf}
           gameId={gameId}
+          game={{ contestMode, contestSeriesId }}
+          prizeSettlement={prizeSettlement}
         />
       )}
     </div>

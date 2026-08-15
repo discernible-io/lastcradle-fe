@@ -1,12 +1,14 @@
 import { NavLink } from "react-router-dom";
 import { env } from "../../config/env.js";
+import { withUtm } from "../../utils/utm.js";
 
 const links = [
-  { to: "/watch", label: "Arena" },
-  { to: "/contests", label: "Competition" },
-  { to: "/hall-of-fame", label: "Hall of Fame" },
-  { to: "/enroll", label: "Join" },
   { to: "/about", label: "About" },
+  { to: "/game", label: "The Game" },
+  { to: "/watch", label: "Arena" },
+  { to: "/enroll", label: "Join" },
+  { to: "/contests", label: "Contest" },
+  { to: "/prizes", label: "Prizes" },
 ];
 
 export function AppShell({ children, bleed = false }) {
@@ -23,7 +25,7 @@ export function AppShell({ children, bleed = false }) {
             </NavLink>
           ))}
           {env.discordInviteUrl && (
-            <a href={env.discordInviteUrl} target="_blank" rel="noreferrer">
+            <a href={withUtm(env.discordInviteUrl)} target="_blank" rel="noreferrer">
               Discord
             </a>
           )}

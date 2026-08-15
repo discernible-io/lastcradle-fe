@@ -6,24 +6,28 @@ import { ArenaPage } from "./pages/ArenaPage.jsx";
 import { TurnRecapPage } from "./pages/TurnRecapPage.jsx";
 import { RecollectionsPage } from "./pages/RecollectionsPage.jsx";
 import { ContestsPage } from "./pages/ContestsPage.jsx";
-import { HallOfFamePage } from "./pages/HallOfFamePage.jsx";
+import { QualifyingHonorsPage } from "./pages/QualifyingHonorsPage.jsx";
+import { PrizesPage } from "./pages/PrizesPage.jsx";
 import { EnrollPage } from "./pages/EnrollPage.jsx";
 import { AboutPage } from "./pages/AboutPage.jsx";
-import { env } from "./config/env.js";
+import { GamePage } from "./pages/GamePage.jsx";
+import { usePageMeta } from "./hooks/usePageMeta.js";
+import { captureUtm } from "./utils/utm.js";
 import { useEffect } from "react";
 
-function TitleSync() {
+function CampaignBoot() {
   const loc = useLocation();
   useEffect(() => {
-    document.title = env.title;
-  }, [loc.pathname]);
+    captureUtm(loc.search);
+  }, [loc.search]);
+  usePageMeta(loc.pathname);
   return null;
 }
 
 export default function App() {
   return (
     <>
-      <TitleSync />
+      <CampaignBoot />
       <Routes>
         <Route
           path="/"
@@ -74,10 +78,19 @@ export default function App() {
           }
         />
         <Route
-          path="/hall-of-fame"
+          path="/prizes"
           element={
             <AppShell>
-              <HallOfFamePage />
+              <PrizesPage />
+            </AppShell>
+          }
+        />
+        <Route path="/hall-of-fame" element={<Navigate to="/prizes#hall-of-fame" replace />} />
+        <Route
+          path="/qualifying-honors"
+          element={
+            <AppShell>
+              <QualifyingHonorsPage />
             </AppShell>
           }
         />
@@ -94,6 +107,14 @@ export default function App() {
           element={
             <AppShell>
               <AboutPage />
+            </AppShell>
+          }
+        />
+        <Route
+          path="/game"
+          element={
+            <AppShell>
+              <GamePage />
             </AppShell>
           }
         />

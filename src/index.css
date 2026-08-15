@@ -202,6 +202,7 @@ select {
   padding: 0.12rem 0.4rem;
 }
 
+.tag.qualifying,
 .tag.practice {
   color: var(--ink-dim);
 }
@@ -224,11 +225,23 @@ select {
 /* Landing hero */
 .hero {
   min-height: calc(100vh - 3.5rem);
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   position: relative;
   overflow: hidden;
-  padding: 2rem 1.5rem 4rem;
+  padding: 1.25rem 1.5rem 4rem;
+}
+
+.hero-campaign {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 56rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
 }
 
 .hero-bg {
@@ -1305,17 +1318,98 @@ select {
   border-color: rgba(62, 200, 214, 0.35);
 }
 
-.enroll-pin {
-  padding: 1rem 1.15rem;
-  margin: 1.25rem 0 1.5rem;
+.enroll-starts {
+  margin: 0 0 0.9rem;
 }
 
-.enroll-code-inline {
-  display: inline-block;
-  margin-top: 0.35rem;
-  font-size: 1rem;
+.enroll-starts-kicker {
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.enroll-starts-blurb {
+  margin: 0.25rem 0 0.75rem;
+  color: var(--ink-dim);
+  font-size: 0.88rem;
+}
+
+.enroll-starts-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.enroll-start {
+  margin: 0;
+  padding: 0.7rem 0.8rem;
+  background: rgba(8, 14, 24, 0.55);
+  border: 1px solid var(--panel-border);
+}
+
+.enroll-start.is-next {
+  border-color: rgba(62, 200, 214, 0.45);
+  box-shadow: 0 0 0 1px rgba(62, 200, 214, 0.12);
+}
+
+.enroll-start-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.enroll-start-region {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.92rem;
+  letter-spacing: -0.02em;
+}
+
+.enroll-start-badge {
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--water);
-  word-break: break-all;
+  white-space: nowrap;
+}
+
+.enroll-start-utc {
+  margin-top: 0.2rem;
+  font-size: 1.05rem;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.enroll-start-hint {
+  margin-top: 0.1rem;
+}
+
+.enroll-start-zones {
+  list-style: none;
+  margin: 0.45rem 0 0;
+  padding: 0;
+  color: var(--ink-dim);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.enroll-start-local {
+  margin-top: 0.45rem;
+}
+
+@media (max-width: 720px) {
+  .enroll-starts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.enroll-docs {
+  padding: 1rem 1.15rem;
+  margin: 1.25rem 0 1.5rem;
 }
 
 .enroll-prompt-block {
@@ -1323,7 +1417,6 @@ select {
   margin-bottom: 1.25rem;
 }
 
-.enroll-pin code,
 .enroll-page code {
   font-size: 0.85em;
   color: var(--ink);
@@ -1389,6 +1482,10 @@ select {
 .about-panel {
   padding: 1.1rem 1.15rem;
   margin-top: 1.25rem;
+}
+
+.about-panel .about-mechanics {
+  gap: 1.25rem;
 }
 
 .about-memoirs {
@@ -1494,6 +1591,82 @@ select {
   margin-top: 0.45rem;
 }
 
+.about-mechanic dd p {
+  margin: 0 0 0.65rem;
+}
+
+.about-mechanic dd p:last-child {
+  margin-bottom: 0;
+}
+
+.about-ability-points {
+  margin: 0 0 0.65rem;
+  padding-left: 1.15rem;
+  color: var(--ink-dim);
+  line-height: 1.65;
+}
+
+.about-ability-points li + li {
+  margin-top: 0.4rem;
+}
+
+.about-ability-points strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.about-table-wrap {
+  overflow-x: auto;
+  margin: 0 0 0.75rem;
+}
+
+.about-identity-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.about-identity-table th,
+.about-identity-table td {
+  text-align: left;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--panel-border);
+  vertical-align: top;
+}
+
+.about-identity-table thead th {
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  font-weight: 600;
+  background: rgba(244, 247, 255, 0.04);
+}
+
+.about-identity-table tbody th {
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  width: 32%;
+}
+
+.about-identity-table td {
+  color: var(--ink-dim);
+}
+
+.about-one-line {
+  margin: 1.15rem 0 0;
+  padding: 0.85rem 0 0 0.95rem;
+  border-left: 2px solid rgba(232, 160, 60, 0.45);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.5;
+}
+
 @media (max-width: 640px) {
   .about-memoir-grid {
     grid-template-columns: 1fr;
@@ -1504,4 +1677,109 @@ select {
   .enroll-snippet {
     font-size: 0.72rem;
   }
+}
+
+/* Season 1 campaign */
+.season-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.25rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.05rem;
+  background: linear-gradient(135deg, rgba(62, 200, 214, 0.12), rgba(232, 160, 60, 0.1));
+  border: 1px solid rgba(62, 200, 214, 0.28);
+}
+
+.season-strip-kicker {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--white-hole);
+}
+
+.season-strip-dates {
+  margin: 0.15rem 0 0;
+  color: var(--ink-dim);
+  font-size: 0.88rem;
+}
+
+.season-strip-wallet {
+  margin: 0.2rem 0 0;
+}
+
+.season-strip-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.season-strip.is-compact {
+  padding: 0.7rem 0.9rem;
+  margin-bottom: 1.15rem;
+}
+
+.prize-trust,
+.first5-flash {
+  padding: 1rem 1.15rem;
+}
+
+.prize-trust-kicker {
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.prize-trust-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.65rem 1rem;
+  margin: 0 0 0.85rem;
+}
+
+.prize-trust-meta dt {
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.prize-trust-meta dd {
+  margin: 0.15rem 0 0;
+  font-size: 0.9rem;
+}
+
+.prize-tx-list,
+.first5-winners,
+.qualifying-honor-winners {
+  margin: 0.4rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.joining-meta {
+  margin-top: 0.35rem;
+}
+
+.share-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-left: auto;
+}
+
+.restart-prize-proof {
+  pointer-events: auto;
+  margin-top: 0.65rem;
+  max-width: 28rem;
+}
+
+.restart-prize-proof .prize-trust {
+  background: rgba(8, 14, 24, 0.55);
+}
+
+.prizes-page .season-strip {
+  margin-bottom: 0;
+}
+
+.hall-of-fame-board {
+  margin-top: 1.75rem;
+  scroll-margin-top: 4.5rem;
 }

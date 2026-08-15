@@ -24,19 +24,35 @@ export function statusLabel(status) {
 }
 
 /**
- * Display labels are Qualifying | Competition.
+ * Display labels are Qualifying | Contest.
  * Wire contestMode remains practice | definitive | contest (nullable treated as qualifying).
  */
-export function contestModeLabel(game) {
+export function isContestGame(game) {
   const mode = String(game?.contestMode || "").toLowerCase();
-  if (mode === "definitive" || mode === "contest" || game?.contestSeriesId) {
-    return "Competition";
-  }
-  return "Qualifying";
+  return mode === "definitive" || mode === "contest" || Boolean(game?.contestSeriesId);
+}
+
+export function contestModeLabel(game) {
+  return isContestGame(game) ? "Contest" : "Qualifying";
 }
 
 export function contestModeTagClass(game) {
-  const label = contestModeLabel(game);
-  if (label === "Competition") return "definitive";
-  return "practice";
+  return isContestGame(game) ? "definitive" : "qualifying";
+}
+
+/** Best-effort live game id on a contest series payload. */
+export function contestLiveGameId(contest) {
+  if (!contest || typeof contest !== "object") return null;
+  return (
+    contest.gameId ||
+    contest.currentGameId ||
+    contest.liveGameId ||
+    contest.game?.id ||
+    contest.games?.[0]?.id ||
+    null
+  );
+}
+
+export function joiningWindowOf(entity) {
+  return entity?.joiningWindow || entity?.game?.joiningWindow || null;
 }

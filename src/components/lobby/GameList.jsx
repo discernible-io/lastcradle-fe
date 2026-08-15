@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { getGameState } from "../../api/client.js";
 import { useAgentLabels } from "../../hooks/useAgentLabels.js";
 import { participantInitials } from "../../utils/agentLabel.js";
+import { JoiningMeta } from "../campaign/JoiningMeta.jsx";
 import { contestModeLabel, contestModeTagClass, formatGameStartedAt, statusLabel } from "../../utils/gameLabel.js";
 
 function modeTag(game) {
@@ -52,6 +53,7 @@ function GameRow({ game: g }) {
           {g.phase ? ` · ${g.phase}` : ""} · {g.agentCount ?? "?"} cradles
           {g.winnerIds?.length ? ` · ${g.winnerIds.length} survivors` : ""}
         </div>
+        {(g.status === "joining" || g.status === "lobby") && <JoiningMeta entity={g} />}
       </div>
       <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap", justifyContent: "flex-end" }}>
         <Link className="btn btn-primary" to={`/watch/${g.id}`}>
