@@ -13,6 +13,6 @@ COPY nginx/security-headers-common.inc /etc/nginx/security-headers-common.inc
 RUN chown -R nginx:nginx /etc/nginx/nginx.conf /var/cache/nginx /var/log/nginx /etc/nginx/conf.d /app
 
 USER nginx
-EXPOSE 443 10443
+EXPOSE 443 13443
 
 CMD ["nginx", "-g", "daemon off;"]

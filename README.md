@@ -37,12 +37,12 @@ After a finale, append tx hashes to `prizeSettlements` in that file (the arena a
 
 Mirrors `mintclient-idc`:
 
-- **Branches:** `development` → dihola tier · `main` → discernible tier
+- **Branches:** `development` → dihola tier · `main` → lastcradle.io
 - **Public URLs:** `.env.development` / `.env.main` (copied to transient `.env` by `npm run env:sync`)
 - **Images:** GHCR `…/slcfrontend-app` + `…/slcfrontend-nginx`
 - **Host runtime:** `~/slcfrontend-app` (certs, logs, secrets) — not this git tree
-- **Ports:** development listens on `10443` and pins the API on `:9443`; main listens on `443` and omits the port in page copy
-- **Domains:** `slc.dihola.io` (dev) / `slc.discernible.io` (main)
+- **Ports:** development listens on `13443` (host may 443→13443 REDIRECT) and pins the API on `:9443`; main listens on `443` and omits the port in page copy
+- **Domains:** `slc.dihola.io` (dev) / `lastcradle.io` + `www.lastcradle.io` (main; API `api.lastcradle.io`). Apex and www are distinct browser origins — the API CORS allowlist must include both.
 
 Workflow: `.github/workflows/deploy.yml`  
 Local mirror: `./scripts/deploy-local-podman.sh`
@@ -50,8 +50,8 @@ Local mirror: `./scripts/deploy-local-podman.sh`
 ### Before first deploy
 
 1. Create GitHub repo + Actions secrets (`SSH_HOST_*`, `SSH_USER_*`, `SSH_PRIVATE_KEY_*`, `SSH_KNOWN_HOSTS_*`, `GHCR_PULL_TOKEN`).
-2. On the host: `mkdir -p ~/slcfrontend-app/{certs,logs/nginx,data,nginx,secrets}` and install TLS PEMs for the hostname.
-3. Open firewall / infra for port **10443** (development) or **443** (main).
+2. On the host: `mkdir -p ~/slcfrontend-app/{certs,logs/nginx,data,nginx,secrets}` and install TLS PEMs covering `lastcradle.io` and `www.lastcradle.io` (main) or `slc.dihola.io` (development).
+3. Open firewall / infra for port **13443** (development; optional permanent 443→13443) or **443** (main).
 4. Push to `development` or run the workflow.
 
 ## API feeds

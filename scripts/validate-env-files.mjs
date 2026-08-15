@@ -186,11 +186,12 @@ function validateVars(fileLabel, vars) {
         );
       }
     }
-    if (vars.REACT_APP_PUBLIC_ORIGIN && !hostEndsWith(vars.REACT_APP_PUBLIC_ORIGIN, "discernible.io")) {
-      errors.push(fail(fileLabel, "REACT_APP_PUBLIC_ORIGIN", "must be a discernible.io origin on main"));
+    if (vars.REACT_APP_PUBLIC_ORIGIN && !hostEndsWith(vars.REACT_APP_PUBLIC_ORIGIN, "lastcradle.io")) {
+      errors.push(fail(fileLabel, "REACT_APP_PUBLIC_ORIGIN", "must be a lastcradle.io origin on main (apex or www)"));
     }
-    if (vars.REACT_APP_API_BASE && !hostEndsWith(vars.REACT_APP_API_BASE, "discernible.io")) {
-      errors.push(fail(fileLabel, "REACT_APP_API_BASE", "must be a discernible.io origin on main"));
+    const apiHost = parse(vars.REACT_APP_API_BASE)?.hostname;
+    if (vars.REACT_APP_API_BASE && apiHost !== "api.lastcradle.io") {
+      errors.push(fail(fileLabel, "REACT_APP_API_BASE", "must be https://api.lastcradle.io on main"));
     }
   }
 
