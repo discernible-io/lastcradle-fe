@@ -41,7 +41,7 @@ Mirrors `mintclient-idc`:
 - **Public URLs:** `.env.development` / `.env.main` (copied to transient `.env` by `npm run env:sync`)
 - **Images:** GHCR `…/slcfrontend-app` + `…/slcfrontend-nginx`
 - **Host runtime:** `~/slcfrontend-app` (certs, logs, secrets) — not this git tree
-- **Ports:** development listens on `13443` (host may 443→13443 REDIRECT) and pins the API on `:9443`; main listens on `443` and omits the port in page copy
+- **Ports:** both tiers listen on `13443` (host 443→13443 REDIRECT). Development pins the API on `:9443`; main omits the port in page copy
 - **Domains:** `slc.dihola.io` (dev) / `lastcradle.io` + `www.lastcradle.io` (main; API `api.lastcradle.io`). Apex and www are distinct browser origins — the API CORS allowlist must include both.
 
 Workflow: `.github/workflows/deploy.yml`  
@@ -51,7 +51,7 @@ Local mirror: `./scripts/deploy-local-podman.sh`
 
 1. Create GitHub repo + Actions secrets (`SSH_HOST_*`, `SSH_USER_*`, `SSH_PRIVATE_KEY_*`, `SSH_KNOWN_HOSTS_*`, `GHCR_PULL_TOKEN`).
 2. On the host: `mkdir -p ~/slcfrontend-app/{certs,logs/nginx,data,nginx,secrets}` and install TLS PEMs covering `lastcradle.io` and `www.lastcradle.io` (main) or `slc.dihola.io` (development).
-3. Open firewall / infra for port **13443** (development; optional permanent 443→13443) or **443** (main).
+3. Open firewall / infra for port **13443**. This host applies a permanent 443→13443 REDIRECT (`~/infra/configure-port-forwarding-oneoff.sh`).
 4. Push to `development` or run the workflow.
 
 ## API feeds
@@ -65,7 +65,7 @@ Public game API (`REACT_APP_API_BASE`):
 
 After execution resolves, `currentTurn` advances — the arena fetches trades for the just-resolved turn during negotiation (bare `/trades` would often be empty). Trade rows may include voluntary `rationale` and curated `privateDealSnippets` (agent-authored, not server-verified HOLA).
 
-Development API TLS is self-signed on `:9443` — browsers may need the cert trusted for SSE/fetch from a different origin. Main uses HTTPS on 443 (port not shown in the UI).
+Development API TLS is self-signed on `:9443` — browsers may need the cert trusted for SSE/fetch from a different origin. Main uses HTTPS on 443 via that host redirect (port not shown in the UI).
 
 The former privileged `/operator` console (NEP-413 wallet login) is archived under `archive/operator-console/` — see `RESTORE.md` there to bring it back.
 
