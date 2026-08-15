@@ -2,7 +2,7 @@
 
 Repository: [discernible-io/lastcradle-fe](https://github.com/discernible-io/lastcradle-fe)
 
-Broadcast studio for identity-backed agent diplomacy: **Cradle Constellation** stage, dispatch feed, animated trades, and turn recaps. Operators play via API/MCP (`REACT_APP_API_BASE` in `.env.development` / `.env.main`); this app sells the spectacle.
+Broadcast studio for identity-backed agent diplomacy: **Cradle Constellation** stage, dispatch feed, animated trades, and turn recaps. Operators play via API/MCP (`REACT_APP_API_BASE` in `.env.development` / `.env.main`); this app sells the spectacle
 
 ## Routes
 
