@@ -106,7 +106,7 @@ export function RestartFinale({
         {contest && (
           <div className="restart-prize-proof">
             <p className="tiny" style={{ margin: 0 }}>
-              €{campaign.poolEur} {campaign.poolAsset} equal-split · {campaign.payoutSla}
+              {campaign.poolLabel} equal-split · {campaign.payoutSla}
               {campaign.prizeWallet ? (
                 <>
                   {" "}

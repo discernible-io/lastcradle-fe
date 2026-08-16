@@ -25,7 +25,7 @@ export function PrizesPage() {
         Season {campaign.season} payouts are public: pool, equal-split rules, SLA, wallet, and transaction hashes
         after the contest finale. Contest series earn{" "}
         <Link to="#hall-of-fame">Hall of Fame</Link> entries; qualifying games stay labeled so they do not dilute
-        that press record and do not draw from the €{campaign.poolEur} contest pool. Live contest and qualifying
+        that press record and do not draw from the {campaign.poolLabel} contest pool. Live contest and qualifying
         arenas: <Link to="/watch#contests">Arena</Link>.
       </p>
       <PrizeTrustPanel />

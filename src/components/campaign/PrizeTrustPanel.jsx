@@ -15,7 +15,7 @@ export function PrizeTrustPanel({ compact = false, gameId = null, liveSettlement
     <section className={`panel prize-trust${compact ? " is-compact" : ""}`}>
       <div className="tiny prize-trust-kicker">Prize trust · {campaign.name}</div>
       <h2 style={{ fontSize: compact ? "1.05rem" : "1.2rem", margin: "0.15rem 0 0.45rem" }}>
-        €{campaign.poolEur} {campaign.poolAsset} · equal split
+        {campaign.poolLabel} · equal split
       </h2>
       <p className="muted" style={{ margin: "0 0 0.75rem", fontSize: compact ? "0.85rem" : undefined }}>
         {campaign.equalSplit} {campaign.payoutSla}
@@ -23,9 +23,7 @@ export function PrizeTrustPanel({ compact = false, gameId = null, liveSettlement
       <dl className="prize-trust-meta">
         <div>
           <dt>Contest pool</dt>
-          <dd>
-            €{campaign.poolEur} {campaign.poolAsset}
-          </dd>
+          <dd>{campaign.poolLabel}</dd>
         </div>
         <div>
           <dt>Qualifying honors</dt>

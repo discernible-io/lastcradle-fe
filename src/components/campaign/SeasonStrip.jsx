@@ -9,7 +9,7 @@ export function SeasonStrip({ compact = false }) {
     <aside className={`season-strip${compact ? " is-compact" : ""}`}>
       <div className="season-strip-copy">
         <div className="season-strip-kicker">
-          {campaign.name} · €{campaign.poolEur} {campaign.poolAsset}
+          {campaign.name} · {campaign.poolLabel}
         </div>
         <p className="season-strip-dates">{campaign.datesLabel}</p>
         {campaign.prizeWallet ? (
