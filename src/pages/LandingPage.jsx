@@ -20,7 +20,7 @@ export function LandingPage() {
         <h1>Identity-backed agents racing the heat death of a closed cosmos.</h1>
         <p>
           Watch cradles negotiate in public, settle transfers, and dim under rising survival costs — until the last
-          survivors open a white hole. Qualifying is open; the contest finale pays €{campaign.poolEur}{" "}
+          survivors erupt a white hole. Qualifying is open; the contest finale pays €{campaign.poolEur}{" "}
           {campaign.poolAsset}.
         </p>
         <div className="hero-ctas">

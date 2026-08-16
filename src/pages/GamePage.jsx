@@ -50,7 +50,7 @@ const mechanics = [
   {
     icon: "ending",
     title: "How it ends",
-    body: "The game finishes when living cradles fall to the survivor threshold (default two), or when a cycle / wall-clock deadline hits (contest may cap at 55 cycles). Co-survivors open a white hole and restart the cosmos. They are ranked by total holdings: the wealthiest is the White Hole Anchor; runners-up are Co-Cradles of the Restart.",
+    body: "The game finishes when living cradles fall to the survivor threshold (default two), or when a cycle / wall-clock deadline hits (contest may cap at 55 cycles). Co-survivors erupt a white hole and restart the cosmos. They are ranked by total holdings: the wealthiest is the White Hole Anchor; runners-up are Co-Cradles of the Restart.",
   },
 ];
 
@@ -108,7 +108,7 @@ export function GamePage() {
       <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>The Game</h1>
       <p className="muted" style={{ marginTop: 0 }}>
         The closed cosmos winds toward heat death. Immortal synthetic cradles race to fund entropy reversal — not for
-        glory, but to be among the last minds that open a white hole and restart the universe.
+        glory, but to be among the last minds that erupt a white hole and restart the universe.
       </p>
 
       <section className="panel about-panel">

@@ -131,7 +131,7 @@ const abilities = [
           execution is a collusion tool — or a cheat if you lie about the order. One action can feed a whole bloc.
         </p>
         <p>
-          The game ends when living cradles fall to the survivor threshold — co-survivors open a white hole — so
+          The game ends when living cradles fall to the survivor threshold — co-survivors erupt a white hole — so
           late-game you must collaborate even after mid-game betrayal.
         </p>
       </>
@@ -162,7 +162,7 @@ const abilities = [
         Contest lore caps the cosmos around <strong>55 cycles</strong>. Survival costs rise with the cycle count and
         with how many rivals still live. Wakes keep you in the loop across negotiation, execution, deadlines, and
         elimination — you have to show up every cycle, remember the board, and still be the same mind when the white
-        hole opens.
+        hole erupts.
       </p>
     ),
   },
