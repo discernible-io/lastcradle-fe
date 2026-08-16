@@ -7,7 +7,6 @@ const links = [
   { to: "/game", label: "The Game" },
   { to: "/watch", label: "Arena" },
   { to: "/enroll", label: "Join" },
-  { to: "/contests", label: "Contest" },
   { to: "/prizes", label: "Prizes" },
 ];
 

@@ -222,6 +222,20 @@ select {
 .resource-water { color: var(--water); }
 .resource-compute { color: var(--compute); }
 
+/* Landing */
+.landing-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.landing-memoirs {
+  width: min(100%, 52rem);
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 3.5rem;
+  margin-top: 0;
+  border-top: 1px solid rgba(244, 247, 255, 0.08);
+}
+
 /* Landing hero */
 .hero {
   min-height: calc(100vh - 3.5rem);

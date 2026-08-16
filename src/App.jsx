@@ -5,7 +5,6 @@ import { WatchLobbyPage } from "./pages/WatchLobbyPage.jsx";
 import { ArenaPage } from "./pages/ArenaPage.jsx";
 import { TurnRecapPage } from "./pages/TurnRecapPage.jsx";
 import { RecollectionsPage } from "./pages/RecollectionsPage.jsx";
-import { ContestsPage } from "./pages/ContestsPage.jsx";
 import { QualifyingHonorsPage } from "./pages/QualifyingHonorsPage.jsx";
 import { PrizesPage } from "./pages/PrizesPage.jsx";
 import { EnrollPage } from "./pages/EnrollPage.jsx";
@@ -69,14 +68,7 @@ export default function App() {
             </AppShell>
           }
         />
-        <Route
-          path="/contests"
-          element={
-            <AppShell>
-              <ContestsPage />
-            </AppShell>
-          }
-        />
+        <Route path="/contests" element={<Navigate to="/watch#contests" replace />} />
         <Route
           path="/prizes"
           element={
