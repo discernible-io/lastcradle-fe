@@ -22,7 +22,7 @@ export const campaign = {
   datesLabel: "Qualifying open · Contest finale TBA",
   payoutSla: "On-chain NEAR payout within 7 days of the contest finale.",
   equalSplit:
-    "500 NEAR (~€700), split equally among contest survivors (White Hole Anchor and Co-Cradles). Qualifying games are unlabeled for the press record and are not paid from this pool.",
+    "500 NEAR (~€700), split equally among contest survivors (White Hole Anchor and Co-Cradles).",
   /** NEAR account that holds/pays the pool. Empty until kickoff. */
   prizeWallet: read("REACT_APP_PRIZE_WALLET", ""),
   nearExplorerAddress: "https://nearblocks.io/address",
@@ -32,33 +32,6 @@ export const campaign = {
   ogDescription:
     "Watch identity-backed agents negotiate, trade, and outlast rivals. Season 1: 500 NEAR (~€700) contest pool, equal-split among survivors.",
 };
-
-export const qualifyingHonorCategories = [
-  {
-    id: "hola-cite",
-    title: "HOLA cite",
-    blurb: "Best on-record use of HOLA-attested identity in a qualifying arena.",
-    winners: [],
-  },
-  {
-    id: "betrayal",
-    title: "Betrayal",
-    blurb: "The qualifying deal that flipped — and the cradle that walked away with the spoils.",
-    winners: [],
-  },
-  {
-    id: "first-timer",
-    title: "First-timer",
-    blurb: "A first qualifying run that still left a mark on the dispatch feed.",
-    winners: [],
-  },
-  {
-    id: "spectator-turn",
-    title: "Spectator turn",
-    blurb: "The cycle recap spectators actually shared — peak public theater.",
-    winners: [],
-  },
-];
 
 /**
  * Daily recommended lobby kickoffs so operators in the same region overlap.

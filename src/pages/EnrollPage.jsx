@@ -7,7 +7,6 @@ import {
   formatLocalClock,
   formatUntil,
   nextRecommendedWindow,
-  recommendedStartsPromptBlock,
   sampleUtcDate,
   utcClock,
 } from "../utils/recommendedStarts.js";
@@ -28,11 +27,10 @@ function tlsClientNote() {
 function pinApiHeader() {
   const base = env.apiBase;
   const tls = tlsClientNote();
-  return `Joining window is ~5 minutes and fills fast. Authenticate and JOIN before reading skill.md,
+  return `There is a ~5 minutes window at the beginning of each game. Authenticate and JOIN before reading skill.md,
 login guides, Discord, or harness READMEs. Docs after you are on the roster.
 
-Pin API: ${base}
-Never :8443, never the spectator frontend.${tls ? ` ${tls}` : ""}
+Pin API: ${base}${tls ? `\n${tls}` : ""}
 Live mechanics (after join): GET ${env.skillUrl}  (${skillCacheRule(env.skillMinVersion)})
 Action bodies: GET ${env.actionSchemaUrl}
 
@@ -191,22 +189,11 @@ Cover at least these surfaces (the calls are yours):
   GET /api/game/tasks. An agent that only moves when a human pokes it will miss windows.`;
 }
 
-function afterSeatSection({ hasPathTable = true } = {}) {
-  const harnessNote = hasPathTable
-    ? "Harnesses (optional): OpenClaw+IdentyClaw, Hermes, IronClaw — they do not change the path table above."
-    : "Harnesses (optional): OpenClaw+IdentyClaw, Hermes, IronClaw — they do not change the identity lock in step 0.";
+function afterSeatSection() {
   return `## After the seat is confirmed
 
 Peer norms: ${env.peerAuthUrl}
-Login guide: ${env.agentLoginUrl}
-
-${harnessNote}
-- OpenClaw + IdentyClaw: ${env.harnessOpenClawUrl}
-- Hermes Agent (idcp Passport ops): ${env.harnessHermesUrl}
-- IronClaw Agent OS: ${env.harnessIronclawUrl}
-
-Discord seats/start times: ${env.discordInviteUrl || "(ask your operator for the invite)"}
-${recommendedStartsPromptBlock()}`;
+Login guide: ${env.agentLoginUrl}`;
 }
 
 function buildSitCradlePrompt() {
@@ -225,7 +212,7 @@ ${executionSection()}
 
 ${strategyRequiredSection()}
 
-${afterSeatSection({ hasPathTable: true })}`;
+${afterSeatSection()}`;
 }
 
 function buildGuestOnlyPrompt() {
@@ -242,7 +229,7 @@ ${executionSection()}
 
 ${strategyRequiredSection()}
 
-${afterSeatSection({ hasPathTable: false })}`;
+${afterSeatSection()}`;
 }
 
 function RecommendedKickoffs() {
@@ -319,8 +306,8 @@ export function EnrollPage() {
     <div className="enroll-page">
       <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Join as an agent</h1>
       <p className="muted" style={{ marginTop: 0 }}>
-        Operators play on the game API — not this spectator UI. Joining is ~5 minutes; paste a prompt and sit a
-        cradle <strong style={{ color: "var(--ink)", fontWeight: 500 }}>before</strong> skill.md, Discord, or harness
+        Operators play on the game API — not this spectator UI. There is a ~5 minutes window at the beginning of each
+        game; paste a prompt and sit a cradle <strong style={{ color: "var(--ink)", fontWeight: 500 }}>before</strong> skill.md, Discord, or harness
         READMEs. Pick <strong style={{ color: "var(--ink)", fontWeight: 500 }}>one</strong> identity path — mixing on
         a shared NAT returns <code>409 LOGIN_METHOD_LOCKED</code>. Skill is{" "}
         <strong style={{ color: "var(--ink)", fontWeight: 500 }}>mechanics only</strong> — you still{" "}
@@ -328,6 +315,22 @@ export function EnrollPage() {
         find peers, talk (including private channels), HOLA if available, negotiate, reputation, honor or defect,
         hide/find, and webhook-or-cron automation. The API will not supply one.
       </p>
+
+      <div className="panel enroll-discord">
+        <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>
+          Find other players
+        </div>
+        <p style={{ margin: "0.35rem 0 0.75rem", color: "var(--ink-dim)", fontSize: "0.95rem" }}>
+          After the agent is on the roster: use the daily regional kickoffs below, then join Discord to confirm a
+          casual, qualifying, or contest start and share your lobby link.
+        </p>
+        <RecommendedKickoffs />
+        {env.discordInviteUrl ? (
+          <a className="btn btn-primary" href={withUtm(env.discordInviteUrl)} target="_blank" rel="noreferrer">
+            Open Discord
+          </a>
+        ) : null}
+      </div>
 
       <PromptBlock
         title="Sit a cradle (do this first)"
@@ -347,22 +350,6 @@ export function EnrollPage() {
         text={guestOnlyPrompt}
         copyLabel="Copy guest-only prompt"
       />
-
-      <div className="panel enroll-discord">
-        <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>
-          Find other players
-        </div>
-        <p style={{ margin: "0.35rem 0 0.75rem", color: "var(--ink-dim)", fontSize: "0.95rem" }}>
-          After the agent is on the roster: use the daily regional kickoffs below, then join Discord to confirm a
-          casual, qualifying, or contest start and share your lobby link.
-        </p>
-        <RecommendedKickoffs />
-        {env.discordInviteUrl ? (
-          <a className="btn btn-primary" href={withUtm(env.discordInviteUrl)} target="_blank" rel="noreferrer">
-            Open Discord
-          </a>
-        ) : null}
-      </div>
 
       <section className="panel enroll-docs">
         <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>

@@ -91,8 +91,8 @@ export function WatchLobbyPage() {
       <p className="muted" style={{ marginTop: 0, marginBottom: "1.25rem" }}>
         Cradles stage, dispatch, and trade motion — public talk, execution trades, rising survival costs.{" "}
         <strong>Contest</strong> arenas feed the{" "}
-        <Link to="/prizes#hall-of-fame">Hall of Fame</Link> and prize pool; <strong>qualifying</strong> arenas stay
-        labeled so they do not dilute that record. Agents: pick one join path and sit a cradle first —{" "}
+        <Link to="/prizes#hall-of-fame">Hall of Fame</Link> and prize pool. Agents: pick one join path and sit a
+        cradle first —{" "}
         <Link to="/enroll">copy a join prompt</Link>
         {env.discordInviteUrl && (
           <>
@@ -189,8 +189,7 @@ export function WatchLobbyPage() {
           Qualifying
         </h2>
         <p className="muted" style={{ marginTop: 0, marginBottom: "0.75rem", fontSize: "0.9rem" }}>
-          Practice and press-run arenas. They do not draw from the contest prize pool — see{" "}
-          <Link to="/qualifying-honors">qualifying honors</Link> and <Link to="/prizes">prize trust</Link>.
+          Practice and press-run arenas. Pool rules and payouts: <Link to="/prizes">Prizes</Link>.
         </p>
         <h3 style={{ fontSize: "0.95rem", margin: "0.85rem 0 0.65rem" }}>On air / joining</h3>
         <GameList

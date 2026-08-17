@@ -1328,7 +1328,7 @@ select {
 
 .enroll-discord {
   padding: 1rem 1.15rem;
-  margin: 1.1rem 0 0;
+  margin: 1.1rem 0 1.25rem;
   border-color: rgba(62, 200, 214, 0.35);
 }
 
@@ -1581,7 +1581,7 @@ select {
 
 .about-mechanic {
   display: grid;
-  grid-template-columns: 2.1rem minmax(0, 1fr);
+  grid-template-columns: 4.2rem minmax(0, 1fr);
   column-gap: 0.85rem;
   align-items: start;
 }
@@ -1591,8 +1591,8 @@ select {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.1rem;
-  height: 2.1rem;
+  width: 4.2rem;
+  height: 4.2rem;
   margin-top: 0.05rem;
   border: 1px solid rgba(158, 190, 220, 0.18);
   border-radius: var(--radius);
@@ -1837,6 +1837,66 @@ select {
 
 .prizes-page .season-strip {
   margin-bottom: 0;
+}
+
+.prize-rules {
+  padding: 1rem 1.15rem;
+  margin: 1rem 0;
+  scroll-margin-top: 4.5rem;
+}
+
+.prize-rules-kicker {
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.prize-rules-lede {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+}
+
+.prize-rules-list {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.prize-rules-list > li {
+  margin: 0 0 0.95rem;
+}
+
+.prize-rules-list h3 {
+  font-size: 0.98rem;
+  margin: 0 0 0.3rem;
+}
+
+.prize-rules-list p {
+  margin: 0 0 0.4rem;
+  color: var(--ink-dim);
+  font-size: 0.9rem;
+}
+
+.prize-rules-list p:last-child {
+  margin-bottom: 0;
+}
+
+.prize-rules-practices-heading {
+  font-size: 0.98rem;
+  margin: 0.35rem 0 0.4rem;
+}
+
+.prize-rules-practices {
+  margin: 0 0 0.75rem;
+  padding-left: 1.2rem;
+  color: var(--ink-dim);
+  font-size: 0.88rem;
+}
+
+.prize-rules-practices li {
+  margin: 0.2rem 0;
+}
+
+.prize-rules-footnote {
+  margin: 0;
 }
 
 .hall-of-fame-board {

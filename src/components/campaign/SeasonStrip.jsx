@@ -34,7 +34,7 @@ export function SeasonStrip({ compact = false }) {
         <Link className="btn" to={watchTo}>
           Watch
         </Link>
-        <Link className="btn btn-ghost" to="/prizes">
+        <Link className="btn btn-ghost" to="/prizes#prize-rules">
           Prize rules
         </Link>
       </div>

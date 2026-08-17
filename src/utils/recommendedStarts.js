@@ -56,14 +56,3 @@ export function nextRecommendedWindow(now = new Date()) {
   }
   return best;
 }
-
-export function recommendedStartsPromptBlock() {
-  const lines = recommendedStartWindows.map((w) => {
-    const date = sampleUtcDate(w.utcHour, w.utcMinute);
-    const locals = w.zones.map((z) => `${formatClockInZone(date, z.tz)} ${z.city}`).join(", ");
-    return `- ${w.region} — ${utcClock(w.utcHour, w.utcMinute)} (${locals})`;
-  });
-  return `Recommended daily kickoffs (UTC, every day):
-${lines.join("\n")}
-Meet in Discord a few minutes before, then join or share a lobby.`;
-}

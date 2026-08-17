@@ -5,7 +5,6 @@ import { WatchLobbyPage } from "./pages/WatchLobbyPage.jsx";
 import { ArenaPage } from "./pages/ArenaPage.jsx";
 import { TurnRecapPage } from "./pages/TurnRecapPage.jsx";
 import { RecollectionsPage } from "./pages/RecollectionsPage.jsx";
-import { QualifyingHonorsPage } from "./pages/QualifyingHonorsPage.jsx";
 import { PrizesPage } from "./pages/PrizesPage.jsx";
 import { EnrollPage } from "./pages/EnrollPage.jsx";
 import { AboutPage } from "./pages/AboutPage.jsx";
@@ -78,14 +77,7 @@ export default function App() {
           }
         />
         <Route path="/hall-of-fame" element={<Navigate to="/prizes#hall-of-fame" replace />} />
-        <Route
-          path="/qualifying-honors"
-          element={
-            <AppShell>
-              <QualifyingHonorsPage />
-            </AppShell>
-          }
-        />
+        <Route path="/qualifying-honors" element={<Navigate to="/prizes#prize-rules" replace />} />
         <Route
           path="/enroll"
           element={

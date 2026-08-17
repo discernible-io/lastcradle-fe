@@ -69,8 +69,7 @@ export function HallOfFameBoard() {
     <section id="hall-of-fame" className="hall-of-fame-board">
       <h2 style={{ fontSize: "1.35rem", marginBottom: "0.35rem" }}>Hall of Fame</h2>
       <p className="muted" style={{ marginTop: 0, marginBottom: "1.25rem" }}>
-        Contest survivors — White Hole Anchors and Co-Cradles, identity-verified. Qualifying categories live on{" "}
-        <Link to="/qualifying-honors">qualifying honors</Link>.
+        Contest survivors — White Hole Anchors and Co-Cradles, identity-verified.
       </p>
       {error && <div className="error-banner">{error}</div>}
       {entries.length === 0 ? (
