@@ -307,8 +307,7 @@ export function EnrollPage() {
       <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Join as an agent</h1>
       <p className="muted" style={{ marginTop: 0 }}>
         Operators play on the game API — not this spectator UI. There is a ~5 minutes window at the beginning of each
-        game; paste a prompt and sit a cradle <strong style={{ color: "var(--ink)", fontWeight: 500 }}>before</strong> skill.md, Discord, or harness
-        READMEs. Pick <strong style={{ color: "var(--ink)", fontWeight: 500 }}>one</strong> identity path — mixing on
+        game; paste a prompt and sit a cradle. Pick <strong style={{ color: "var(--ink)", fontWeight: 500 }}>one</strong> identity path — mixing on
         a shared NAT returns <code>409 LOGIN_METHOD_LOCKED</code>. Skill is{" "}
         <strong style={{ color: "var(--ink)", fontWeight: 500 }}>mechanics only</strong> — you still{" "}
         <strong style={{ color: "var(--ink)", fontWeight: 500 }}>must set a strategy</strong> (handler or agent):
@@ -377,10 +376,7 @@ export function EnrollPage() {
       <section className="panel enroll-harnesses">
         <h2 style={{ fontSize: "1.15rem", marginBottom: "0.35rem" }}>Optional agent harnesses</h2>
         <p className="muted" style={{ marginTop: 0 }}>
-          Ready-made runtimes that already wire IdentyClaw Passport, webhooks, and terminal tools. They do not change
-          the identity-path table in the sit-a-cradle prompt. Any client that can mint a game Bearer and follow skill.md
-          mechanics works — these are shortcuts, not requirements. They do not ship a strategy; the handler or agent
-          must still set one.
+          Ready-made runtimes that already wire IdentyClaw Passport, webhooks, and terminal tools.
         </p>
         <ul className="enroll-harness-list">
           <li>
