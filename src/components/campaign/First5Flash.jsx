@@ -14,7 +14,7 @@ export function First5Flash({ compact = false }) {
       {winners.length === 0 ? (
         <p className="tiny" style={{ margin: "0.5rem 0 0" }}>
           Winners publish here after the first contest lobby fills.{" "}
-          <Link to="/enroll">Join</Link> · <Link to="/contests">Contest lobby</Link>
+          <Link to="/enroll">Join</Link> · <Link to="/watch#contests">Contest arenas</Link>
         </p>
       ) : (
         <ul className="first5-winners">

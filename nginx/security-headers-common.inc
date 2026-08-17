@@ -3,5 +3,5 @@ add_header X-Content-Type-Options "nosniff" always;
 add_header Referrer-Policy "strict-origin-when-cross-origin" always;
 add_header X-Frame-Options "DENY" always;
 add_header Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()" always;
-# Google Fonts + game API (main :443 / development :9443) + EventSource
-add_header Content-Security-Policy "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://slcapi.discernible.io https://slcapi.discernible.io:9443 https://slcapi.dihola.io:9443 https:; worker-src 'self' blob:" always;
+# Google Fonts + game API (main api.lastcradle.io / development :9443) + EventSource
+add_header Content-Security-Policy "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://api.lastcradle.io https://slcapi.discernible.io https://slcapi.discernible.io:9443 https://slcapi.dihola.io:9443 https:; worker-src 'self' blob:" always;

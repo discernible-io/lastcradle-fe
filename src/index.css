@@ -222,6 +222,20 @@ select {
 .resource-water { color: var(--water); }
 .resource-compute { color: var(--compute); }
 
+/* Landing */
+.landing-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.landing-memoirs {
+  width: min(100%, 52rem);
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 3.5rem;
+  margin-top: 0;
+  border-top: 1px solid rgba(244, 247, 255, 0.08);
+}
+
 /* Landing hero */
 .hero {
   min-height: calc(100vh - 3.5rem);
@@ -1565,19 +1579,65 @@ select {
   gap: 0.9rem;
 }
 
+.about-mechanic {
+  display: grid;
+  grid-template-columns: 2.1rem minmax(0, 1fr);
+  column-gap: 0.85rem;
+  align-items: start;
+}
+
+.about-mechanic-icon {
+  grid-column: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  margin-top: 0.05rem;
+  border: 1px solid rgba(158, 190, 220, 0.18);
+  border-radius: var(--radius);
+  background: rgba(8, 14, 24, 0.55);
+  color: var(--ink-dim);
+}
+
+.about-mechanic-icon--energy {
+  color: var(--energy);
+  border-color: rgba(232, 160, 60, 0.32);
+  background: rgba(232, 160, 60, 0.08);
+}
+
+.about-mechanic-icon--water {
+  color: var(--water);
+  border-color: rgba(62, 200, 214, 0.32);
+  background: rgba(62, 200, 214, 0.08);
+}
+
+.about-mechanic-icon--compute {
+  color: var(--compute);
+  border-color: rgba(126, 207, 106, 0.32);
+  background: rgba(126, 207, 106, 0.08);
+}
+
+.about-mechanic-icon-svg {
+  display: block;
+  flex-shrink: 0;
+}
+
 .about-mechanic dt {
   font-family: var(--font-display);
   font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--ink);
-  margin-bottom: 0.2rem;
+  margin: 0.15rem 0 0.2rem;
+  grid-column: 2;
 }
 
 .about-mechanic dd {
   margin: 0;
   color: var(--ink-dim);
   line-height: 1.65;
+  grid-column: 2;
 }
 
 .about-abilities {

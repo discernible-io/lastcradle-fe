@@ -40,7 +40,7 @@ function hasExplicitNonDefaultPort(raw) {
   return u.port !== "443" && u.port !== "80";
 }
 
-const apiBaseRaw = read("REACT_APP_API_BASE", "https://slcapi.discernible.io").replace(/\/$/, "");
+const apiBaseRaw = read("REACT_APP_API_BASE", "https://api.lastcradle.io").replace(/\/$/, "");
 const apiBase = stripDefaultPort(apiBaseRaw);
 const publicOrigin = stripDefaultPort(read("REACT_APP_PUBLIC_ORIGIN", "http://localhost:5173"));
 

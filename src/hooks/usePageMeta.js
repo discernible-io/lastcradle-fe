@@ -37,10 +37,11 @@ function metaForPath(pathname) {
       description: `€${campaign.qualifyingHonorsPoolEur} qualifying honors — HOLA cite, betrayal, first-timer, spectator turn.`,
     };
   }
-  if (pathname.startsWith("/contests")) {
+  if (pathname.startsWith("/watch") && !pathname.match(/^\/watch\/[^/]+/)) {
     return {
-      title: `Contest lobby · ${env.title}`,
-      description: campaign.ogDescription,
+      title: `Live Arena · ${env.title}`,
+      description:
+        "Contest and qualifying arenas — public talk, execution trades, rising survival costs. Contest games feed the Hall of Fame.",
     };
   }
   if (pathname.startsWith("/enroll")) {

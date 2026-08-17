@@ -55,7 +55,7 @@ export function honorTitleByAgentId(honorees) {
 }
 
 /**
- * Compact end-of-race banner: entropy reversed, white hole opened, ranked titles.
+ * Compact end-of-race banner: entropy reversed, white hole eruption, ranked titles.
  */
 export function RestartFinale({
   honors = null,
@@ -79,10 +79,10 @@ export function RestartFinale({
     <div className="restart-finale" role="status" aria-live="polite">
       <div className="restart-finale-copy">
         <p className="restart-finale-kicker">Entropy reversed</p>
-        <h2 className="restart-finale-title">White hole opened</h2>
+        <h2 className="restart-finale-title">White hole eruption</h2>
         <p className="restart-finale-blurb">
           {deadline
-            ? "At the edge of oblivion the last cradles forced the restart open."
+            ? "At the edge of oblivion the last cradles forced the eruption."
             : "The last cradles derived the reversal theorem and poured every reserve into a single restart."}
           {cycle != null ? ` Cycle ${cycle}.` : ""}
         </p>
@@ -106,7 +106,7 @@ export function RestartFinale({
         {contest && (
           <div className="restart-prize-proof">
             <p className="tiny" style={{ margin: 0 }}>
-              €{campaign.poolEur} {campaign.poolAsset} equal-split · {campaign.payoutSla}
+              {campaign.poolLabel} equal-split · {campaign.payoutSla}
               {campaign.prizeWallet ? (
                 <>
                   {" "}

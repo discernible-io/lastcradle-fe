@@ -10,22 +10,21 @@ set -euo pipefail
 [[ "${TRACE:-0}" == 1 ]] && set -x
 
 REPO_ROOT="${REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
-APP_DIR="${APP_DIR:-/home/dedalo43/slcfrontend-app}"
+APP_DIR="${APP_DIR:-$HOME/slcfrontend-app}"
 APP_DIR="${APP_DIR/#\~/$HOME}"
 TARGET="${TARGET:-development}"
 
 POD_NAME="${POD_NAME:-slcfrontend-pod}"
-APP_CONTAINER_NAME="${APP_CONTAINER_NAME:-slcfrontend-container}"
 NGINX_CONTAINER_NAME="${NGINX_CONTAINER_NAME:-slcfrontend-nginx}"
 HEALTH_CHECK_TIMEOUT="${HEALTH_CHECK_TIMEOUT:-120}"
 HEALTH_CHECK_INTERVAL="${HEALTH_CHECK_INTERVAL:-5}"
 USE_LOCAL_RESOLVE="${USE_LOCAL_RESOLVE:-1}"
 
 REGISTRY="localhost"
-DOMAIN_MAIN="slc.discernible.io"
+DOMAIN_MAIN="lastcradle.io"
 DOMAIN_DEVELOPMENT="slc.dihola.io"
-PORT_MAIN=443
-PORT_DEVELOPMENT=10443
+PORT_MAIN=13443
+PORT_DEVELOPMENT=13443
 
 RUN_BUILD=1
 RUN_DEPLOY=1
@@ -75,23 +74,15 @@ case "$TARGET" in
     ;;
 esac
 
-APP_IMAGE_NAME="slcfrontend-app"
 NGINX_IMAGE_NAME="slcfrontend-nginx"
-APP_IMAGE="${REGISTRY}/${APP_IMAGE_NAME}:${DEPLOY_SHA}"
 NGINX_IMAGE="${REGISTRY}/${NGINX_IMAGE_NAME}:${DEPLOY_SHA}"
 
 cd "$REPO_ROOT"
 
 build_images() {
-  echo "==> [build-images] Build React app image"
-  podman build -f react.Dockerfile \
-    --build-arg "APP_BUILD_ENV=${APP_BUILD_ENV}" \
-    -t "${APP_IMAGE}" \
-    -t "${REGISTRY}/${APP_IMAGE_NAME}:latest" \
-    "${REPO_ROOT}"
-
-  echo "==> [build-images] Build Nginx image"
+  echo "==> [build-images] Build Nginx image (SPA baked in)"
   podman build -f nginx.Dockerfile \
+    --build-arg "APP_BUILD_ENV=${APP_BUILD_ENV}" \
     --build-arg "NODE_ENV=${NGINX_BUILD_ENV}" \
     -t "${NGINX_IMAGE}" \
     -t "${REGISTRY}/${NGINX_IMAGE_NAME}:latest" \
@@ -106,6 +97,7 @@ setup_directories() {
   chmod 750 "${APP_DIR}/secrets" || true
   chmod 0775 "${APP_DIR}/logs/nginx" || true
   podman unshare chown -R 101:101 "${APP_DIR}/logs/nginx" || true
+  DEPLOY_USER="$(whoami)" bash "$REPO_ROOT/scripts/ensure-podman-linger.sh"
 }
 
 deploy_containers() {
@@ -115,17 +107,9 @@ deploy_containers() {
 
   podman pod exists "$POD_NAME" && podman pod rm -f "$POD_NAME" || true
 
-  podman image exists "$APP_IMAGE" || { echo "Missing image: $APP_IMAGE" >&2; exit 1; }
   podman image exists "$NGINX_IMAGE" || { echo "Missing image: $NGINX_IMAGE" >&2; exit 1; }
 
   podman pod create --name "$POD_NAME" -p "${APP_PORT}:${APP_PORT}"
-
-  podman run -d \
-    --log-driver=k8s-file \
-    --pod "$POD_NAME" \
-    --name "$APP_CONTAINER_NAME" \
-    --restart=unless-stopped \
-    "$APP_IMAGE"
 
   mkdir -p "${APP_DIR}/logs/nginx"
   chmod 0775 "${APP_DIR}/logs/nginx" || true
@@ -156,17 +140,12 @@ deploy_containers() {
     "$NGINX_IMAGE"
 
   podman ps -a
-  podman logs "$APP_CONTAINER_NAME" || true
   podman logs "$NGINX_CONTAINER_NAME" || true
 }
 
 verify_deployment() {
   echo "==> [test-and-deploy] Verify deployment"
-  if [[ "${APP_PORT}" == "443" ]]; then
-    SITE_URL="https://${DOMAIN}/"
-  else
-    SITE_URL="https://${DOMAIN}:${APP_PORT}/"
-  fi
+  SITE_URL="https://${DOMAIN}:${APP_PORT}/"
   echo "Probing: ${SITE_URL}"
 
   curl_site() {
@@ -213,10 +192,6 @@ if verify_deployment; then
   exit 0
 fi
 
-if [[ "${APP_PORT}" == "443" ]]; then
-  probe="https://${DOMAIN}/"
-else
-  probe="https://${DOMAIN}:${APP_PORT}/"
-fi
+probe="https://${DOMAIN}:${APP_PORT}/"
 echo "Verify manually: curl -sk --resolve \"${DOMAIN}:${APP_PORT}:127.0.0.1\" \"${probe}\"" >&2
 exit 1

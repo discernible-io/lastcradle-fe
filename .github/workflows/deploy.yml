@@ -17,14 +17,12 @@ env:
   SSH_USER: ${{ github.ref == 'refs/heads/main' && secrets.SSH_USER_MAIN || secrets.SSH_USER_DEVELOPMENT }}
   SSH_PRIVATE_KEY: ${{ github.ref == 'refs/heads/main' && secrets.SSH_PRIVATE_KEY_MAIN || secrets.SSH_PRIVATE_KEY_DEVELOPMENT }}
   SSH_KNOWN_HOSTS: ${{ github.ref == 'refs/heads/main' && secrets.SSH_KNOWN_HOSTS_MAIN || secrets.SSH_KNOWN_HOSTS_DEVELOPMENT }}
-  DOMAIN: ${{ github.ref == 'refs/heads/main' && 'slc.discernible.io' || 'slc.dihola.io' }}
-  APP_PORT: ${{ github.ref == 'refs/heads/main' && 443 || 10443 }}
+  DOMAIN: ${{ github.ref == 'refs/heads/main' && 'lastcradle.io' || 'slc.dihola.io' }}
+  APP_PORT: 13443
   APP_DIR: /home/${{ github.ref == 'refs/heads/main' && secrets.SSH_USER_MAIN || secrets.SSH_USER_DEVELOPMENT }}/slcfrontend-app
   POD_NAME: slcfrontend-pod
-  APP_CONTAINER_NAME: slcfrontend-container
   NGINX_CONTAINER_NAME: slcfrontend-nginx
   REGISTRY: ghcr.io
-  APP_IMAGE_NAME: ${{ github.repository }}/slcfrontend-app
   NGINX_IMAGE_NAME: ${{ github.repository }}/slcfrontend-nginx
   HEALTH_CHECK_TIMEOUT: 120
   HEALTH_CHECK_INTERVAL: 5
@@ -48,6 +46,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Enforce minimum package age
+        run: node scripts/enforce-minimum-package-age.js
+
       - name: Validate public env files
         run: node scripts/validate-env-files.mjs
 
@@ -61,19 +62,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push React app image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: ./react.Dockerfile
-          push: true
-          build-args: |
-            APP_BUILD_ENV=${{ env.DEPLOY_TIER }}
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.APP_IMAGE_NAME }}:${{ env.DEPLOY_SHA }}-${{ env.DEPLOY_TIER }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
       - name: Build and push Nginx image
         uses: docker/build-push-action@v6
         with:
@@ -81,6 +69,7 @@ jobs:
           file: ./nginx.Dockerfile
           push: true
           build-args: |
+            APP_BUILD_ENV=${{ env.DEPLOY_TIER }}
             NODE_ENV=${{ env.DEPLOY_TIER }}
           tags: |
             ${{ env.REGISTRY }}/${{ env.NGINX_IMAGE_NAME }}:${{ env.DEPLOY_SHA }}-${{ env.DEPLOY_TIER }}
@@ -127,6 +116,19 @@ jobs:
 
           ssh -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=10 "${SSH_USER}@${SSH_HOST}" "true"
 
+      - name: Checkout deploy scripts
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.DEPLOY_SHA }}
+          sparse-checkout: |
+            scripts/ensure-podman-linger.sh
+          sparse-checkout-cone-mode: false
+
+      - name: Enable systemd linger for rootless Podman
+        run: |
+          ssh ${{ env.SSH_USER }}@${{ env.SSH_HOST }} "DEPLOY_USER=${{ env.SSH_USER }} bash -s" \
+            < scripts/ensure-podman-linger.sh
+
       - name: Setup directories and login to GHCR
         env:
           GHCR_PULL_TOKEN: ${{ secrets.GHCR_PULL_TOKEN }}
@@ -148,20 +150,9 @@ jobs:
 
             podman pod exists ${{ env.POD_NAME }} && podman pod rm -f ${{ env.POD_NAME }} || true
 
-            podman pull ${{ env.REGISTRY }}/${{ env.APP_IMAGE_NAME }}:${{ env.DEPLOY_SHA }}-${{ env.DEPLOY_TIER }}
             podman pull ${{ env.REGISTRY }}/${{ env.NGINX_IMAGE_NAME }}:${{ env.DEPLOY_SHA }}-${{ env.DEPLOY_TIER }}
 
             podman pod create --name ${{ env.POD_NAME }} -p ${{ env.APP_PORT }}:${{ env.APP_PORT }}
-
-            podman run -d \
-              --log-driver=k8s-file \
-              --pod ${{ env.POD_NAME }} \
-              --name ${{ env.APP_CONTAINER_NAME }} \
-              --restart=unless-stopped \
-              ${{ env.REGISTRY }}/${{ env.APP_IMAGE_NAME }}:${{ env.DEPLOY_SHA }}-${{ env.DEPLOY_TIER }}
-
-            podman container exists ${{ env.APP_CONTAINER_NAME }}
-            podman inspect ${{ env.APP_CONTAINER_NAME }} --format '{{.State.Status}}' | grep -E 'running|created'
 
             mkdir -p ${{ env.APP_DIR }}/logs/nginx
             chmod 0775 ${{ env.APP_DIR }}/logs/nginx || true
@@ -191,8 +182,10 @@ jobs:
               -v ${{ env.APP_DIR }}/logs/nginx:/var/log/nginx:Z \
               ${{ env.REGISTRY }}/${{ env.NGINX_IMAGE_NAME }}:${{ env.DEPLOY_SHA }}-${{ env.DEPLOY_TIER }}
 
+            podman container exists ${{ env.NGINX_CONTAINER_NAME }}
+            podman inspect ${{ env.NGINX_CONTAINER_NAME }} --format '{{.State.Status}}' | grep -E 'running|created'
+
             podman ps -a
-            podman logs ${{ env.APP_CONTAINER_NAME }} || true
             podman logs ${{ env.NGINX_CONTAINER_NAME }} || true
           "
 
@@ -204,11 +197,7 @@ jobs:
           HEALTH_CHECK_INTERVAL: ${{ env.HEALTH_CHECK_INTERVAL }}
         run: |
           set -euo pipefail
-          if [ "${APP_PORT}" = "443" ]; then
-            SITE_URL="https://${DOMAIN}/"
-          else
-            SITE_URL="https://${DOMAIN}:${APP_PORT}/"
-          fi
+          SITE_URL="https://${DOMAIN}:${APP_PORT}/"
           echo "Probing: ${SITE_URL}"
           elapsed=0
           while [ "$elapsed" -lt "$HEALTH_CHECK_TIMEOUT" ]; do

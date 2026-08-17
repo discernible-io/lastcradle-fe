@@ -23,8 +23,10 @@ export function PrizesPage() {
       <h1 style={{ fontSize: "1.75rem", margin: "1.25rem 0 0.35rem" }}>Prize trust</h1>
       <p className="muted" style={{ marginTop: 0 }}>
         Season {campaign.season} payouts are public: pool, equal-split rules, SLA, wallet, and transaction hashes
-        after the contest finale. Qualifying games do not draw from the €{campaign.poolEur} contest pool. Contest
-        survivors are listed in the Hall of Fame below.
+        after the contest finale. Contest series earn{" "}
+        <Link to="#hall-of-fame">Hall of Fame</Link> entries; qualifying games stay labeled so they do not dilute
+        that press record and do not draw from the {campaign.poolLabel} contest pool. Live contest and qualifying
+        arenas: <Link to="/watch#contests">Arena</Link>.
       </p>
       <PrizeTrustPanel />
       <div style={{ marginTop: "1rem" }}>

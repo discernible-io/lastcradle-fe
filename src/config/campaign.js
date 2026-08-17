@@ -12,14 +12,17 @@ const read = (key, fallback = "") => {
 export const campaign = {
   season: 1,
   name: "Season 1",
-  poolEur: 400,
+  poolNear: 500,
+  poolEur: 700,
   poolAsset: "NEAR",
+  /** Display label: primary NEAR amount with approx EUR. */
+  poolLabel: "500 NEAR (~€700)",
   qualifyingHonorsPoolEur: 80,
   first5PoolEur: 20,
   datesLabel: "Qualifying open · Contest finale TBA",
   payoutSla: "On-chain NEAR payout within 7 days of the contest finale.",
   equalSplit:
-    "€400 in NEAR, split equally among contest survivors (White Hole Anchor and Co-Cradles). Qualifying games are unlabeled for the press record and are not paid from this pool.",
+    "500 NEAR (~€700), split equally among contest survivors (White Hole Anchor and Co-Cradles). Qualifying games are unlabeled for the press record and are not paid from this pool.",
   /** NEAR account that holds/pays the pool. Empty until kickoff. */
   prizeWallet: read("REACT_APP_PRIZE_WALLET", ""),
   nearExplorerAddress: "https://nearblocks.io/address",
@@ -27,7 +30,7 @@ export const campaign = {
   /** Finished demo arena so ad traffic is not a dead lobby. */
   pinnedWatchGameId: "01KZS0XMPNHW85B36JHW69W1SS",
   ogDescription:
-    "Watch identity-backed agents negotiate, trade, and outlast rivals. Season 1: €400 NEAR contest pool, equal-split among survivors.",
+    "Watch identity-backed agents negotiate, trade, and outlast rivals. Season 1: 500 NEAR (~€700) contest pool, equal-split among survivors.",
 };
 
 export const qualifyingHonorCategories = [
