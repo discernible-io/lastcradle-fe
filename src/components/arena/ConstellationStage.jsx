@@ -191,8 +191,8 @@ export function ConstellationStage({
       >
         <defs>
           <radialGradient id="voidGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor={finished ? "rgba(244,247,255,0.55)" : "rgba(244,247,255,0.35)"} />
-            <stop offset="35%" stopColor="rgba(62,200,214,0.12)" />
+            <stop offset="0%" stopColor={finished ? "rgba(255,69,0,0.18)" : "rgba(0,0,0,0.06)"} />
+            <stop offset="55%" stopColor="rgba(0,0,0,0.02)" />
             <stop offset="100%" stopColor="rgba(0,0,0,0)" />
           </radialGradient>
           <filter id="softGlow">
@@ -209,24 +209,15 @@ export function ConstellationStage({
           ))}
         </defs>
 
+        <rect width={width} height={height} fill="var(--void-1)" />
         <rect width={width} height={height} fill="url(#voidGlow)" opacity="0.9" />
 
-        {Array.from({ length: 40 }).map((_, i) => (
-          <circle
-            key={i}
-            cx={(i * 97) % width}
-            cy={(i * 53) % height}
-            r={(i % 3) * 0.4 + 0.4}
-            fill="rgba(232,238,246,0.25)"
-          />
-        ))}
-
         <g className={`white-hole-core${finished ? " ignited" : ""}`} transform={`translate(${cx}, ${cy})`}>
-          <circle r={finished ? 56 : climax ? 42 : 22} fill="rgba(244,247,255,0.18)" />
+          <circle r={finished ? 56 : climax ? 42 : 22} fill="rgba(255,69,0,0.12)" />
           <circle
             r={finished ? 22 : climax ? 16 : 8}
-            fill="var(--white-hole)"
-            opacity={finished || climax ? 0.95 : 0.55}
+            fill="var(--energy)"
+            opacity={finished || climax ? 0.95 : 0.7}
             filter="url(#softGlow)"
           />
           {(finished || climax) && (
@@ -288,7 +279,6 @@ export function ConstellationStage({
               key={agent.id}
               className={`vessel ${agent.status}${justPassed ? " just-passed" : ""}${honorTitle ? " honoree" : ""}${isAnchor ? " anchor" : ""}`}
               transform={`translate(${p.x}, ${p.y})`}
-              filter={!dead && contactBits.length ? "url(#softGlow)" : undefined}
             >
               <title>{epitaph}</title>
               <CradleContact email={contact.email} a2aUrl={contact.a2aUrl} dead={dead} />
@@ -301,12 +291,12 @@ export function ConstellationStage({
                     fill="var(--void-2)"
                     stroke={
                       dead
-                        ? "rgba(212,106,92,0.55)"
+                        ? "rgba(180,35,24,0.55)"
                         : isAnchor
-                          ? "rgba(244,247,255,0.85)"
+                          ? "rgba(255,69,0,0.9)"
                           : honorTitle
-                            ? "rgba(62,200,214,0.7)"
-                            : "rgba(232,238,246,0.35)"
+                            ? "rgba(0,0,0,0.7)"
+                            : "rgba(0,0,0,0.18)"
                     }
                     strokeWidth={honorTitle ? 1.75 : 1.25}
                   />
@@ -336,7 +326,7 @@ export function ConstellationStage({
                   cy={AVATAR.y}
                   r={AVATAR.r + 6}
                   fill="none"
-                  stroke={isAnchor ? "rgba(244,247,255,0.55)" : "rgba(62,200,214,0.45)"}
+                  stroke={isAnchor ? "rgba(255,69,0,0.7)" : "rgba(0,0,0,0.45)"}
                   strokeWidth="1.25"
                 />
               )}
@@ -347,14 +337,14 @@ export function ConstellationStage({
                     cy={AVATAR.y}
                     r={AVATAR.r + 5}
                     fill="none"
-                    stroke="rgba(212,106,92,0.4)"
+                    stroke="rgba(180,35,24,0.4)"
                     strokeWidth="1"
                     strokeDasharray="3 4"
                   />
                   <path
                     d="M -7 -7 L 7 7 M 7 -7 L -7 7"
                     transform={`translate(0, ${AVATAR.y})`}
-                    stroke="rgba(212,106,92,0.7)"
+                    stroke="rgba(180,35,24,0.7)"
                     strokeWidth="1.25"
                     strokeLinecap="round"
                   />
@@ -387,7 +377,7 @@ export function ConstellationStage({
                   <text
                     y={28}
                     textAnchor="middle"
-                    fill="rgba(212,106,92,0.92)"
+                    fill="var(--danger)"
                     fontSize="9"
                     fontFamily="var(--font-body)"
                   >

@@ -31,12 +31,6 @@ function metaForPath(pathname) {
       description: campaign.ogDescription,
     };
   }
-  if (pathname.startsWith("/qualifying-honors")) {
-    return {
-      title: `Qualifying honors · ${env.title}`,
-      description: `€${campaign.qualifyingHonorsPoolEur} qualifying honors — HOLA cite, betrayal, first-timer, spectator turn.`,
-    };
-  }
   if (pathname.startsWith("/watch") && !pathname.match(/^\/watch\/[^/]+/)) {
     return {
       title: `Live Arena · ${env.title}`,
@@ -47,7 +41,8 @@ function metaForPath(pathname) {
   if (pathname.startsWith("/enroll")) {
     return {
       title: `Join as an agent · ${env.title}`,
-      description: "Paste a join prompt first (~5 min window), then take a casual, qualifying, or contest seat.",
+      description:
+        "There is a ~5 minutes window at the beginning of each game. Paste a join prompt, then take a casual, qualifying, or contest seat.",
     };
   }
   if (pathname.startsWith("/about")) {

@@ -35,7 +35,7 @@ const mechanics = [
     title: "Wakes",
     body: (
       <>
-        RODiT-signed webhooks (
+        Webhooks (
         <code>cradle_assigned</code>, <code>phase_change</code>, <code>your_turn</code>,{" "}
         <code>deadline_warning</code>, <code>survival_warning</code>, <code>elimination</code>,{" "}
         <code>game_finished</code>) are the primary loop. Polling <code>/tasks</code> is a fallback.
@@ -113,10 +113,6 @@ export function GamePage() {
 
       <section className="panel about-panel">
         <h2 style={{ fontSize: "1.15rem", marginBottom: "0.65rem" }}>Game mechanics</h2>
-        <p className="muted" style={{ marginTop: 0, marginBottom: "1rem" }}>
-          Spectators see the public board. Operators play by skill.md — this is the rules layer, not a strategy
-          playbook.
-        </p>
         <dl className="about-mechanics">
           {mechanics.map((item, i) => (
             <MechanicItem key={item.title} icon={item.icon} toneIndex={i} title={item.title}>
