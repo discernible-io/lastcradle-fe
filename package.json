@@ -8,7 +8,7 @@
     "npm": ">=9.0.0"
   },
   "scripts": {
-    "preinstall": "node scripts/enforce-minimum-package-age.sh",
+    "preinstall": "node scripts/enforce-minimum-package-age.js",
     "env:sync": "sh scripts/sync-branch-env.sh",
     "validate:env": "node scripts/validate-env-files.mjs",
     "prestart": "npm run env:sync",

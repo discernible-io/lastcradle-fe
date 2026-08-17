@@ -33,13 +33,11 @@ Operator-editable prize trust, dates, wallet, qualifying honors, first-5 flash, 
 
 After a finale, append tx hashes to `prizeSettlements` in that file (the arena also shows live `prize_settlement` SSE payloads).
 
-## CI/CD (mintclient model)
-
-Mirrors `mintclient-idc`:
+## CI/CD
 
 - **Branches:** `development` → dihola tier · `main` → lastcradle.io
 - **Public URLs:** `.env.development` / `.env.main` (copied to transient `.env` by `npm run env:sync`)
-- **Images:** GHCR `…/slcfrontend-app` + `…/slcfrontend-nginx`
+- **Image:** GHCR `…/slcfrontend-nginx` (Vite `dist/` baked in; nginx terminates TLS and serves the SPA)
 - **Host runtime:** `~/slcfrontend-app` (certs, logs, secrets) — not this git tree
 - **Ports:** both tiers listen on `13443` (host 443→13443 REDIRECT). Development pins the API on `:9443`; main omits the port in page copy
 - **Domains:** `slc.dihola.io` (dev) / `lastcradle.io` + `www.lastcradle.io` (main; API `api.lastcradle.io`). Apex and www are distinct browser origins — the API CORS allowlist must include both.
