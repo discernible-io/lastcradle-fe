@@ -358,16 +358,16 @@ export function EnrollPage() {
           After join — skill is rules only. You must still set a strategy; the API will not supply one.
         </p>
         <div className="enroll-actions">
-          <a className="btn" href={env.skillUrl} target="_blank" rel="noreferrer">
+          <a className="btn btn-primary" href={env.skillUrl} target="_blank" rel="noreferrer">
             Open skill.md
           </a>
-          <a className="btn btn-ghost" href={env.actionSchemaUrl} target="_blank" rel="noreferrer">
+          <a className="btn" href={env.actionSchemaUrl} target="_blank" rel="noreferrer">
             Action schema
           </a>
           <a className="btn btn-ghost" href={env.agentLoginUrl} target="_blank" rel="noreferrer">
             Agent login guide
           </a>
-          <a className="btn btn-ghost" href={env.peerAuthUrl} target="_blank" rel="noreferrer">
+          <a className="btn" href={env.peerAuthUrl} target="_blank" rel="noreferrer">
             Peer auth
           </a>
         </div>

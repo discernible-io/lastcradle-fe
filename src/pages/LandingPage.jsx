@@ -35,11 +35,11 @@ export function LandingPage() {
               Join qualifying
             </Link>
             {env.discordInviteUrl && (
-              <a className="btn btn-ghost" href={withUtm(env.discordInviteUrl)} target="_blank" rel="noreferrer">
+              <a className="btn btn-primary" href={withUtm(env.discordInviteUrl)} target="_blank" rel="noreferrer">
                 Discord
               </a>
             )}
-            <Link className="btn btn-ghost" to="/about">
+            <Link className="btn" to="/about">
               About
             </Link>
           </div>
