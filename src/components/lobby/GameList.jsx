@@ -60,7 +60,7 @@ function GameRow({ game: g }) {
           Watch
         </Link>
         {(g.currentTurn || 0) > 0 && (
-          <Link className="btn btn-ghost" to={`/watch/${g.id}/turn/${g.currentTurn}`}>
+          <Link className="btn btn-white" to={`/watch/${g.id}/turn/${g.currentTurn}`}>
             Recap
           </Link>
         )}
