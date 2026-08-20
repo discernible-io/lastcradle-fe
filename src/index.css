@@ -271,6 +271,18 @@ select:focus {
   border-color: var(--ink);
 }
 
+.btn-white {
+  background: var(--void-0);
+  border-color: var(--panel-border);
+  color: var(--ink);
+}
+
+.btn-white:hover {
+  background: var(--void-0);
+  border-color: var(--energy);
+  color: var(--energy);
+}
+
 .muted {
   color: var(--ink-dim);
 }
@@ -1420,7 +1432,7 @@ select:focus {
   max-width: 960px;
 }
 
-.enroll-discord {
+.enroll-telegram {
   padding: 1rem 1.15rem;
   margin: 1.1rem 0 1.25rem;
   border-color: rgba(255, 69, 0, 0.35);

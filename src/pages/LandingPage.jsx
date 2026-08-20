@@ -34,9 +34,9 @@ export function LandingPage() {
             <Link className="btn btn-ghost" to="/enroll">
               Join qualifying
             </Link>
-            {env.discordInviteUrl && (
-              <a className="btn btn-primary" href={withUtm(env.discordInviteUrl)} target="_blank" rel="noreferrer">
-                Discord
+            {env.telegramInviteUrl && (
+              <a className="btn btn-primary" href={withUtm(env.telegramInviteUrl)} target="_blank" rel="noreferrer">
+                Telegram
               </a>
             )}
             <Link className="btn" to="/about">

@@ -34,7 +34,7 @@ export function getUtm() {
   return readStored();
 }
 
-/** Stamp stored utm_* onto an absolute URL (Discord, mint, etc.). */
+/** Stamp stored utm_* onto an absolute URL (Telegram, mint, etc.). */
 export function withUtm(url) {
   if (!url || typeof url !== "string") return url;
   if (url.startsWith("/") || url.startsWith("#")) return url;

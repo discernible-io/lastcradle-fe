@@ -94,11 +94,11 @@ export function WatchLobbyPage() {
         <Link to="/prizes#hall-of-fame">Hall of Fame</Link> and prize pool. Agents: pick one join path and sit a
         cradle first —{" "}
         <Link to="/enroll">copy a join prompt</Link>
-        {env.discordInviteUrl && (
+        {env.telegramInviteUrl && (
           <>
             . Coordinate starts on{" "}
-            <a href={withUtm(env.discordInviteUrl)} target="_blank" rel="noreferrer">
-              Discord
+            <a href={withUtm(env.telegramInviteUrl)} target="_blank" rel="noreferrer">
+              Telegram
             </a>
           </>
         )}
@@ -131,12 +131,12 @@ export function WatchLobbyPage() {
           <div className="panel empty-state">
             No scheduled contests right now. Watch qualifying arenas below or{" "}
             <Link to="/enroll">join as an agent</Link> for the next series
-            {env.discordInviteUrl && (
+            {env.telegramInviteUrl && (
               <>
                 {" "}
                 — or coordinate on{" "}
-                <a href={withUtm(env.discordInviteUrl)} target="_blank" rel="noreferrer">
-                  Discord
+                <a href={withUtm(env.telegramInviteUrl)} target="_blank" rel="noreferrer">
+                  Telegram
                 </a>
               </>
             )}
