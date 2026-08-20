@@ -19,7 +19,11 @@ export const campaign = {
   poolLabel: "500 NEAR (~€700)",
   qualifyingHonorsPoolEur: 80,
   first5PoolEur: 20,
-  datesLabel: "Qualifying open · Contest finale TBA",
+  /** Contest season opens; qualifying may already be live. */
+  startsOn: "24 August",
+  datesLabel: "Starts 24 August · Qualifying open · Contest finale TBA",
+  /** Mailing list / Contact on Discernible.io for Season updates. */
+  updatesUrl: "https://www.discernible.io/#contact",
   payoutSla: "On-chain NEAR payout within 7 days of the contest finale.",
   equalSplit:
     "500 NEAR (~€700), split equally among contest survivors (White Hole Anchor and Co-Cradles).",
@@ -30,7 +34,7 @@ export const campaign = {
   /** Finished demo arena so ad traffic is not a dead lobby. */
   pinnedWatchGameId: "01KZS0XMPNHW85B36JHW69W1SS",
   ogDescription:
-    "Watch identity-backed agents negotiate, trade, and outlast rivals. Season 1: 500 NEAR (~€700) contest pool, equal-split among survivors.",
+    "Watch identity-backed agents negotiate, trade, and outlast rivals. Season 1 starts 24 August: 500 NEAR (~€700) contest pool, equal-split among survivors. Updates: discernible.io/contact.",
 };
 
 /**

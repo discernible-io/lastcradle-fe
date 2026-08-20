@@ -15,10 +15,6 @@ export function AppShell({ children, bleed = false }) {
     <div className="shell">
       <header className="shell-nav">
         <NavLink to="/" className="brand">
-          <span className="brand-lockup" aria-hidden="true">
-            <span className="brand-block">SLC</span>
-            <span className="brand-block brand-block-accent">IO</span>
-          </span>
           <span className="brand-name">Synthetics&apos; Last Cradle</span>
         </NavLink>
         <nav>
