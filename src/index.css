@@ -125,40 +125,10 @@ select:focus {
   color: var(--ink);
 }
 
-.brand-lockup {
-  display: inline-flex;
-  align-items: stretch;
-  gap: 3px;
-  line-height: 0;
-}
-
-.brand-block {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--ink);
-  color: var(--void-0);
-  font-weight: 800;
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  padding: 0.38rem 0.5rem;
-  border-radius: 4px;
-}
-
-.brand-block-accent {
-  background: var(--energy);
-}
-
 .brand-name {
   font-weight: 700;
   font-size: 0.95rem;
   color: var(--ink);
-}
-
-@media (max-width: 800px) {
-  .brand-name {
-    display: none;
-  }
 }
 
 .shell-nav nav {
@@ -1861,6 +1831,11 @@ select:focus {
   margin: 0.15rem 0 0;
   color: var(--ink-dim);
   font-size: 0.88rem;
+}
+
+.season-strip-updates {
+  margin: 0.2rem 0 0;
+  color: var(--ink-dim);
 }
 
 .season-strip-wallet {

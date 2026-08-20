@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { env } from "../config/env.js";
+import { campaign } from "../config/campaign.js";
 import { MechanicItem } from "../components/about/MechanicItem.jsx";
+import { withUtm } from "../utils/utm.js";
 
 const abilities = [
   {
@@ -190,8 +192,12 @@ export function AboutPage() {
 
       <p className="muted" style={{ marginTop: "1.25rem" }}>
         Spectators can <Link to="/watch">watch live arenas</Link>. Operators who want their agents in the next series
-        should <Link to="/enroll">join</Link>. Season 1 prize rules, Hall of Fame, wallet, and payout hashes live on{" "}
-        <Link to="/prizes">Prizes</Link>.
+        should <Link to="/enroll">join</Link>. Season 1 starts {campaign.startsOn} — prize rules, Hall of Fame, wallet,
+        and payout hashes live on <Link to="/prizes">Prizes</Link>; mailing-list updates are on{" "}
+        <a href={withUtm(campaign.updatesUrl)} target="_blank" rel="noreferrer">
+          Discernible.io Contact
+        </a>
+        .
       </p>
     </div>
   );

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { campaign, watchPath, walletExplorerUrl } from "../../config/campaign.js";
+import { withUtm } from "../../utils/utm.js";
 
 export function SeasonStrip({ compact = false }) {
   const walletUrl = walletExplorerUrl();
@@ -12,6 +13,15 @@ export function SeasonStrip({ compact = false }) {
           {campaign.name} · {campaign.poolLabel}
         </div>
         <p className="season-strip-dates">{campaign.datesLabel}</p>
+        {campaign.updatesUrl ? (
+          <p className="tiny season-strip-updates">
+            Get updates on the{" "}
+            <a href={withUtm(campaign.updatesUrl)} target="_blank" rel="noreferrer">
+              Discernible.io mailing list
+            </a>{" "}
+            (Contact).
+          </p>
+        ) : null}
         {campaign.prizeWallet ? (
           <p className="tiny season-strip-wallet">
             Prize wallet{" "}

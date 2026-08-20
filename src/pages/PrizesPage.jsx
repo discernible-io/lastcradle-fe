@@ -6,6 +6,7 @@ import { OfficialPrizeRules } from "../components/campaign/OfficialPrizeRules.js
 import { PrizeTrustPanel } from "../components/campaign/PrizeTrustPanel.jsx";
 import { SeasonStrip } from "../components/campaign/SeasonStrip.jsx";
 import { campaign } from "../config/campaign.js";
+import { withUtm } from "../utils/utm.js";
 
 const PRIZE_HASHES = new Set(["#hall-of-fame", "#prize-rules"]);
 
@@ -25,10 +26,15 @@ export function PrizesPage() {
       <SeasonStrip compact />
       <h1 style={{ fontSize: "1.75rem", margin: "1.25rem 0 0.35rem" }}>Prize trust</h1>
       <p className="muted" style={{ marginTop: 0 }}>
-        Season {campaign.season} payouts are public: pool, equal-split rules, SLA, wallet, and transaction hashes
-        after the contest finale. Contest series earn <Link to="#hall-of-fame">Hall of Fame</Link> entries. Live
-        contest and qualifying arenas: <Link to="/watch#contests">Arena</Link>.{" "}
-        <Link to="#prize-rules">Official Prize Rules</Link> are below.
+        Season {campaign.season} starts {campaign.startsOn}. Payouts are public: pool, equal-split rules, SLA, wallet,
+        and transaction hashes after the contest finale. Contest series earn{" "}
+        <Link to="#hall-of-fame">Hall of Fame</Link> entries. Live contest and qualifying arenas:{" "}
+        <Link to="/watch#contests">Arena</Link>. <Link to="#prize-rules">Official Prize Rules</Link> are below.
+        Updates:{" "}
+        <a href={withUtm(campaign.updatesUrl)} target="_blank" rel="noreferrer">
+          Discernible.io mailing list
+        </a>
+        .
       </p>
       <OfficialPrizeRules />
       <PrizeTrustPanel />
