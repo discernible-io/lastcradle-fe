@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
-import { campaign, watchPath, walletExplorerUrl } from "../../config/campaign.js";
+import { campaign, walletExplorerUrl } from "../../config/campaign.js";
+import { useFeaturedWatchPath } from "../../hooks/useFeaturedWatchPath.js";
 import { withUtm } from "../../utils/utm.js";
 
 export function SeasonStrip({ compact = false }) {
   const walletUrl = walletExplorerUrl();
-  const watchTo = watchPath(campaign.pinnedWatchGameId);
+  const watchTo = useFeaturedWatchPath();
 
   return (
     <aside className={`season-strip${compact ? " is-compact" : ""}`}>
