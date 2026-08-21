@@ -5,7 +5,7 @@ import { GameList } from "../components/lobby/GameList.jsx";
 import { JoiningMeta, WatchLink } from "../components/campaign/JoiningMeta.jsx";
 import { SeasonStrip } from "../components/campaign/SeasonStrip.jsx";
 import { env } from "../config/env.js";
-import { campaign, watchPath } from "../config/campaign.js";
+import { watchPath } from "../config/campaign.js";
 import { withUtm } from "../utils/utm.js";
 import { contestLiveGameId, isContestGame, statusLabel } from "../utils/gameLabel.js";
 
@@ -70,13 +70,6 @@ export function WatchLobbyPage() {
   if (queryGameId) {
     return <Navigate to={watchPath(queryGameId)} replace />;
   }
-
-  const pinId = campaign.pinnedWatchGameId;
-  const pinInLists =
-    parts.liveContest.some((g) => g.id === pinId) ||
-    parts.liveQualifying.some((g) => g.id === pinId) ||
-    parts.finishedContest.some((g) => g.id === pinId) ||
-    parts.finishedQualifying.some((g) => g.id === pinId);
 
   const contestGameIds = new Set(
     contests.map((c) => contestLiveGameId(c)).filter(Boolean),
@@ -194,26 +187,8 @@ export function WatchLobbyPage() {
         <h3 style={{ fontSize: "0.95rem", margin: "0.85rem 0 0.65rem" }}>On air / joining</h3>
         <GameList
           games={parts.liveQualifying}
-          empty={
-            pinId ? (
-              <>
-                No live qualifying games right now —{" "}
-                <Link to={watchPath(pinId)}>watch a finished demo arena</Link> or a recent finish below.
-              </>
-            ) : (
-              "No live qualifying games right now — watch a finished game below."
-            )
-          }
+          empty="No live qualifying games right now — watch a finished game below."
         />
-        {pinId && !pinInLists && (
-          <>
-            <h3 style={{ fontSize: "0.95rem", margin: "1.15rem 0 0.65rem" }}>Pinned demo</h3>
-            <p className="muted" style={{ marginTop: 0 }}>
-              A finished qualifying run so the lobby is never empty.{" "}
-              <Link to={watchPath(pinId)}>Open pinned arena</Link>
-            </p>
-          </>
-        )}
         <h3 style={{ fontSize: "0.95rem", margin: "1.15rem 0 0.65rem" }}>Recent qualifying finishes</h3>
         <GameList games={parts.finishedQualifying} empty="No finished qualifying games yet." />
       </section>

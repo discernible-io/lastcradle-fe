@@ -77,7 +77,6 @@ export default function App() {
           }
         />
         <Route path="/hall-of-fame" element={<Navigate to="/prizes#hall-of-fame" replace />} />
-        <Route path="/qualifying-honors" element={<Navigate to="/prizes#prize-rules" replace />} />
         <Route
           path="/enroll"
           element={

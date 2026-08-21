@@ -2007,26 +2007,6 @@ select:focus {
   margin-bottom: 0;
 }
 
-.prize-rules-practices-heading {
-  font-size: 0.98rem;
-  margin: 0.35rem 0 0.4rem;
-}
-
-.prize-rules-practices {
-  margin: 0 0 0.75rem;
-  padding-left: 1.2rem;
-  color: var(--ink-dim);
-  font-size: 0.88rem;
-}
-
-.prize-rules-practices li {
-  margin: 0.2rem 0;
-}
-
-.prize-rules-footnote {
-  margin: 0;
-}
-
 .hall-of-fame-board {
   margin-top: 1.75rem;
   scroll-margin-top: 4.5rem;

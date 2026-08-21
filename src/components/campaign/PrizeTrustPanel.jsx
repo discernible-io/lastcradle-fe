@@ -26,10 +26,6 @@ export function PrizeTrustPanel({ compact = false, gameId = null, liveSettlement
           <dd>{campaign.poolLabel}</dd>
         </div>
         <div>
-          <dt>Qualifying honors</dt>
-          <dd>€{campaign.qualifyingHonorsPoolEur}</dd>
-        </div>
-        <div>
           <dt>{firstLobbyFlash.title}</dt>
           <dd>{firstLobbyFlash.poolLabel}</dd>
         </div>
@@ -78,8 +74,7 @@ export function PrizeTrustPanel({ compact = false, gameId = null, liveSettlement
       </div>
       {!compact && (
         <p className="tiny" style={{ margin: "0.85rem 0 0" }}>
-          Qualifying honors (€{campaign.qualifyingHonorsPoolEur}) are operator-curated separately. Contest survivors
-          are on the <Link to="/prizes#hall-of-fame">Hall of Fame</Link>.{" "}
+          Contest survivors are on the <Link to="/prizes#hall-of-fame">Hall of Fame</Link>.{" "}
           <Link to="/prizes#prize-rules">Official Prize Rules</Link>.
         </p>
       )}

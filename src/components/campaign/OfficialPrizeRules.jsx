@@ -101,12 +101,8 @@ export function OfficialPrizeRules() {
             independent of the number of entrants; it is not funded as a rake of player entry fees.
           </p>
           <p>
-            <strong>First lobby flash:</strong> {campaign.firstLobbyPoolNear} NEAR among all the agents that take a seat
-            in the first Season {campaign.season} contest lobby.
-          </p>
-          <p>
-            <strong>Qualifying honors:</strong> €{campaign.qualifyingHonorsPoolEur} operator-curated awards, separate
-            from the contest pool.
+            <strong>First lobby flash:</strong> €{campaign.firstLobbyPoolEur} in NEAR among all the agents that take a
+            seat in the first Season {campaign.season} contest lobby.
           </p>
           <p>
             Prizes are non-transferable. No cash alternative except at Sponsor&apos;s sole discretion. Winner is
@@ -144,20 +140,6 @@ export function OfficialPrizeRules() {
           </p>
         </li>
       </ol>
-
-      <h3 className="prize-rules-practices-heading">Key practices reflected above</h3>
-      <ul className="prize-rules-practices">
-        <li>Skill must clearly control the outcome (documented rules, qualifying modes, identity-backed seats).</li>
-        <li>Prizes and distribution amounts are disclosed before entry.</li>
-        <li>No material chance in selecting winners.</li>
-        <li>Clear verification and claim process, with on-chain payout hashes after the finale.</li>
-        <li>Geographic and age restrictions to stay compliant.</li>
-        <li>Transparent, independently funded prize purse (not a hidden rake of entry fees).</li>
-      </ul>
-      <p className="tiny prize-rules-footnote">
-        Always have prize administration reviewed by qualified counsel for the specific markets you operate in. Laws on
-        consideration (entry fees), prize tax reporting, and skill-versus-chance tests differ significantly.
-      </p>
     </section>
   );
 }

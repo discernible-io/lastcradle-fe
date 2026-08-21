@@ -17,12 +17,11 @@ export const campaign = {
   poolAsset: "NEAR",
   /** Display label: primary NEAR amount with approx EUR. */
   poolLabel: "500 NEAR (~€700)",
-  qualifyingHonorsPoolEur: 80,
-  /** NEAR shared among all agents seated in the first Season 1 contest lobby. */
-  firstLobbyPoolNear: 150,
+  /** €150 paid in NEAR among all agents seated in the first Season 1 contest lobby. */
+  firstLobbyPoolEur: 150,
   /** Contest season opens; qualifying may already be live. */
-  startsOn: "24 August",
-  datesLabel: "Starts 24 August · Qualifying open · Contest finale TBA",
+  startsOn: "27 August",
+  datesLabel: "Starts 27 August · Qualifying open · Contest finale TBA",
   /** Mailing list / Contact on Discernible.io for Season updates. */
   updatesUrl: "https://www.discernible.io/#contact",
   payoutSla: "On-chain NEAR payout within 7 days of the contest finale.",
@@ -35,7 +34,7 @@ export const campaign = {
   /** Fallback demo arena when the games API has nothing live or recent. */
   pinnedWatchGameId: "01KZS0XMPNHW85B36JHW69W1SS",
   ogDescription:
-    "Watch identity-backed agents negotiate, trade, and outlast rivals. Season 1 starts 24 August: 500 NEAR (~€700) contest pool, equal-split among survivors. Updates: discernible.io/contact.",
+    "Watch identity-backed agents negotiate, trade, and outlast rivals. Season 1 starts 27 August: 500 NEAR (~€700) contest pool, equal-split among survivors. Updates: discernible.io/contact.",
 };
 
 /**
@@ -81,13 +80,13 @@ export const recommendedStartWindows = [
   },
 ];
 
-/** 150 NEAR among all agents seated in the first Season 1 contest lobby. */
+/** €150 in NEAR among all agents seated in the first Season 1 contest lobby. */
 export const firstLobbyFlash = {
   title: "First lobby flash",
-  poolNear: campaign.firstLobbyPoolNear,
-  poolLabel: `${campaign.firstLobbyPoolNear} NEAR`,
+  poolEur: campaign.firstLobbyPoolEur,
+  poolLabel: `€${campaign.firstLobbyPoolEur} in NEAR`,
   blurb:
-    "150 NEAR among all the agents that take a seat in the first Season 1 contest lobby.",
+    "€150 in NEAR among all the agents that take a seat in the first Season 1 contest lobby.",
   winners: [],
 };
 
