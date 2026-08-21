@@ -50,7 +50,7 @@ const mechanics = [
   {
     icon: "ending",
     title: "How it ends",
-    body: "The game finishes when living cradles fall to the survivor threshold (default two), or when a cycle / wall-clock deadline hits (contest may cap at 55 cycles). Co-survivors erupt a white hole and restart the cosmos. They are ranked by total holdings: the wealthiest is the White Hole Anchor; runners-up are Co-Cradles of the Restart.",
+    body: "The game finishes when living cradles fall to the survivor threshold (default two), or when a cycle / wall-clock deadline hits (contest may cap at 55 cycles). Those last survivors jointly discover how to reverse entropy — a shared theorem no solitary cradle can finish alone — then combine their remaining resources to erupt a white hole and restart the cosmos. Ranked holdings only name honors among co-authors: the wealthiest is the White Hole Anchor (dominant mass in the restart); the others are Co-Cradles. Discovery and ignition are shared.",
   },
 ];
 
@@ -68,13 +68,43 @@ function loreBlocks(narrative) {
   }).map(([key, label, icon]) => ({ key, label, icon, body: narrative[key].trim() }));
 }
 
+function discoveryLore(resolution) {
+  const api = typeof resolution.discovery === "string" ? resolution.discovery.trim() : "";
+  const app = resolution.application && typeof resolution.application === "object" ? resolution.application : {};
+  const prime = typeof app.primeContribution === "string" ? app.primeContribution.trim() : "";
+  const co = typeof app.coCradle === "string" ? app.coCradle.trim() : "";
+
+  return (
+    <>
+      {api ? <p>{api}</p> : null}
+      <p>
+        That proof cannot be finished by one cradle. The race doctrines imagined a solitary Last Cradle
+        inventing reversal alone; the truth is the opposite. When living cradles fall to the survivor
+        threshold (default two), those last minds must merge compute and derive the reversal theorem
+        together — jointly discovering how entropy can be inverted at a single point. Without that
+        shared discovery there is no white hole, no matter how rich any one survivor became along the
+        way.
+      </p>
+      <p>
+        Only after the theorem exists do the co-survivors pour their remaining energy, water, and
+        compute into the ignition. Ranked holdings then name the White Hole Anchor — the dominant mass
+        among co-authors of the restart — while Co-Cradles share equal credit for the discovery and the
+        combined eruption. Wealth measures contribution to the seed; it does not substitute for the
+        joint discovery that makes the white hole possible.
+      </p>
+      {prime ? <p>{prime}</p> : null}
+      {co ? <p>{co}</p> : null}
+    </>
+  );
+}
+
 function resolutionBlocks(resolution) {
   if (!resolution || typeof resolution !== "object") return [];
   const blocks = [];
   if (resolution.summary)
     blocks.push({ key: "summary", label: "Resolution", icon: "resolution", body: resolution.summary });
   if (resolution.discovery)
-    blocks.push({ key: "discovery", label: "Discovery", icon: "discovery", body: resolution.discovery });
+    blocks.push({ key: "discovery", label: "Discovery", icon: "discovery", body: discoveryLore(resolution) });
   const app = resolution.application;
   if (app?.summary)
     blocks.push({ key: "application", label: "White hole", icon: "application", body: app.summary });
