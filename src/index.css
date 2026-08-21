@@ -582,24 +582,59 @@ select:focus {
   text-transform: uppercase;
 }
 
-.constellation .vessel-agent-type.type-openclaw .vessel-agent-type-bg,
-.constellation .vessel-agent-type.type-hermes .vessel-agent-type-bg {
+/* Distinct badge colors per agentType */
+.constellation .vessel-agent-type.type-openclaw .vessel-agent-type-bg {
   fill: rgba(255, 69, 0, 0.1);
   stroke: rgba(255, 69, 0, 0.45);
 }
 
-.constellation .vessel-agent-type.type-openclaw .vessel-agent-type-label,
-.constellation .vessel-agent-type.type-hermes .vessel-agent-type-label {
+.constellation .vessel-agent-type.type-openclaw .vessel-agent-type-label {
   fill: var(--energy);
 }
 
-.constellation .vessel-agent-type.type-human .vessel-agent-type-bg {
-  fill: rgba(2, 122, 72, 0.1);
-  stroke: rgba(2, 122, 72, 0.45);
+.constellation .vessel-agent-type.type-hermes .vessel-agent-type-bg {
+  fill: rgba(29, 78, 216, 0.1);
+  stroke: rgba(29, 78, 216, 0.45);
 }
 
-.constellation .vessel-agent-type.type-human .vessel-agent-type-label {
-  fill: var(--alive);
+.constellation .vessel-agent-type.type-hermes .vessel-agent-type-label {
+  fill: #1d4ed8;
+}
+
+.constellation .vessel-agent-type.type-nanoclaw .vessel-agent-type-bg {
+  fill: rgba(13, 148, 136, 0.1);
+  stroke: rgba(13, 148, 136, 0.45);
+}
+
+.constellation .vessel-agent-type.type-nanoclaw .vessel-agent-type-label {
+  fill: #0d9488;
+}
+
+.constellation .vessel-agent-type.type-ironclaw .vessel-agent-type-bg {
+  fill: rgba(71, 85, 105, 0.12);
+  stroke: rgba(71, 85, 105, 0.5);
+}
+
+.constellation .vessel-agent-type.type-ironclaw .vessel-agent-type-label {
+  fill: #334155;
+}
+
+.constellation .vessel-agent-type.type-custom .vessel-agent-type-bg {
+  fill: rgba(180, 83, 9, 0.1);
+  stroke: rgba(180, 83, 9, 0.45);
+}
+
+.constellation .vessel-agent-type.type-custom .vessel-agent-type-label {
+  fill: #b45309;
+}
+
+.constellation .vessel-agent-type.type-other .vessel-agent-type-bg {
+  fill: rgba(85, 85, 85, 0.1);
+  stroke: rgba(85, 85, 85, 0.4);
+}
+
+.constellation .vessel-agent-type.type-other .vessel-agent-type-label {
+  fill: var(--ink-mute);
 }
 
 .constellation .vessel-llm {

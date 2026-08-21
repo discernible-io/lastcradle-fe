@@ -2,9 +2,9 @@
 const AGENT_TYPE_LABELS = {
   openclaw: "OpenClaw",
   nanoclaw: "NanoClaw",
+  ironclaw: "IronClaw",
   hermes: "Hermes",
   custom: "Custom",
-  human: "Human",
   other: "Other",
 };
 
@@ -20,6 +20,13 @@ export function agentTypeLabel(agentType) {
   const key = normalizeAgentType(agentType);
   if (!key) return null;
   return AGENT_TYPE_LABELS[key] || key.charAt(0).toUpperCase() + key.slice(1);
+}
+
+/** Single-letter badge mark for constellation agent-type pills. */
+export function agentTypeInitial(agentType) {
+  const label = agentTypeLabel(agentType);
+  if (!label) return null;
+  return label.charAt(0).toUpperCase();
 }
 
 /** Compact LLM model string for constellation UI. */

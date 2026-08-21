@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useAgentLabels } from "../../hooks/useAgentLabels.js";
 import {
   agentRuntimeMetaHeight,
+  agentTypeInitial,
   agentTypeLabel,
   llmModelLabel,
   normalizeAgentType,
@@ -75,21 +76,25 @@ function compactA2aLabel(url) {
 /** Agent type pill + LLM model under the vessel name (from public state). */
 function AgentRuntimeMeta({ agentType, llmModel, dead = false, startY = 28 }) {
   const typeLabel = agentTypeLabel(agentType);
+  const typeInitial = agentTypeInitial(agentType);
   const typeKey = normalizeAgentType(agentType);
   const modelFull = String(llmModel || "").trim();
   const modelLabel = llmModelLabel(modelFull);
-  if (!typeLabel && !modelLabel) return null;
+  if (!typeInitial && !modelLabel) return null;
 
   let y = startY;
   const nodes = [];
 
-  if (typeLabel) {
-    const tw = Math.max(typeLabel.length * AGENT_TYPE_BADGE.charW, 28);
-    const w = tw + AGENT_TYPE_BADGE.padX * 2;
+  if (typeInitial) {
     const h = AGENT_TYPE_BADGE.fontSize + AGENT_TYPE_BADGE.padY * 2;
+    const w = Math.max(h, AGENT_TYPE_BADGE.charW + AGENT_TYPE_BADGE.padX * 2);
     const rectY = y - AGENT_TYPE_BADGE.fontSize + 1;
     nodes.push(
-      <g key="type" className={`vessel-agent-type${typeKey ? ` type-${typeKey}` : ""}`}>
+      <g
+        key="type"
+        className={`vessel-agent-type${typeKey ? ` type-${typeKey}` : ""}`}
+      >
+        <title>{typeLabel}</title>
         <rect
           x={-w / 2}
           y={rectY}
@@ -108,7 +113,7 @@ function AgentRuntimeMeta({ agentType, llmModel, dead = false, startY = 28 }) {
           fontWeight="700"
           letterSpacing="0.03em"
         >
-          {typeLabel}
+          {typeInitial}
         </text>
       </g>,
     );
