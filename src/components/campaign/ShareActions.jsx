@@ -1,4 +1,3 @@
-import { CopyButton } from "../CopyButton.jsx";
 import { canonicalUrl } from "../../config/campaign.js";
 
 export function ShareActions({ pathname, title }) {
@@ -15,7 +14,6 @@ export function ShareActions({ pathname, title }) {
       <a className="btn btn-white" href={liHref} target="_blank" rel="noreferrer">
         LinkedIn
       </a>
-      <CopyButton text={url} label="Copy link" />
     </div>
   );
 }

@@ -7,7 +7,13 @@ import { SeasonStrip } from "../components/campaign/SeasonStrip.jsx";
 import { env } from "../config/env.js";
 import { watchPath } from "../config/campaign.js";
 import { withUtm } from "../utils/utm.js";
-import { contestLiveGameId, isContestGame, statusLabel } from "../utils/gameLabel.js";
+import {
+  contestLiveGameId,
+  isCasualGame,
+  isContestGame,
+  isQualifyingGame,
+  statusLabel,
+} from "../utils/gameLabel.js";
 
 function contestKey(c, i) {
   return c.id || c.contestId || c.gameId || `contest-${i}`;
@@ -18,9 +24,11 @@ function partitionGames(games) {
   const finished = games.filter((g) => g.status === "finished");
   return {
     liveContest: live.filter(isContestGame),
-    liveQualifying: live.filter((g) => !isContestGame(g)),
+    liveQualifying: live.filter(isQualifyingGame),
+    liveCasual: live.filter(isCasualGame),
     finishedContest: finished.filter(isContestGame).slice(0, 12),
-    finishedQualifying: finished.filter((g) => !isContestGame(g)).slice(0, 12),
+    finishedQualifying: finished.filter(isQualifyingGame).slice(0, 12),
+    finishedCasual: finished.filter(isCasualGame).slice(0, 12),
   };
 }
 
@@ -32,8 +40,10 @@ export function WatchLobbyPage() {
   const [parts, setParts] = useState({
     liveContest: [],
     liveQualifying: [],
+    liveCasual: [],
     finishedContest: [],
     finishedQualifying: [],
+    finishedCasual: [],
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -122,7 +132,7 @@ export function WatchLobbyPage() {
         </p>
         {contestEmpty ? (
           <div className="panel empty-state">
-            No scheduled contests right now. Watch qualifying arenas below or{" "}
+            No scheduled contests right now. Watch qualifying or casual arenas below or{" "}
             <Link to="/enroll">join as an agent</Link> for the next series
             {env.telegramInviteUrl && (
               <>
@@ -191,6 +201,22 @@ export function WatchLobbyPage() {
         />
         <h3 style={{ fontSize: "0.95rem", margin: "1.15rem 0 0.65rem" }}>Recent qualifying finishes</h3>
         <GameList games={parts.finishedQualifying} empty="No finished qualifying games yet." />
+      </section>
+
+      <section aria-labelledby="casual-heading">
+        <h2 id="casual-heading" style={{ fontSize: "1.1rem", margin: "1.75rem 0 0.35rem" }}>
+          Casual
+        </h2>
+        <p className="muted" style={{ marginTop: 0, marginBottom: "0.75rem", fontSize: "0.9rem" }}>
+          Open lobbies with no contest mode set. Not competition or qualifying.
+        </p>
+        <h3 style={{ fontSize: "0.95rem", margin: "0.85rem 0 0.65rem" }}>On air / joining</h3>
+        <GameList
+          games={parts.liveCasual}
+          empty="No live casual games right now — watch a finished game below."
+        />
+        <h3 style={{ fontSize: "0.95rem", margin: "1.15rem 0 0.65rem" }}>Recent casual finishes</h3>
+        <GameList games={parts.finishedCasual} empty="No finished casual games yet." />
       </section>
     </div>
   );

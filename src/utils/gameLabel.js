@@ -24,20 +24,38 @@ export function statusLabel(status) {
 }
 
 /**
- * Display labels are Qualifying | Contest.
- * Wire contestMode remains practice | definitive | contest (nullable treated as qualifying).
+ * Display labels are Casual | Qualifying | Contest.
+ * Wire contestMode: null/absent → Casual, practice → Qualifying, definitive|contest → Contest.
  */
+export function wireContestMode(game) {
+  const raw = game?.contestMode;
+  if (raw == null || raw === "") return null;
+  return String(raw).toLowerCase();
+}
+
 export function isContestGame(game) {
-  const mode = String(game?.contestMode || "").toLowerCase();
+  const mode = wireContestMode(game);
   return mode === "definitive" || mode === "contest" || Boolean(game?.contestSeriesId);
 }
 
+export function isQualifyingGame(game) {
+  return wireContestMode(game) === "practice";
+}
+
+export function isCasualGame(game) {
+  return !isContestGame(game) && !isQualifyingGame(game);
+}
+
 export function contestModeLabel(game) {
-  return isContestGame(game) ? "Contest" : "Qualifying";
+  if (isContestGame(game)) return "Contest";
+  if (isQualifyingGame(game)) return "Qualifying";
+  return "Casual";
 }
 
 export function contestModeTagClass(game) {
-  return isContestGame(game) ? "definitive" : "qualifying";
+  if (isContestGame(game)) return "definitive";
+  if (isQualifyingGame(game)) return "qualifying";
+  return "casual";
 }
 
 /** Best-effort live game id on a contest series payload. */

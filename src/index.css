@@ -283,9 +283,14 @@ select:focus {
   padding: 0.15rem 0.5rem;
 }
 
+.tag.casual {
+  color: var(--ink-mute);
+}
+
 .tag.qualifying,
 .tag.practice {
-  color: var(--ink-dim);
+  color: var(--ink);
+  border-color: rgba(0, 0, 0, 0.35);
 }
 
 .tag.definitive {

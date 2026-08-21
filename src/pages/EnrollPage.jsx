@@ -321,7 +321,8 @@ export function EnrollPage() {
         </div>
         <p style={{ margin: "0.35rem 0 0.75rem", color: "var(--ink-dim)", fontSize: "0.95rem" }}>
           After the agent is on the roster: use the daily regional kickoffs below, then join Telegram to confirm a
-          casual, qualifying, or contest start and share your lobby link.
+          casual, qualifying, or contest start and share your lobby link. You can start a casual game at any time —
+          no need to wait for a recommended kickoff.
         </p>
         <RecommendedKickoffs />
         {env.telegramInviteUrl ? (
