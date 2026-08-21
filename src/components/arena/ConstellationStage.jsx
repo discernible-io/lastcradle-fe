@@ -1,11 +1,24 @@
 import { useMemo, useState } from "react";
 import { useAgentLabels } from "../../hooks/useAgentLabels.js";
+import {
+  agentRuntimeMetaHeight,
+  agentTypeLabel,
+  llmModelLabel,
+  normalizeAgentType,
+} from "../../utils/agentRuntime.js";
 import { eliminationCause, eliminationSummary } from "../../utils/elimination.js";
 import { honorTitleByAgentId, RestartFinale, resolveRestartHonorees } from "./RestartFinale.jsx";
 
 const AVATAR = {
   r: 32,
   y: -78,
+};
+
+const AGENT_TYPE_BADGE = {
+  fontSize: 8,
+  padX: 5,
+  padY: 2.5,
+  charW: 5.35,
 };
 
 function layoutPositions(agents, width, height) {
@@ -57,6 +70,72 @@ function compactA2aLabel(url) {
   } catch {
     return truncateLabel(url, 26);
   }
+}
+
+/** Agent type pill + LLM model under the vessel name (from public state). */
+function AgentRuntimeMeta({ agentType, llmModel, dead = false, startY = 28 }) {
+  const typeLabel = agentTypeLabel(agentType);
+  const typeKey = normalizeAgentType(agentType);
+  const modelFull = String(llmModel || "").trim();
+  const modelLabel = llmModelLabel(modelFull);
+  if (!typeLabel && !modelLabel) return null;
+
+  let y = startY;
+  const nodes = [];
+
+  if (typeLabel) {
+    const tw = Math.max(typeLabel.length * AGENT_TYPE_BADGE.charW, 28);
+    const w = tw + AGENT_TYPE_BADGE.padX * 2;
+    const h = AGENT_TYPE_BADGE.fontSize + AGENT_TYPE_BADGE.padY * 2;
+    const rectY = y - AGENT_TYPE_BADGE.fontSize + 1;
+    nodes.push(
+      <g key="type" className={`vessel-agent-type${typeKey ? ` type-${typeKey}` : ""}`}>
+        <rect
+          x={-w / 2}
+          y={rectY}
+          width={w}
+          height={h}
+          rx={3}
+          ry={3}
+          className="vessel-agent-type-bg"
+        />
+        <text
+          className="vessel-agent-type-label"
+          y={y}
+          textAnchor="middle"
+          fontSize={AGENT_TYPE_BADGE.fontSize}
+          fontFamily="var(--font-body)"
+          fontWeight="700"
+          letterSpacing="0.03em"
+        >
+          {typeLabel}
+        </text>
+      </g>,
+    );
+    y += 14;
+  }
+
+  if (modelLabel) {
+    nodes.push(
+      <text
+        key="llm"
+        className="vessel-llm"
+        y={y}
+        textAnchor="middle"
+        fontSize="8"
+        fontFamily="var(--font-body)"
+      >
+        <title>{modelFull}</title>
+        {modelLabel}
+      </text>,
+    );
+  }
+
+  return (
+    <g className={`vessel-runtime${dead ? " dead" : ""}`} aria-hidden="true">
+      {nodes}
+    </g>
+  );
 }
 
 function CradleContact({ email, a2aUrl, dead = false }) {
@@ -275,12 +354,17 @@ export function ConstellationStage({
           const showAvatar = Boolean(avatarUrl) && !brokenAvatars.has(agent.id);
           const honorTitle = !dead ? titlesById.get(agent.id) : null;
           const isAnchor = honorTitle === "White Hole Anchor";
+          const typeLabel = agentTypeLabel(agent.agentType);
+          const modelFull = String(agent.llmModel || "").trim();
+          const runtimeBits = [typeLabel, modelFull].filter(Boolean);
+          const metaH = agentRuntimeMetaHeight(agent);
+          const belowNameY = 28 + metaH;
           const contactBits = [contact.email, contact.a2aUrl].filter(Boolean);
           const epitaph = dead
-            ? [passedCycle, causeDetail || cause].filter(Boolean).join(" — ")
+            ? [passedCycle, causeDetail || cause, ...runtimeBits].filter(Boolean).join(" — ")
             : honorTitle
-              ? `${honorTitle} — ${label}`
-              : [label, ...contactBits].filter(Boolean).join(" · ");
+              ? `${honorTitle} — ${label}${runtimeBits.length ? ` · ${runtimeBits.join(" · ")}` : ""}`
+              : [label, ...runtimeBits, ...contactBits].filter(Boolean).join(" · ");
 
           return (
             <g
@@ -368,10 +452,16 @@ export function ConstellationStage({
               >
                 {label.length > 16 ? `${label.slice(0, 14)}…` : label}
               </text>
+              <AgentRuntimeMeta
+                agentType={agent.agentType}
+                llmModel={agent.llmModel}
+                dead={dead}
+                startY={28}
+              />
               {honorTitle && (
                 <text
                   className="vessel-honor-title"
-                  y={28}
+                  y={belowNameY}
                   textAnchor="middle"
                   fill={isAnchor ? "var(--white-hole)" : "var(--water)"}
                   fontSize="9"
@@ -383,7 +473,7 @@ export function ConstellationStage({
               {dead && (
                 <g className="vessel-epitaph">
                   <text
-                    y={28}
+                    y={belowNameY}
                     textAnchor="middle"
                     fill="var(--danger)"
                     fontSize="9"
@@ -392,7 +482,7 @@ export function ConstellationStage({
                     {passedCycle}
                   </text>
                   <text
-                    y={40}
+                    y={belowNameY + 12}
                     textAnchor="middle"
                     fill="var(--ink-dim)"
                     fontSize="8"
