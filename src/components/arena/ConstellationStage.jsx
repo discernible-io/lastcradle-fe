@@ -73,7 +73,7 @@ function compactA2aLabel(url) {
   }
 }
 
-/** Agent type pill + LLM model under the vessel name (from public state). */
+/** Agent type pill + LLM model beside it under the vessel name (from public state). */
 function AgentRuntimeMeta({ agentType, llmModel, dead = false, startY = 28 }) {
   const typeLabel = agentTypeLabel(agentType);
   const typeInitial = agentTypeInitial(agentType);
@@ -82,63 +82,59 @@ function AgentRuntimeMeta({ agentType, llmModel, dead = false, startY = 28 }) {
   const modelLabel = llmModelLabel(modelFull);
   if (!typeInitial && !modelLabel) return null;
 
-  let y = startY;
-  const nodes = [];
-
-  if (typeInitial) {
-    const h = AGENT_TYPE_BADGE.fontSize + AGENT_TYPE_BADGE.padY * 2;
-    const w = Math.max(h, AGENT_TYPE_BADGE.charW + AGENT_TYPE_BADGE.padX * 2);
-    const rectY = y - AGENT_TYPE_BADGE.fontSize + 1;
-    nodes.push(
-      <g
-        key="type"
-        className={`vessel-agent-type${typeKey ? ` type-${typeKey}` : ""}`}
-      >
-        <title>{typeLabel}</title>
-        <rect
-          x={-w / 2}
-          y={rectY}
-          width={w}
-          height={h}
-          rx={3}
-          ry={3}
-          className="vessel-agent-type-bg"
-        />
-        <text
-          className="vessel-agent-type-label"
-          y={y}
-          textAnchor="middle"
-          fontSize={AGENT_TYPE_BADGE.fontSize}
-          fontFamily="var(--font-body)"
-          fontWeight="700"
-          letterSpacing="0.03em"
-        >
-          {typeInitial}
-        </text>
-      </g>,
-    );
-    y += 14;
-  }
-
-  if (modelLabel) {
-    nodes.push(
-      <text
-        key="llm"
-        className="vessel-llm"
-        y={y}
-        textAnchor="middle"
-        fontSize="8"
-        fontFamily="var(--font-body)"
-      >
-        <title>{modelFull}</title>
-        {modelLabel}
-      </text>,
-    );
-  }
+  const modelFontSize = 8;
+  const modelCharW = 4.55;
+  const gap = 4;
+  const badgeH = AGENT_TYPE_BADGE.fontSize + AGENT_TYPE_BADGE.padY * 2;
+  const badgeW = typeInitial
+    ? Math.max(badgeH, AGENT_TYPE_BADGE.charW + AGENT_TYPE_BADGE.padX * 2)
+    : 0;
+  const modelW = modelLabel ? modelLabel.length * modelCharW : 0;
+  const totalW = badgeW + (typeInitial && modelLabel ? gap : 0) + modelW;
+  const originX = -totalW / 2;
+  const rectY = startY - AGENT_TYPE_BADGE.fontSize + 1;
 
   return (
     <g className={`vessel-runtime${dead ? " dead" : ""}`} aria-hidden="true">
-      {nodes}
+      {typeInitial && (
+        <g className={`vessel-agent-type${typeKey ? ` type-${typeKey}` : ""}`}>
+          <title>{typeLabel}</title>
+          <rect
+            x={originX}
+            y={rectY}
+            width={badgeW}
+            height={badgeH}
+            rx={3}
+            ry={3}
+            className="vessel-agent-type-bg"
+          />
+          <text
+            className="vessel-agent-type-label"
+            x={originX + badgeW / 2}
+            y={startY}
+            textAnchor="middle"
+            fontSize={AGENT_TYPE_BADGE.fontSize}
+            fontFamily="var(--font-body)"
+            fontWeight="700"
+            letterSpacing="0.03em"
+          >
+            {typeInitial}
+          </text>
+        </g>
+      )}
+      {modelLabel && (
+        <text
+          className="vessel-llm"
+          x={originX + badgeW + (typeInitial ? gap : 0)}
+          y={startY}
+          textAnchor="start"
+          fontSize={modelFontSize}
+          fontFamily="var(--font-body)"
+        >
+          <title>{modelFull}</title>
+          {modelLabel}
+        </text>
+      )}
     </g>
   );
 }

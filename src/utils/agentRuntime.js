@@ -40,10 +40,8 @@ export function llmModelLabel(llmModel, max = 20) {
   return `${s.slice(0, Math.max(0, max - 1))}…`;
 }
 
-/** Vertical space (px) taken by agent type + LLM lines under the vessel name. */
+/** Vertical space (px) for the agent type + LLM row under the vessel name. */
 export function agentRuntimeMetaHeight(agent) {
-  let h = 0;
-  if (agentTypeLabel(agent?.agentType)) h += 14;
-  if (llmModelLabel(agent?.llmModel)) h += 12;
-  return h;
+  if (agentTypeLabel(agent?.agentType) || llmModelLabel(agent?.llmModel)) return 14;
+  return 0;
 }
