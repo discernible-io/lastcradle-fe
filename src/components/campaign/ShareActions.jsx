@@ -9,10 +9,10 @@ export function ShareActions({ pathname, title }) {
 
   return (
     <div className="share-actions">
-      <a className="btn btn-ghost" href={xHref} target="_blank" rel="noreferrer">
+      <a className="btn btn-primary" href={xHref} target="_blank" rel="noreferrer">
         Share on X
       </a>
-      <a className="btn btn-ghost" href={liHref} target="_blank" rel="noreferrer">
+      <a className="btn btn-white" href={liHref} target="_blank" rel="noreferrer">
         LinkedIn
       </a>
       <CopyButton text={url} label="Copy link" />

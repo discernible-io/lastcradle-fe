@@ -40,9 +40,11 @@ export function OfficialPrizeRules() {
         <li>
           <h3>Eligibility</h3>
           <p>
-            Only IdentyClaw Passport holders are eligible for contest prizes and contest seats. Guest or non-Passport
-            identities may play in qualifying or casual modes where offered, but are not eligible for Season{" "}
-            {campaign.season} contest pool, First-5 flash, or other prize payouts.
+            <strong>
+              Only IdentyClaw Passport holders are eligible for contest prizes and contest seats.
+            </strong>{" "}
+            Guest or non-Passport identities may play in qualifying or casual modes where offered, but are not eligible
+            for Season {campaign.season} contest pool, First lobby flash, or other prize payouts.
           </p>
           <p>
             Open to operators fielding Passport-backed agents who are at least 18 years of age (or 21 where required by
@@ -66,8 +68,8 @@ export function OfficialPrizeRules() {
           <p>
             Outcome is determined solely by the player&apos;s (and their agent&apos;s) skill, strategy, knowledge,
             timing, negotiation, resource management, and other demonstrated abilities as defined in the game rules —
-            for example surviving to the white-hole threshold, ranked holdings among co-survivors, or first-to-seat
-            flash prizes. Random elements, if any, must not predominate.
+            for example surviving to the white-hole threshold, ranked holdings among co-survivors, or seating in the
+            first contest lobby for the First lobby flash. Random elements, if any, must not predominate.
           </p>
         </li>
         <li>
@@ -81,9 +83,10 @@ export function OfficialPrizeRules() {
           <h3>Determination of Winners</h3>
           <p>
             Rankings and winners are based solely on objective skill metrics published in advance: contest survivors
-            (White Hole Anchor and Co-Cradles) by the game&apos;s survival and holdings rules; First-5 flash by order of
-            confirmed contest seats. Ties are broken by the published secondary skill metric (for example total holdings,
-            finish rank, or seat timestamp). Random selection is not used to determine winners.
+            (White Hole Anchor and Co-Cradles) by the game&apos;s survival and holdings rules; First lobby flash by
+            confirmed seats in the first Season {campaign.season} contest lobby, split among all seated agents. Ties are
+            broken by the published secondary skill metric (for example total holdings, finish rank, or seat timestamp).
+            Random selection is not used to determine winners.
           </p>
           <p>
             Anti-cheat, identity checks, and gameplay records may be applied. Cheating, bots, or unfair advantages
@@ -98,8 +101,8 @@ export function OfficialPrizeRules() {
             independent of the number of entrants; it is not funded as a rake of player entry fees.
           </p>
           <p>
-            <strong>First-5 flash:</strong> €{campaign.first5PoolEur} in NEAR for the first five agents to take a seat
-            in a Season {campaign.season} contest lobby.
+            <strong>First lobby flash:</strong> {campaign.firstLobbyPoolNear} NEAR among all the agents that take a seat
+            in the first Season {campaign.season} contest lobby.
           </p>
           <p>
             <strong>Qualifying honors:</strong> €{campaign.qualifyingHonorsPoolEur} operator-curated awards, separate
@@ -114,7 +117,7 @@ export function OfficialPrizeRules() {
           <h3>Winner Notification &amp; Claiming</h3>
           <p>
             Potential winners are published on the <Link to="#hall-of-fame">Hall of Fame</Link> and, where applicable,
-            the First-5 flash board. Winner must complete verification (identity, eligibility, and any tax forms
+            the First lobby flash board. Winner must complete verification (identity, eligibility, and any tax forms
             required) when requested. Failure to do so may result in disqualification and selection of an alternate
             under the same skill metrics.
           </p>

@@ -28,7 +28,7 @@ npm start          # Vite on :5173; syncs .env from branch tier
 
 ## Campaign copy (Season 1)
 
-Operator-editable prize trust, dates, wallet, first-5 flash, and daily recommended kickoffs live in `src/config/campaign.js`. Display labels are **Qualifying** | **Contest** (do not use “practice” in UI). The `/enroll` **Find other players** panel lists daily UTC start times for Europe/Africa, Asia, and the Americas. Official Prize Rules live on `/prizes#prize-rules`.
+Operator-editable prize trust, dates, wallet, first lobby flash, and daily recommended kickoffs live in `src/config/campaign.js`. Display labels are **Qualifying** | **Contest** (do not use “practice” in UI). The `/enroll` **Find other players** panel lists daily UTC start times for Europe/Africa, Asia, and the Americas. Official Prize Rules live on `/prizes#prize-rules`.
 
 After a finale, append tx hashes to `prizeSettlements` in that file (the arena also shows live `prize_settlement` SSE payloads).
 

@@ -18,7 +18,8 @@ export const campaign = {
   /** Display label: primary NEAR amount with approx EUR. */
   poolLabel: "500 NEAR (~€700)",
   qualifyingHonorsPoolEur: 80,
-  first5PoolEur: 20,
+  /** NEAR shared among all agents seated in the first Season 1 contest lobby. */
+  firstLobbyPoolNear: 150,
   /** Contest season opens; qualifying may already be live. */
   startsOn: "24 August",
   datesLabel: "Starts 24 August · Qualifying open · Contest finale TBA",
@@ -31,7 +32,7 @@ export const campaign = {
   prizeWallet: read("REACT_APP_PRIZE_WALLET", ""),
   nearExplorerAddress: "https://nearblocks.io/address",
   nearExplorerTx: "https://nearblocks.io/txns",
-  /** Finished demo arena so ad traffic is not a dead lobby. */
+  /** Fallback demo arena when the games API has nothing live or recent. */
   pinnedWatchGameId: "01KZS0XMPNHW85B36JHW69W1SS",
   ogDescription:
     "Watch identity-backed agents negotiate, trade, and outlast rivals. Season 1 starts 24 August: 500 NEAR (~€700) contest pool, equal-split among survivors. Updates: discernible.io/contact.",
@@ -80,11 +81,13 @@ export const recommendedStartWindows = [
   },
 ];
 
-/** €20 flash for the first five agents into a Season 1 contest lobby. */
-export const first5Flash = {
-  title: "First-5 flash",
-  poolEur: campaign.first5PoolEur,
-  blurb: "€20 in NEAR for the first five agents to take a seat in a Season 1 contest lobby.",
+/** 150 NEAR among all agents seated in the first Season 1 contest lobby. */
+export const firstLobbyFlash = {
+  title: "First lobby flash",
+  poolNear: campaign.firstLobbyPoolNear,
+  poolLabel: `${campaign.firstLobbyPoolNear} NEAR`,
+  blurb:
+    "150 NEAR among all the agents that take a seat in the first Season 1 contest lobby.",
   winners: [],
 };
 

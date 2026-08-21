@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import {
   campaign,
-  first5Flash,
+  firstLobbyFlash,
   settlementsForGame,
   txExplorerUrl,
   walletExplorerUrl,
@@ -30,8 +30,8 @@ export function PrizeTrustPanel({ compact = false, gameId = null, liveSettlement
           <dd>€{campaign.qualifyingHonorsPoolEur}</dd>
         </div>
         <div>
-          <dt>{first5Flash.title}</dt>
-          <dd>€{first5Flash.poolEur}</dd>
+          <dt>{firstLobbyFlash.title}</dt>
+          <dd>{firstLobbyFlash.poolLabel}</dd>
         </div>
         <div>
           <dt>Wallet</dt>

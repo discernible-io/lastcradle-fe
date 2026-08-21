@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 import { env } from "../config/env.js";
-import { campaign, watchPath } from "../config/campaign.js";
+import { campaign } from "../config/campaign.js";
 import { First5Flash } from "../components/campaign/First5Flash.jsx";
 import { SeasonStrip } from "../components/campaign/SeasonStrip.jsx";
 import { VoicesFromTheCradle } from "../components/campaign/VoicesFromTheCradle.jsx";
+import { useFeaturedWatchPath } from "../hooks/useFeaturedWatchPath.js";
 import { withUtm } from "../utils/utm.js";
 
 export function LandingPage() {
-  const watchTo = watchPath(campaign.pinnedWatchGameId);
+  const watchTo = useFeaturedWatchPath();
 
   return (
     <div className="landing-page">
