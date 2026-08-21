@@ -60,7 +60,7 @@ export const env = {
   ),
   peerAuthUrl: stripDefaultPort(read("REACT_APP_PEER_AUTH_URL", `${apiBase}/api/game/peer-auth.md`)),
   /** Refuse skill caches below this frontmatter version (from live skill.md / OpenAPI). */
-  skillMinVersion: read("REACT_APP_SKILL_MIN_VERSION", "1.20.3"),
+  skillMinVersion: read("REACT_APP_SKILL_MIN_VERSION", "1.20.5"),
   agentLoginUrl: stripDefaultPort(
     read("REACT_APP_AGENT_LOGIN_URL", `${apiBase}/api/mcp/resource/guide:agent-login`),
   ),

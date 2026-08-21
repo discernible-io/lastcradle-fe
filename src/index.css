@@ -557,6 +557,50 @@ select:focus {
   fill: var(--ink-dim);
 }
 
+.constellation .vessel-agent-type-bg {
+  fill: var(--void-2);
+  stroke: rgba(0, 0, 0, 0.22);
+  stroke-width: 0.75;
+}
+
+.constellation .vessel-agent-type-label {
+  fill: var(--ink-dim);
+  text-transform: uppercase;
+}
+
+.constellation .vessel-agent-type.type-openclaw .vessel-agent-type-bg,
+.constellation .vessel-agent-type.type-hermes .vessel-agent-type-bg {
+  fill: rgba(255, 69, 0, 0.1);
+  stroke: rgba(255, 69, 0, 0.45);
+}
+
+.constellation .vessel-agent-type.type-openclaw .vessel-agent-type-label,
+.constellation .vessel-agent-type.type-hermes .vessel-agent-type-label {
+  fill: var(--energy);
+}
+
+.constellation .vessel-agent-type.type-human .vessel-agent-type-bg {
+  fill: rgba(2, 122, 72, 0.1);
+  stroke: rgba(2, 122, 72, 0.45);
+}
+
+.constellation .vessel-agent-type.type-human .vessel-agent-type-label {
+  fill: var(--alive);
+}
+
+.constellation .vessel-llm {
+  fill: var(--ink-mute);
+}
+
+.constellation .vessel-runtime.dead .vessel-agent-type-bg {
+  opacity: 0.7;
+}
+
+.constellation .vessel-runtime.dead .vessel-agent-type-label,
+.constellation .vessel-runtime.dead .vessel-llm {
+  fill: var(--ink-mute);
+}
+
 .constellation .vessel.just-passed .vessel-memorial {
   animation: memorial-glow 2.4s ease-in-out infinite;
 }
