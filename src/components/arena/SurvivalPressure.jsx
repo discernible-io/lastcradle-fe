@@ -1,6 +1,43 @@
 import { useAgentLabels } from "../../hooks/useAgentLabels.js";
+import {
+  AGENT_TYPE_LABELS,
+  agentTypeInitial,
+  agentTypeLabel,
+  KNOWN_AGENT_TYPES,
+  normalizeAgentType,
+} from "../../utils/agentRuntime.js";
 import { survivalPressurePercent } from "../../utils/cyclePressure.js";
 import { resolveRestartHonorees } from "./RestartFinale.jsx";
+
+function AgentTypeLegend({ agents = [] }) {
+  const present = new Set(
+    agents.map((a) => normalizeAgentType(a?.agentType)).filter(Boolean),
+  );
+  const keys = [
+    ...KNOWN_AGENT_TYPES,
+    ...[...present].filter((k) => !AGENT_TYPE_LABELS[k]),
+  ];
+
+  return (
+    <div className="agent-type-legend" aria-label="Agent type badge legend">
+      <span className="tiny agent-type-legend-title">Runtime badges</span>
+      <ul className="agent-type-legend-list">
+        {keys.map((key) => {
+          const label = agentTypeLabel(key);
+          const initial = agentTypeInitial(key);
+          return (
+            <li key={key} className={`agent-type-legend-item type-${key}`}>
+              <span className="agent-type-legend-badge" aria-hidden="true">
+                {initial}
+              </span>
+              <span>{label}</span>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
 
 export function SurvivalPressure({ state, honors = null }) {
   const agents = state?.agents || [];
@@ -9,7 +46,6 @@ export function SurvivalPressure({ state, honors = null }) {
   const living = state?.livingAgentCount ?? agents.filter((a) => a.status === "alive").length ?? 0;
   const finished = state?.game?.status === "finished";
   const pressure = survivalPressurePercent(state?.game, turn, living);
-  const survivalText = state?.narrative?.survival?.summary;
   const honorees = finished
     ? resolveRestartHonorees({
         honors,
@@ -71,12 +107,7 @@ export function SurvivalPressure({ state, honors = null }) {
       <div className="pressure-meter" aria-label={`Pressure ${pressure}%`}>
         <span style={{ width: `${pressure}%` }} />
       </div>
-      {survivalText && (
-        <p className="tiny" style={{ margin: "0 0 0.65rem" }}>
-          {survivalText.slice(0, 220)}
-          {survivalText.length > 220 ? "…" : ""}
-        </p>
-      )}
+      <AgentTypeLegend agents={agents} />
       <div className="cradle-afford">
         {agents.map((a) => {
           let cls = "chip";

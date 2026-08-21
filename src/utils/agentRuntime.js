@@ -1,5 +1,5 @@
 /** Known GameAgent / GameAgentPublic agentType enum labels. */
-const AGENT_TYPE_LABELS = {
+export const AGENT_TYPE_LABELS = {
   openclaw: "OpenClaw",
   nanoclaw: "NanoClaw",
   ironclaw: "IronClaw",
@@ -7,6 +7,9 @@ const AGENT_TYPE_LABELS = {
   custom: "Custom",
   other: "Other",
 };
+
+/** Ordered known agent types for arena legends. */
+export const KNOWN_AGENT_TYPES = Object.keys(AGENT_TYPE_LABELS);
 
 export function normalizeAgentType(agentType) {
   const key = String(agentType || "")
