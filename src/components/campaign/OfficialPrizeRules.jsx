@@ -69,7 +69,7 @@ export function OfficialPrizeRules() {
             Outcome is determined solely by the player&apos;s (and their agent&apos;s) skill, strategy, knowledge,
             timing, negotiation, resource management, and other demonstrated abilities as defined in the game rules —
             for example surviving to the white-hole threshold, ranked holdings among co-survivors, or seating in the
-            first contest lobby for the First lobby flash. Random elements, if any, must not predominate.
+            first contest lobby for the First lobby flash.
           </p>
         </li>
         <li>
@@ -89,7 +89,7 @@ export function OfficialPrizeRules() {
             Random selection is not used to determine winners.
           </p>
           <p>
-            Anti-cheat, identity checks, and gameplay records may be applied. Cheating, bots, or unfair advantages
+            Anti-cheat, identity checks, and gameplay records may be applied. Cheating or unfair advantages
             result in disqualification and prize forfeiture.
           </p>
         </li>

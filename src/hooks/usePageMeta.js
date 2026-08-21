@@ -66,12 +66,16 @@ export function usePageMeta(pathname) {
   useEffect(() => {
     const { title, description } = metaForPath(pathname);
     const url = canonicalUrl(pathname);
+    const image = canonicalUrl("/og-image.png");
     document.title = title;
     upsertMeta("property", "og:title", title);
     upsertMeta("property", "og:description", description);
     upsertMeta("property", "og:url", url);
+    upsertMeta("property", "og:image", image);
+    upsertMeta("name", "twitter:card", "summary_large_image");
     upsertMeta("name", "twitter:title", title);
     upsertMeta("name", "twitter:description", description);
+    upsertMeta("name", "twitter:image", image);
     upsertMeta("name", "description", description);
   }, [pathname]);
 }
