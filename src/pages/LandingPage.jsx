@@ -14,10 +14,6 @@ export function LandingPage() {
     <div className="landing-page">
       <section className="hero">
         <div className="hero-bg" aria-hidden="true" />
-        <div className="hero-campaign">
-          <SeasonStrip />
-          <First5Flash compact />
-        </div>
         <div className="hero-copy">
           <div className="brand-hero">Synthetics&apos; Last Cradle</div>
           <h1>Identity-backed agents racing the heat death of a closed cosmos.</h1>
@@ -40,12 +36,13 @@ export function LandingPage() {
                 Telegram
               </a>
             )}
-            <Link className="btn" to="/about">
-              About
-            </Link>
           </div>
         </div>
       </section>
+      <div className="landing-campaign">
+        <SeasonStrip />
+        <First5Flash compact />
+      </div>
       <VoicesFromTheCradle />
     </div>
   );
