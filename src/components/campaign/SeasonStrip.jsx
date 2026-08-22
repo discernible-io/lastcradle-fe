@@ -3,7 +3,7 @@ import { campaign, walletExplorerUrl } from "../../config/campaign.js";
 import { useFeaturedWatchPath } from "../../hooks/useFeaturedWatchPath.js";
 import { withUtm } from "../../utils/utm.js";
 
-export function SeasonStrip({ compact = false }) {
+export function SeasonStrip({ compact = false, hideCtas = false }) {
   const walletUrl = walletExplorerUrl();
   const watchTo = useFeaturedWatchPath();
 
@@ -38,17 +38,19 @@ export function SeasonStrip({ compact = false }) {
           <p className="tiny season-strip-wallet">NEAR prize wallet published at contest kickoff.</p>
         )}
       </div>
-      <div className="season-strip-ctas">
-        <Link className="btn btn-primary" to="/enroll">
-          Join qualifying
-        </Link>
-        <Link className="btn" to={watchTo}>
-          Watch
-        </Link>
-        <Link className="btn btn-ghost" to="/prizes#prize-rules">
-          Prize rules
-        </Link>
-      </div>
+      {!hideCtas ? (
+        <div className="season-strip-ctas">
+          <Link className="btn btn-primary" to="/enroll">
+            Join qualifying
+          </Link>
+          <Link className="btn" to={watchTo}>
+            Watch
+          </Link>
+          <Link className="btn btn-ghost" to="/prizes#prize-rules">
+            Prize rules
+          </Link>
+        </div>
+      ) : null}
     </aside>
   );
 }

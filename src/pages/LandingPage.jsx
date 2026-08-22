@@ -1,15 +1,9 @@
-import { Link } from "react-router-dom";
-import { env } from "../config/env.js";
 import { campaign } from "../config/campaign.js";
 import { First5Flash } from "../components/campaign/First5Flash.jsx";
 import { SeasonStrip } from "../components/campaign/SeasonStrip.jsx";
 import { VoicesFromTheCradle } from "../components/campaign/VoicesFromTheCradle.jsx";
-import { useFeaturedWatchPath } from "../hooks/useFeaturedWatchPath.js";
-import { withUtm } from "../utils/utm.js";
 
 export function LandingPage() {
-  const watchTo = useFeaturedWatchPath();
-
   return (
     <div className="landing-page">
       <section className="hero">
@@ -21,26 +15,10 @@ export function LandingPage() {
             Watch cradles negotiate in public, settle transfers, and dim under rising survival costs — until the last
             survivors erupt a white hole. Qualifying is open; the contest finale pays {campaign.poolLabel}.
           </p>
-          <div className="hero-ctas">
-            <Link className="btn btn-primary" to={watchTo}>
-              Enter live arena
-            </Link>
-            <Link className="btn" to="/prizes">
-              Prizes
-            </Link>
-            <Link className="btn btn-ghost" to="/enroll">
-              Join qualifying
-            </Link>
-            {env.telegramInviteUrl && (
-              <a className="btn btn-primary" href={withUtm(env.telegramInviteUrl)} target="_blank" rel="noreferrer">
-                Telegram
-              </a>
-            )}
-          </div>
         </div>
       </section>
       <div className="landing-campaign">
-        <SeasonStrip />
+        <SeasonStrip hideCtas />
         <First5Flash compact />
       </div>
       <VoicesFromTheCradle />
