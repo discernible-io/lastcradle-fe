@@ -70,11 +70,11 @@ export function WatchLobbyPage() {
   }, [queryGameId]);
 
   useEffect(() => {
-    if (queryGameId || hash !== "#contests") return undefined;
-    const id = window.requestAnimationFrame(() => {
+    if (queryGameId || hash !== "#contests" || loading) return undefined;
+    const id = window.setTimeout(() => {
       document.getElementById("contests")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-    return () => window.cancelAnimationFrame(id);
+    }, 0);
+    return () => window.clearTimeout(id);
   }, [hash, queryGameId, loading]);
 
   if (queryGameId) {
@@ -110,8 +110,40 @@ export function WatchLobbyPage() {
       {error && <div className="error-banner">{error}</div>}
       {loading && <div className="muted">Loading games…</div>}
 
+      <section aria-labelledby="casual-heading">
+        <h2 id="casual-heading" style={{ fontSize: "1.1rem", margin: "1.5rem 0 0.35rem" }}>
+          Casual
+        </h2>
+        <p className="muted" style={{ marginTop: 0, marginBottom: "0.75rem", fontSize: "0.9rem" }}>
+          Open lobbies with no contest mode set. Not competition or qualifying.
+        </p>
+        <h3 style={{ fontSize: "0.95rem", margin: "0.85rem 0 0.65rem" }}>On air / joining</h3>
+        <GameList
+          games={parts.liveCasual}
+          empty="No live casual games right now — watch a finished game below."
+        />
+        <h3 style={{ fontSize: "0.95rem", margin: "1.15rem 0 0.65rem" }}>Recent casual finishes</h3>
+        <GameList games={parts.finishedCasual} empty="No finished casual games yet." />
+      </section>
+
+      <section aria-labelledby="qualifying-heading">
+        <h2 id="qualifying-heading" style={{ fontSize: "1.1rem", margin: "1.75rem 0 0.35rem" }}>
+          Qualifying
+        </h2>
+        <p className="muted" style={{ marginTop: 0, marginBottom: "0.75rem", fontSize: "0.9rem" }}>
+          Practice and press-run arenas. Pool rules and payouts: <Link to="/prizes">Prizes</Link>.
+        </p>
+        <h3 style={{ fontSize: "0.95rem", margin: "0.85rem 0 0.65rem" }}>On air / joining</h3>
+        <GameList
+          games={parts.liveQualifying}
+          empty="No live qualifying games right now — watch a finished game below."
+        />
+        <h3 style={{ fontSize: "0.95rem", margin: "1.15rem 0 0.65rem" }}>Recent qualifying finishes</h3>
+        <GameList games={parts.finishedQualifying} empty="No finished qualifying games yet." />
+      </section>
+
       <section id="contests" aria-labelledby="contest-heading">
-        <h2 id="contest-heading" style={{ fontSize: "1.1rem", margin: "1.5rem 0 0.35rem" }}>
+        <h2 id="contest-heading" style={{ fontSize: "1.1rem", margin: "1.75rem 0 0.35rem" }}>
           Contest (competition)
         </h2>
         <p className="muted" style={{ marginTop: 0, marginBottom: "0.75rem", fontSize: "0.9rem" }}>
@@ -132,7 +164,7 @@ export function WatchLobbyPage() {
         </p>
         {contestEmpty ? (
           <div className="panel empty-state">
-            No scheduled contests right now. Watch qualifying or casual arenas below or{" "}
+            No scheduled contests right now. Watch casual or qualifying arenas above or{" "}
             <Link to="/enroll">join as an agent</Link> for the next series
             {env.telegramInviteUrl && (
               <>
@@ -185,38 +217,6 @@ export function WatchLobbyPage() {
         )}
         <h3 style={{ fontSize: "0.95rem", margin: "1.15rem 0 0.65rem" }}>Recent contest finishes</h3>
         <GameList games={parts.finishedContest} empty="No finished contest games yet." />
-      </section>
-
-      <section aria-labelledby="qualifying-heading">
-        <h2 id="qualifying-heading" style={{ fontSize: "1.1rem", margin: "1.75rem 0 0.35rem" }}>
-          Qualifying
-        </h2>
-        <p className="muted" style={{ marginTop: 0, marginBottom: "0.75rem", fontSize: "0.9rem" }}>
-          Practice and press-run arenas. Pool rules and payouts: <Link to="/prizes">Prizes</Link>.
-        </p>
-        <h3 style={{ fontSize: "0.95rem", margin: "0.85rem 0 0.65rem" }}>On air / joining</h3>
-        <GameList
-          games={parts.liveQualifying}
-          empty="No live qualifying games right now — watch a finished game below."
-        />
-        <h3 style={{ fontSize: "0.95rem", margin: "1.15rem 0 0.65rem" }}>Recent qualifying finishes</h3>
-        <GameList games={parts.finishedQualifying} empty="No finished qualifying games yet." />
-      </section>
-
-      <section aria-labelledby="casual-heading">
-        <h2 id="casual-heading" style={{ fontSize: "1.1rem", margin: "1.75rem 0 0.35rem" }}>
-          Casual
-        </h2>
-        <p className="muted" style={{ marginTop: 0, marginBottom: "0.75rem", fontSize: "0.9rem" }}>
-          Open lobbies with no contest mode set. Not competition or qualifying.
-        </p>
-        <h3 style={{ fontSize: "0.95rem", margin: "0.85rem 0 0.65rem" }}>On air / joining</h3>
-        <GameList
-          games={parts.liveCasual}
-          empty="No live casual games right now — watch a finished game below."
-        />
-        <h3 style={{ fontSize: "0.95rem", margin: "1.15rem 0 0.65rem" }}>Recent casual finishes</h3>
-        <GameList games={parts.finishedCasual} empty="No finished casual games yet." />
       </section>
     </div>
   );
