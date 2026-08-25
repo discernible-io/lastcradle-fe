@@ -89,6 +89,10 @@ export function getNarrative({ signal } = {}) {
   return apiGet(`/api/game/narrative`, { signal });
 }
 
+export function getEnrollPrompts({ signal } = {}) {
+  return apiGet(`/api/game/enroll-prompts`, { signal });
+}
+
 export function listContests({ status, limit = 20, offset = 0, signal } = {}) {
   const q = new URLSearchParams();
   if (status) q.set("status", status);
