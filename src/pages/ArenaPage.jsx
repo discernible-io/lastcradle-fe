@@ -59,12 +59,12 @@ export function ArenaPage() {
           </span>
         )}
         <span className="tiny">{sseConnected ? "SSE live" : "polling"}</span>
-        <button type="button" className="btn btn-ghost" style={{ padding: "0.25rem 0.55rem" }} onClick={refresh}>
+        <button type="button" className="btn btn-primary" style={{ padding: "0.25rem 0.55rem" }} onClick={refresh}>
           Refresh
         </button>
         {recapTurn != null && recapTurn > 0 && (
           <Link
-            className="btn btn-ghost"
+            className="btn btn-white"
             style={{ padding: "0.25rem 0.55rem" }}
             to={`/watch/${gameId}/turn/${recapTurn}`}
           >
