@@ -23,13 +23,17 @@ const AGENT_TYPE_BADGE = {
 };
 
 function layoutPositions(agents, width, height) {
-  const cx = width / 2;
-  const cy = height / 2;
   const living = agents.filter((a) => a.status === "alive");
   const dead = agents.filter((a) => a.status === "dead");
   const nLiving = Math.max(living.length, 1);
-  const nDead = Math.max(dead.length, 1);
-  const radius = Math.min(width, height) * 0.32;
+  const nDead = dead.length;
+
+  // Fallen cradles settle along the bottom; reserve that band so the living ring
+  // stays clear of husk avatars / epitaphs.
+  const deadBand = nDead > 0 ? 128 : 0;
+  const cx = width / 2;
+  const cy = (height - deadBand) / 2;
+  const radius = Math.min(width, height - deadBand) * 0.34;
 
   const pos = {};
   living.forEach((a, i) => {
@@ -39,21 +43,38 @@ function layoutPositions(agents, width, height) {
       y: cy + Math.sin(angle) * radius * 0.85,
     };
   });
-  dead.forEach((a, i) => {
-    // Dead cradles are drawn on an outer ellipse. Keep them visually separated from
-    // the alive ring even with the larger avatar/text extents above/below center.
-    // Also stagger their angles relative to the alive ring so counts don't align.
-    const angleOffset = (Math.PI / nLiving) * 0.5;
-    const angle = (Math.PI * 2 * i) / nDead - Math.PI / 2 + angleOffset;
 
-    // Empirically tuned so the outer (dead) vessels don't intrude into the inner (alive)
-    // vessels.
-    const r = radius * 1.55;
-    pos[a.id] = {
-      x: cx + Math.cos(angle) * r,
-      y: cy + Math.sin(angle) * r * 0.9,
-    };
-  });
+  if (nDead > 0) {
+    // Vessel origin sits above the epitaph; keep ~52px below so text doesn't clip.
+    const vesselBottomPad = 52;
+    const minSpacing = 78;
+    const sidePad = 48;
+    const usableW = Math.max(minSpacing, width - sidePad * 2);
+    const maxPerRow = Math.max(1, Math.floor(usableW / minSpacing));
+    const cols = Math.min(nDead, maxPerRow);
+    const rows = Math.ceil(nDead / cols);
+    const rowGap = 108;
+
+    dead.forEach((a, i) => {
+      const row = Math.floor(i / cols);
+      const col = i % cols;
+      const rowFromBottom = rows - 1 - row;
+      const countInRow =
+        row === rows - 1 ? nDead - row * cols : cols;
+      const idealSpacing = 96;
+      const spacing =
+        countInRow > 1
+          ? Math.min(idealSpacing, usableW / (countInRow - 1))
+          : 0;
+      const rowWidth = spacing * Math.max(countInRow - 1, 0);
+      const startX = cx - rowWidth / 2;
+      pos[a.id] = {
+        x: startX + col * spacing,
+        y: height - vesselBottomPad - rowFromBottom * rowGap,
+      };
+    });
+  }
+
   return { pos, cx, cy };
 }
 
