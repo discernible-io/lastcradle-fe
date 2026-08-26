@@ -8,8 +8,8 @@
   --ink-dim: #333333;
   --ink-mute: #555555;
   --energy: #ff4500;
-  --water: #000000;
-  --compute: #555555;
+  --water: #1565c0;
+  --compute: #000000;
   --white-hole: #000000;
   --husk: #9a9a9a;
   --danger: #b42318;
@@ -17,8 +17,8 @@
   --panel: #ffffff;
   --panel-border: #e0e0e0;
   --glow-energy: rgba(255, 69, 0, 0.35);
-  --glow-water: rgba(0, 0, 0, 0.18);
-  --glow-compute: rgba(85, 85, 85, 0.28);
+  --glow-water: rgba(21, 101, 192, 0.28);
+  --glow-compute: rgba(0, 0, 0, 0.22);
   --font-display: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --radius: 12px;
