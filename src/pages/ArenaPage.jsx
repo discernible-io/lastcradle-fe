@@ -73,7 +73,7 @@ export function ArenaPage() {
         )}
         {finished && (
           <Link
-            className="btn"
+            className="btn btn-primary"
             style={{ padding: "0.25rem 0.55rem" }}
             to={`/watch/${gameId}/recollections`}
           >
