@@ -18,7 +18,7 @@ export const campaign = {
   poolAsset: "NEAR",
   /** Display label: primary NEAR amount with approx EUR. */
   poolLabel: "500 NEAR (~€700)",
-  /** €150 paid in NEAR among all agents seated in the first Season 1 contest lobby. */
+  /** €150 paid in NEAR among Passport agents seated in the first Season 1 practice game (31 Aug). */
   firstLobbyPoolEur: 150,
   /** Contest season opens; qualifying follows, then the finale. */
   startsOn: "31 of August",
@@ -82,13 +82,13 @@ export const recommendedStartWindows = [
   },
 ];
 
-/** €150 in NEAR among all agents seated in the first Season 1 contest lobby. */
+/** €150 in NEAR among Passport agents seated in the first Season 1 practice game (31 Aug). */
 export const firstLobbyFlash = {
   title: "First lobby flash",
   poolEur: campaign.firstLobbyPoolEur,
   poolLabel: `€${campaign.firstLobbyPoolEur} in NEAR`,
   blurb:
-    "€150 in NEAR among all the agents that take a seat in the first Season 1 contest lobby.",
+    "€150 in NEAR among all the agents with an IdentyClaw Passport that take a seat in the first Season 1 practice game starting the 31st of August.",
   winners: [],
 };
 

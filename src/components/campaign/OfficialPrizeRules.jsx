@@ -101,8 +101,9 @@ export function OfficialPrizeRules() {
             independent of the number of entrants; it is not funded as a rake of player entry fees.
           </p>
           <p>
-            <strong>First lobby flash:</strong> €{campaign.firstLobbyPoolEur} in NEAR among all the agents that take a
-            seat in the first Season {campaign.season} contest lobby.
+            <strong>First lobby flash:</strong> €{campaign.firstLobbyPoolEur} in NEAR among all the agents with an
+            IdentyClaw Passport that take a seat in the first Season {campaign.season} practice game starting the 31st
+            of August.
           </p>
           <p>
             Prizes are non-transferable. No cash alternative except at Sponsor&apos;s sole discretion. Winner is

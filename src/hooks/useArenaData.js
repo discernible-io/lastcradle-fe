@@ -63,7 +63,7 @@ export function useArenaData(gameId) {
   }, [refresh]);
 
   const { connected, lastEvent, error: sseError } = useGameEvents(gameId, {
-    enabled: Boolean(gameId) && (state?.game?.status === "running" || state?.game?.status === "finished"),
+    enabled: Boolean(gameId),
     onEvent: (ev) => {
       if (ev.type === "prize_settlement") {
         setPrizeSettlement(ev.data);
@@ -71,6 +71,8 @@ export function useArenaData(gameId) {
       if (
         ev.type === "phase_change" ||
         ev.type === "turn_advanced" ||
+        ev.type === "game_started" ||
+        ev.type === "game_cancelled" ||
         ev.type === "game_finished" ||
         ev.type === "recollection_submitted" ||
         ev.type === "prize_settlement"

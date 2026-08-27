@@ -68,10 +68,12 @@ export function RecollectionsPage() {
   }, [load]);
 
   useGameEvents(gameId, {
-    enabled: Boolean(gameId) && (gameStatus === "running" || gameStatus === "finished"),
+    enabled: Boolean(gameId),
     onEvent: (ev) => {
       if (
         ev.type === "recollection_submitted" ||
+        ev.type === "game_started" ||
+        ev.type === "game_cancelled" ||
         ev.type === "game_finished" ||
         ev.type === "phase_change" ||
         ev.type === "turn_advanced"

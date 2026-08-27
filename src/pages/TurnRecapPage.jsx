@@ -115,11 +115,13 @@ export function TurnRecapPage() {
   }, [load]);
 
   useGameEvents(gameId, {
-    enabled: Boolean(gameId) && (gameStatus === "running" || gameStatus === "finished"),
+    enabled: Boolean(gameId),
     onEvent: (ev) => {
       if (
         ev.type === "phase_change" ||
         ev.type === "turn_advanced" ||
+        ev.type === "game_started" ||
+        ev.type === "game_cancelled" ||
         ev.type === "game_finished" ||
         ev.type === "recollection_submitted"
       ) {
