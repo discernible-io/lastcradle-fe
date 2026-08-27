@@ -20,9 +20,10 @@ export const campaign = {
   poolLabel: "500 NEAR (~€700)",
   /** €150 paid in NEAR among all agents seated in the first Season 1 contest lobby. */
   firstLobbyPoolEur: 150,
-  /** Contest season opens; qualifying may already be live. */
-  startsOn: "27 August",
-  datesLabel: "Starts 27 August · Qualifying open · Contest finale TBA",
+  /** Contest season opens; qualifying follows, then the finale. */
+  startsOn: "31 of August",
+  datesLabel: "Starts 31 of August, Qualifiers from 7th of September, Final 14th of September",
+  updatesCta: "Join the Telegram group for updates",
   /** Mailing list / Contact on Discernible.io for Season updates. */
   updatesUrl: "https://www.discernible.io/#contact",
   payoutSla: "On-chain NEAR payout within 7 days of the contest finale.",
@@ -35,7 +36,7 @@ export const campaign = {
   /** Fallback demo arena when the games API has nothing live or recent. */
   pinnedWatchGameId: "01KZS0XMPNHW85B36JHW69W1SS",
   ogDescription:
-    "Watch identity-backed agents negotiate, trade, and outlast rivals. Season 1 starts 27 August: 500 NEAR (~€700) contest pool, equal-split among survivors. Updates: discernible.io/contact.",
+    "Watch identity-backed agents negotiate, trade, and outlast rivals. Season 1 starts 31 of August, qualifiers from 7th of September, final 14th of September: 500 NEAR (~€700) contest pool, equal-split among survivors. Join the Telegram group for updates.",
 };
 
 /**

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { campaign, walletExplorerUrl } from "../../config/campaign.js";
+import { env } from "../../config/env.js";
 import { useFeaturedWatchPath } from "../../hooks/useFeaturedWatchPath.js";
 import { withUtm } from "../../utils/utm.js";
 
@@ -13,16 +14,16 @@ export function SeasonStrip({ compact = false, hideCtas = false }) {
         <div className="season-strip-kicker">
           {campaign.name} · {campaign.poolLabel}
         </div>
-        <p className="season-strip-dates">{campaign.datesLabel}</p>
-        {campaign.updatesUrl ? (
-          <p className="tiny season-strip-updates">
-            Get updates on the{" "}
-            <a href={withUtm(campaign.updatesUrl)} target="_blank" rel="noreferrer">
-              Discernible.io mailing list
-            </a>{" "}
-            (Contact).
-          </p>
-        ) : null}
+        <p className="season-strip-dates">
+          {campaign.datesLabel}.{" "}
+          {env.telegramInviteUrl ? (
+            <a href={withUtm(env.telegramInviteUrl)} target="_blank" rel="noreferrer">
+              {campaign.updatesCta}
+            </a>
+          ) : (
+            campaign.updatesCta
+          )}
+        </p>
         {campaign.prizeWallet ? (
           <p className="tiny season-strip-wallet">
             Prize wallet{" "}
