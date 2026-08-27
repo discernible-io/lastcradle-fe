@@ -1,4 +1,26 @@
 # Shared browser security headers (included by nginx.main / nginx.development server blocks)
+#
+# ---------------------------------------------------------------------------
+# SEO backlog (not done yet) vs shipped nearby
+# ---------------------------------------------------------------------------
+# Shipped (see nginx.*.conf + app):
+# - www.lastcradle.io → 301 https://lastcradle.io$request_uri (canonical host)
+# - public/robots.txt + public/sitemap.xml (stable marketing routes)
+# - staging X-Robots-Tag: noindex, nofollow (nginx.development.conf)
+# - SPA NotFoundPage (no longer soft-redirects unknown paths to /)
+# - client <link rel="canonical"> + expanded usePageMeta; landing JSON-LD
+# - favicon.svg; arena/recap/recollections code-split via React.lazy
+#
+# Still open:
+# - True HTTP 404 status: try_files still falls through to /index.html (200).
+#   Client 404 is UX + noindex meta only; allowlist SPA paths in nginx if needed.
+# - Prerender marketing routes so <title>/OG exist in dist HTML before React.
+# - Edge/OG inject for /watch/:gameId/turn/:n share bots (turn headline in HTML).
+# - Prefer real paths over hash targets for /contests and /hall-of-fame if ranking.
+# - Recap titles still generic ("Cycle N") until report headline is wired into meta.
+# - Optional FAQPage JSON-LD on /about.
+# - HSTS is set only in nginx.main.conf (production); keep it off development.
+# ---------------------------------------------------------------------------
 add_header X-Content-Type-Options "nosniff" always;
 add_header Referrer-Policy "strict-origin-when-cross-origin" always;
 add_header X-Frame-Options "DENY" always;

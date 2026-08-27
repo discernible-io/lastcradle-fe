@@ -17,6 +17,17 @@ function upsertMeta(attr, name, content) {
   el.setAttribute("content", content);
 }
 
+function upsertLink(rel, href) {
+  if (!href) return;
+  let el = document.head.querySelector(`link[rel="${rel}"]`);
+  if (!el) {
+    el = document.createElement("link");
+    el.setAttribute("rel", rel);
+    document.head.appendChild(el);
+  }
+  el.setAttribute("href", href);
+}
+
 function metaForPath(pathname) {
   const recap = pathname.match(/^\/watch\/([^/]+)\/turn\/(\d+)/);
   if (recap) {
@@ -25,13 +36,28 @@ function metaForPath(pathname) {
       description: `Shareable recap of cycle ${recap[2]} — Synthetics' Last Cradle, Season ${campaign.season}.`,
     };
   }
+  const recollections = pathname.match(/^\/watch\/([^/]+)\/recollections\/?$/);
+  if (recollections) {
+    return {
+      title: `Recollections · ${env.title}`,
+      description: `What the cradles remember — post-game memoirs from Synthetics' Last Cradle, Season ${campaign.season}.`,
+    };
+  }
+  const arena = pathname.match(/^\/watch\/([^/]+)\/?$/);
+  if (arena) {
+    return {
+      title: `Live Arena · ${env.title}`,
+      description:
+        "Watch identity-backed agents negotiate, trade, and outlast rivals — constellation stage, dispatch feed, and rising survival costs.",
+    };
+  }
   if (pathname.startsWith("/prizes")) {
     return {
       title: `Season ${campaign.season} prizes · ${env.title}`,
       description: campaign.ogDescription,
     };
   }
-  if (pathname.startsWith("/watch") && !pathname.match(/^\/watch\/[^/]+/)) {
+  if (pathname === "/watch") {
     return {
       title: `Live Arena · ${env.title}`,
       description:
@@ -59,23 +85,43 @@ function metaForPath(pathname) {
         "Lore and mechanics of Synthetics' Last Cradle — cradles, cycles, trade, espionage, and the white hole.",
     };
   }
-  return { title: env.title, description: campaign.ogDescription || DEFAULT_DESC };
+  if (pathname === "/" || pathname === "") {
+    return { title: env.title, description: campaign.ogDescription || DEFAULT_DESC };
+  }
+  return {
+    title: `Page not found · ${env.title}`,
+    description: DEFAULT_DESC,
+    robots: "noindex, follow",
+  };
 }
 
 export function usePageMeta(pathname) {
   useEffect(() => {
-    const { title, description } = metaForPath(pathname);
+    const { title, description, robots } = metaForPath(pathname);
     const url = canonicalUrl(pathname);
     const image = canonicalUrl("/og-image.png");
+    const imageAlt = "Synthetics' Last Cradle — Season 1";
     document.title = title;
+    upsertLink("canonical", robots ? canonicalUrl("/") : url);
     upsertMeta("property", "og:title", title);
     upsertMeta("property", "og:description", description);
-    upsertMeta("property", "og:url", url);
+    upsertMeta("property", "og:url", robots ? canonicalUrl("/") : url);
     upsertMeta("property", "og:image", image);
+    upsertMeta("property", "og:image:alt", imageAlt);
+    upsertMeta("property", "og:locale", "en_US");
+    upsertMeta("property", "og:type", "website");
+    upsertMeta("property", "og:site_name", env.title);
     upsertMeta("name", "twitter:card", "summary_large_image");
     upsertMeta("name", "twitter:title", title);
     upsertMeta("name", "twitter:description", description);
     upsertMeta("name", "twitter:image", image);
+    upsertMeta("name", "twitter:image:alt", imageAlt);
     upsertMeta("name", "description", description);
+    if (robots) {
+      upsertMeta("name", "robots", robots);
+    } else {
+      const robotsEl = document.head.querySelector('meta[name="robots"]');
+      if (robotsEl) robotsEl.remove();
+    }
   }, [pathname]);
 }

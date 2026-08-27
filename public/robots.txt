@@ -1,0 +1,6 @@
+# Production index: https://lastcradle.io
+# Staging (slc.dihola.io) should send X-Robots-Tag: noindex — see nginx.development.conf
+User-agent: *
+Allow: /
+
+Sitemap: https://lastcradle.io/sitemap.xml
