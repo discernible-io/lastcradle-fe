@@ -3,6 +3,7 @@
  * Turn activity index (played vs quiet): GET .../turns — used for picker / prev-next.
  * Full narrative turn-report endpoint remains optional; this stays the offline assembler.
  */
+import { buildRecapHeadline } from "../../shared/recapHeadline.mjs";
 import { agentLabel, agentLabelFromId, tradePartyLabel } from "../utils/agentLabel.js";
 import { eliminationCause, eliminationSummary } from "../utils/elimination.js";
 
@@ -92,16 +93,11 @@ export function buildTurnReport({
     }))
     .sort((a, b) => String(a.name).localeCompare(String(b.name)));
 
-  let headline = `Cycle ${turn}`;
-  if (eliminatedThisTurn.length > 0) {
-    headline += ` — ${eliminatedThisTurn.length} cradle${eliminatedThisTurn.length === 1 ? "" : "s"} eliminated`;
-  } else if (edges.length > 0) {
-    headline += ` — ${edges.length} transfer${edges.length === 1 ? "" : "s"} settled`;
-  } else if (quotes.length > 0) {
-    headline += ` — public negotiation`;
-  } else {
-    headline += ` — quiet cycle`;
-  }
+  const headline = buildRecapHeadline(turn, {
+    eliminationCount: eliminatedThisTurn.length,
+    tradeCount: edges.length,
+    messageCount: quotes.length,
+  });
 
   return {
     turn,

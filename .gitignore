@@ -7,6 +7,7 @@ node_modules/
 /dist/
 /build/
 /.vite/
+/server/og-runtime.json
 
 # Environment files (authoritative: .env.main / .env.development; transient .env from npm env:sync)
 .env

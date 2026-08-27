@@ -6,6 +6,9 @@ import { buildTurnReport } from "../api/turnReport.js";
 import { TurnRecapView } from "../components/recap/TurnRecapView.jsx";
 import { useGameEvents } from "../hooks/useGameEvents.js";
 import { env } from "../config/env.js";
+import { campaign } from "../config/campaign.js";
+import { recapDocumentTitle, recapOgDescription } from "../../shared/recapHeadline.mjs";
+import { setPageMetaOverrides } from "../utils/pageMetaOverrides.js";
 import {
   buildVisibleTurns,
   nearestNextTurn,
@@ -27,6 +30,21 @@ export function TurnRecapPage() {
   const { currentTurn, visible } = useMemo(() => buildVisibleTurns(activity), [activity]);
   const prevTurn = nearestPrevTurn(selectedTurn, visible);
   const nextTurn = nearestNextTurn(selectedTurn, visible);
+
+  useEffect(() => {
+    if (!report?.headline) {
+      setPageMetaOverrides(null);
+      return undefined;
+    }
+    setPageMetaOverrides({
+      title: recapDocumentTitle(report.headline, env.title),
+      description: recapOgDescription(report.turn, {
+        season: campaign.season,
+        siteName: env.title,
+      }),
+    });
+    return () => setPageMetaOverrides(null);
+  }, [report]);
 
   const load = useCallback(async () => {
     if (!gameId || !Number.isFinite(selectedTurn) || selectedTurn < 1) {

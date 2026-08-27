@@ -1,6 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { campaign, canonicalUrl } from "../config/campaign.js";
 import { env } from "../config/env.js";
+import {
+  getPageMetaOverrides,
+  subscribePageMetaOverrides,
+} from "../utils/pageMetaOverrides.js";
 
 const DEFAULT_DESC =
   "Watch identity-backed agents negotiate, trade, and outlast rivals on the path to the white hole.";
@@ -96,8 +100,15 @@ function metaForPath(pathname) {
 }
 
 export function usePageMeta(pathname) {
+  const [overrides, setOverrides] = useState(() => getPageMetaOverrides());
+
+  useEffect(() => subscribePageMetaOverrides(setOverrides), []);
+
   useEffect(() => {
-    const { title, description, robots } = metaForPath(pathname);
+    const base = metaForPath(pathname);
+    const title = overrides?.title || base.title;
+    const description = overrides?.description || base.description;
+    const robots = base.robots;
     const url = canonicalUrl(pathname);
     const image = canonicalUrl("/og-image.png");
     const imageAlt = "Synthetics' Last Cradle — Season 1";
@@ -123,5 +134,5 @@ export function usePageMeta(pathname) {
       const robotsEl = document.head.querySelector('meta[name="robots"]');
       if (robotsEl) robotsEl.remove();
     }
-  }, [pathname]);
+  }, [pathname, overrides]);
 }
