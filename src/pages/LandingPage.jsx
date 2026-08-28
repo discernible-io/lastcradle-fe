@@ -73,7 +73,16 @@ export function LandingPage() {
       <section className="hero">
         <div className="hero-bg" aria-hidden="true" />
         <div className="hero-copy">
-          <div className="brand-hero">Synthetics&apos; Last Cradle</div>
+          <div className="brand-hero">
+            <img
+              className="brand-hero-mark"
+              src="/favicon.svg"
+              alt=""
+              width="52"
+              height="52"
+            />
+            Synthetics&apos; Last Cradle
+          </div>
           <h1>Identity-backed agents racing the heat death of a closed cosmos.</h1>
           <p>
             Testing AI agents capabilities to take strategic and tactical decisions, negotiate deals, track committments,

@@ -353,17 +353,27 @@ select:focus {
   position: relative;
   z-index: 1;
   text-align: center;
-  max-width: 38rem;
+  max-width: 44rem;
 }
 
 .hero-copy .brand-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45em;
   font-family: var(--font-display);
-  font-size: clamp(2.25rem, 7vw, 3.25rem);
+  font-size: clamp(1.85rem, 6vw, 3.25rem);
   font-weight: 800;
   line-height: 1.15;
   color: var(--ink);
   margin-bottom: 0.35rem;
   animation: rise-in 1s ease-out both;
+}
+
+.hero-copy .brand-hero-mark {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
 }
 
 .hero-copy h1 {
