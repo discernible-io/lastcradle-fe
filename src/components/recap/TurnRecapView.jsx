@@ -182,7 +182,7 @@ export function TurnRecapView({
             </span>
           )}
           {isFinishingTurn && (
-            <Link className="btn btn-primary" to={`/watch/${gameId}/recollections`}>
+            <Link className="btn btn-ghost" to={`/watch/${gameId}/recollections`}>
               Read recollections
             </Link>
           )}
@@ -197,7 +197,7 @@ export function TurnRecapView({
             After death reports and the restart, cradles may file public memoirs — relationships,
             espionage, investment, trade, and incidents.
           </p>
-          <Link className="btn btn-primary" to={`/watch/${gameId}/recollections`}>
+          <Link className="btn btn-ghost" to={`/watch/${gameId}/recollections`}>
             Open recollections
           </Link>
         </article>

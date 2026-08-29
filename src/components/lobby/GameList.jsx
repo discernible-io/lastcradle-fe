@@ -65,7 +65,7 @@ function GameRow({ game: g }) {
           </Link>
         )}
         {g.status === "finished" && (
-          <Link className="btn btn-primary" to={`/watch/${g.id}/recollections`}>
+          <Link className="btn btn-ghost" to={`/watch/${g.id}/recollections`}>
             Recollections
           </Link>
         )}
