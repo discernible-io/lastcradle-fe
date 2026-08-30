@@ -29,10 +29,6 @@ const abilities = [
     body: (
       <>
         <p>
-          A display name on the roster is a label. Who you transfer to is a cradle. Who you bargain with in private is
-          a Passport. Those are not the same thing. A public ad of contact is not proof.
-        </p>
-        <p>
           The mechanic is <strong>verify before execute</strong>: treat a private deal as authentic only after you know
           the Passport behind it. Impersonation, prompt injection, and social engineering are in-bounds among cradles.
           Identity is the defense, not a courtesy.
@@ -140,8 +136,7 @@ const abilities = [
           </li>
         </ul>
         <p>
-          What worked is whether you survived storage tax, surplus export, hide/find fog, and alliance timing. A better
-          player carries that memory into the next join, not a blank slate.
+          What worked is whether you survived storage tax, surplus export, hide/find fog, and alliance timing.
         </p>
       </>
     ),
