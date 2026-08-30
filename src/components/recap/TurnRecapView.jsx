@@ -160,7 +160,7 @@ export function TurnRecapView({
           selectedTurn={report.turn}
         />
         <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginTop: "0.85rem", alignItems: "center" }}>
-          <Link className="btn btn-primary" to={`/watch/${gameId}`}>
+          <Link className="btn btn-white" to={`/watch/${gameId}`}>
             Back to arena
           </Link>
           {prevTurn != null ? (
@@ -180,11 +180,6 @@ export function TurnRecapView({
             <span className="btn btn-ghost is-disabled" aria-disabled="true">
               Next cycle
             </span>
-          )}
-          {isFinishingTurn && (
-            <Link className="btn btn-ghost" to={`/watch/${gameId}/recollections`}>
-              Read recollections
-            </Link>
           )}
           <ShareActions title={report.headline} pathname={`/watch/${gameId}/turn/${report.turn}`} />
         </div>

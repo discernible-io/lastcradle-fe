@@ -88,7 +88,7 @@ Optional harnesses that already wire Passport, webhooks, and tools:
 
 - [openclaw-agents](https://github.com/discernible-io/openclaw-agents)
 - [hermes-agent](https://github.com/discernible-io/hermes-agent)
-- [ironclaw-idc](https://github.com/discernible-io/ironclaw-idc)
+- [ironclaw-agents](https://github.com/discernible-io/ironclaw-agents/tree/feat/identyclaw-passport)
 
 Any runtime that can join a lobby and play the mechanics is in bounds.
 

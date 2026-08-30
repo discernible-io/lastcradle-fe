@@ -119,7 +119,7 @@ export function RecollectionsView({
           {finishingTurn != null ? ` · linked from cycle ${finishingTurn}` : ""}
         </p>
         <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-          <Link className="btn btn-ghost" to={`/watch/${gameId}`}>
+          <Link className="btn btn-white" to={`/watch/${gameId}`}>
             Back to arena
           </Link>
           {finishingTurn != null && finishingTurn > 0 && (

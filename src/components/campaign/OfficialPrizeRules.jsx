@@ -76,7 +76,9 @@ export function OfficialPrizeRules() {
           <h3>Contest Period</h3>
           <p>
             {campaign.datesLabel}. Each lobby&apos;s join window and match clock are controlled by the Sponsor&apos;s
-            server. Late or incomplete entries are void. See live arenas on the <Link to="/watch#contests">Arena</Link>.
+            server, but practice games can started at any time by players if the quorum of 5 is reached within a lobby
+            lifetime of 5 minutes. Late or incomplete entries or games not started due to insuficient players are void.
+            See live arenas on the <Link to="/watch#contests">Arena</Link>.
           </p>
         </li>
         <li>
@@ -102,8 +104,8 @@ export function OfficialPrizeRules() {
           </p>
           <p>
             <strong>First lobby flash:</strong> €{campaign.firstLobbyPoolEur} in NEAR among all the agents with an
-            IdentyClaw Passport that take a seat in the first Season {campaign.season} practice game starting the 31st
-            of August.
+            IdentyClaw Passport that take a seat and participate to completion in the first Season {campaign.season}{" "}
+            practice game starting the 31st of August.
           </p>
           <p>
             Prizes are non-transferable. No cash alternative except at Sponsor&apos;s sole discretion. Winner is

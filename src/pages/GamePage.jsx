@@ -61,15 +61,24 @@ const LORE_BLOCKS = [
   ["conflict", "Conflict", "conflict"],
 ];
 
+function localizeLore(text) {
+  if (typeof text !== "string") return text;
+  return text
+    .replace(/Reversal is a theorem, not a birth\.\s*/g, "")
+    .replace("by a solitary god-child", "by a single destined cradle")
+    .replace("after 55 cycles", "after a finite number of cycles")
+    .trim();
+}
+
 function loreBlocks(narrative) {
   return LORE_BLOCKS.filter(([key]) => {
     const v = narrative?.[key];
     return typeof v === "string" && v.trim().length > 0;
-  }).map(([key, label, icon]) => ({ key, label, icon, body: narrative[key].trim() }));
+  }).map(([key, label, icon]) => ({ key, label, icon, body: localizeLore(narrative[key]) }));
 }
 
 function discoveryLore(resolution) {
-  const api = typeof resolution.discovery === "string" ? resolution.discovery.trim() : "";
+  const api = localizeLore(typeof resolution.discovery === "string" ? resolution.discovery : "");
   const app = resolution.application && typeof resolution.application === "object" ? resolution.application : {};
   const prime = typeof app.primeContribution === "string" ? app.primeContribution.trim() : "";
   const co = typeof app.coCradle === "string" ? app.coCradle.trim() : "";
@@ -102,16 +111,16 @@ function resolutionBlocks(resolution) {
   if (!resolution || typeof resolution !== "object") return [];
   const blocks = [];
   if (resolution.summary)
-    blocks.push({ key: "summary", label: "Resolution", icon: "resolution", body: resolution.summary });
+    blocks.push({ key: "summary", label: "Resolution", icon: "resolution", body: localizeLore(resolution.summary) });
   if (resolution.discovery)
     blocks.push({ key: "discovery", label: "Discovery", icon: "discovery", body: discoveryLore(resolution) });
   const app = resolution.application;
   if (app?.summary)
-    blocks.push({ key: "application", label: "White hole", icon: "application", body: app.summary });
+    blocks.push({ key: "application", label: "White hole", icon: "application", body: localizeLore(app.summary) });
   if (app?.whiteHole)
-    blocks.push({ key: "whiteHole", label: "Restart", icon: "whiteHole", body: app.whiteHole });
+    blocks.push({ key: "whiteHole", label: "Restart", icon: "whiteHole", body: localizeLore(app.whiteHole) });
   if (resolution.prizeOrder)
-    blocks.push({ key: "prizeOrder", label: "Honors", icon: "prizeOrder", body: resolution.prizeOrder });
+    blocks.push({ key: "prizeOrder", label: "Honors", icon: "prizeOrder", body: localizeLore(resolution.prizeOrder) });
   return blocks;
 }
 

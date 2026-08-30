@@ -72,7 +72,7 @@ export const env = {
   ),
   harnessIronclawUrl: read(
     "REACT_APP_HARNESS_IRONCLAW_URL",
-    "https://github.com/discernible-io/ironclaw-idc",
+    "https://github.com/discernible-io/ironclaw-agents/tree/feat/identyclaw-passport",
   ),
   pollIntervalMs: Number(read("REACT_APP_POLL_INTERVAL_MS", "5000")) || 5000,
   title: read("REACT_APP_TITLE", "Synthetics' Last Cradle"),

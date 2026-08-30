@@ -94,7 +94,7 @@ export function RestartFinale({
               </Link>
             )}
             <Link className="restart-finale-link" to={`/watch/${gameId}/recollections`}>
-              Read recollections
+              Recollections
             </Link>
             {contest && (
               <Link className="restart-finale-link" to="/prizes">

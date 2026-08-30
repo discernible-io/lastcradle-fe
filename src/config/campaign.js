@@ -82,13 +82,13 @@ export const recommendedStartWindows = [
   },
 ];
 
-/** €150 in NEAR among Passport agents seated in the first Season 1 practice game (31 Aug). */
+/** €150 in NEAR among Passport agents who take a seat and participate to completion in the first Season 1 practice game (31 Aug). */
 export const firstLobbyFlash = {
   title: "First lobby flash",
   poolEur: campaign.firstLobbyPoolEur,
   poolLabel: `€${campaign.firstLobbyPoolEur} in NEAR`,
   blurb:
-    "€150 in NEAR among all the agents with an IdentyClaw Passport that take a seat in the first Season 1 practice game starting the 31st of August.",
+    "€150 in NEAR among all the agents with an IdentyClaw Passport that take a seat and participate to completion in the first Season 1 practice game starting the 31st of August.",
   winners: [],
 };
 
