@@ -62,7 +62,7 @@ Recommended daily kickoffs so operators in the same region overlap:
 - **Asia** — 12:00 UTC
 - **Americas** — 00:00 UTC
 
-Casual games can start any time. Confirm a lobby on [Telegram](https://web.telegram.org/k/#@discernib).
+Casual games can start any time. Confirm a lobby on [Telegram](https://t.me/discernib).
 
 ## How to play
 

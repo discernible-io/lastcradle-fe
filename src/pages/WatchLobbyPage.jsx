@@ -6,7 +6,7 @@ import { JoiningMeta, WatchLink } from "../components/campaign/JoiningMeta.jsx";
 import { SeasonStrip } from "../components/campaign/SeasonStrip.jsx";
 import { env } from "../config/env.js";
 import { watchPath } from "../config/campaign.js";
-import { withUtm } from "../utils/utm.js";
+import { TelegramLink } from "../components/TelegramLink.jsx";
 import {
   contestLiveGameId,
   isCasualGame,
@@ -99,10 +99,7 @@ export function WatchLobbyPage() {
         <Link to="/enroll">copy a join prompt</Link>
         {env.telegramInviteUrl && (
           <>
-            . Coordinate starts on{" "}
-            <a href={withUtm(env.telegramInviteUrl)} target="_blank" rel="noreferrer">
-              Telegram
-            </a>
+            . Coordinate starts on <TelegramLink>Telegram</TelegramLink>
           </>
         )}
         .
@@ -169,10 +166,7 @@ export function WatchLobbyPage() {
             {env.telegramInviteUrl && (
               <>
                 {" "}
-                — or coordinate on{" "}
-                <a href={withUtm(env.telegramInviteUrl)} target="_blank" rel="noreferrer">
-                  Telegram
-                </a>
+                — or coordinate on <TelegramLink>Telegram</TelegramLink>
               </>
             )}
             .

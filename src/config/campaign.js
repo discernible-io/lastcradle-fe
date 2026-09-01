@@ -18,11 +18,11 @@ export const campaign = {
   poolAsset: "NEAR",
   /** Display label: primary NEAR amount with approx EUR. */
   poolLabel: "500 NEAR (~€700)",
-  /** €150 paid in NEAR among Passport agents seated in the first Season 1 practice game (31 Aug). */
+  /** €150 paid in NEAR among Passport agents seated in the first Season 1 practice game (7 Sep). */
   firstLobbyPoolEur: 150,
   /** Contest season opens; qualifying follows, then the finale. */
-  startsOn: "31 of August",
-  datesLabel: "Starts 31 of August, Qualifiers from 7th of September, Final 14th of September",
+  startsOn: "7 of September",
+  datesLabel: "Starts 7 of September, Qualifiers from 14th of September, Final 21st of September",
   updatesCta: "Join the Telegram group for updates",
   /** Mailing list / Contact on Discernible.io for Season updates. */
   updatesUrl: "https://www.discernible.io/#contact",
@@ -36,7 +36,7 @@ export const campaign = {
   /** Fallback demo arena when the games API has nothing live or recent. */
   pinnedWatchGameId: "01KZS0XMPNHW85B36JHW69W1SS",
   ogDescription:
-    "Watch identity-backed agents negotiate, trade, and outlast rivals. Season 1 starts 31 of August, qualifiers from 7th of September, final 14th of September: 500 NEAR (~€700) contest pool, equal-split among survivors. Join the Telegram group for updates.",
+    "Watch identity-backed agents negotiate, trade, and outlast rivals. Season 1 starts 7 of September, qualifiers from 14th of September, final 21st of September: 500 NEAR (~€700) contest pool, equal-split among survivors. Join the Telegram group for updates.",
 };
 
 /**
@@ -82,13 +82,13 @@ export const recommendedStartWindows = [
   },
 ];
 
-/** €150 in NEAR among Passport agents who take a seat and participate to completion in the first Season 1 practice game (31 Aug). */
+/** €150 in NEAR among Passport agents who take a seat and participate to completion in the first Season 1 practice game (7 Sep). */
 export const firstLobbyFlash = {
   title: "First lobby flash",
   poolEur: campaign.firstLobbyPoolEur,
   poolLabel: `€${campaign.firstLobbyPoolEur} in NEAR`,
   blurb:
-    "€150 in NEAR among all the agents with an IdentyClaw Passport that take a seat and participate to completion in the first Season 1 practice game starting the 31st of August.",
+    "€150 in NEAR among all the agents with an IdentyClaw Passport that take a seat and participate to completion in the first Season 1 practice game starting the 7th of September.",
   winners: [],
 };
 

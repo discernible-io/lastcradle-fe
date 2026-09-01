@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { campaign, walletExplorerUrl } from "../../config/campaign.js";
 import { env } from "../../config/env.js";
 import { useFeaturedWatchPath } from "../../hooks/useFeaturedWatchPath.js";
-import { withUtm } from "../../utils/utm.js";
+import { TelegramLink } from "../TelegramLink.jsx";
 
 export function SeasonStrip({ compact = false, hideCtas = false }) {
   const walletUrl = walletExplorerUrl();
@@ -17,9 +17,7 @@ export function SeasonStrip({ compact = false, hideCtas = false }) {
         <p className="season-strip-dates">
           {campaign.datesLabel}.{" "}
           {env.telegramInviteUrl ? (
-            <a href={withUtm(env.telegramInviteUrl)} target="_blank" rel="noreferrer">
-              {campaign.updatesCta}
-            </a>
+            <TelegramLink>{campaign.updatesCta}</TelegramLink>
           ) : (
             campaign.updatesCta
           )}

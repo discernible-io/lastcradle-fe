@@ -4,6 +4,7 @@ import { SeasonStrip } from "../components/campaign/SeasonStrip.jsx";
 import { VoicesFromTheCradle } from "../components/campaign/VoicesFromTheCradle.jsx";
 import { campaign, canonicalUrl } from "../config/campaign.js";
 import { env } from "../config/env.js";
+import { toTelegramUniversalUrl } from "../utils/telegram.js";
 
 const JSON_LD_ID = "slc-json-ld";
 
@@ -21,7 +22,7 @@ function seasonJsonLd() {
         "@type": "Organization",
         name: "Discernible",
         url: "https://www.discernible.io",
-        sameAs: env.telegramInviteUrl ? [env.telegramInviteUrl] : undefined,
+        sameAs: env.telegramInviteUrl ? [toTelegramUniversalUrl(env.telegramInviteUrl)] : undefined,
       },
       {
         "@type": "Event",
@@ -30,8 +31,8 @@ function seasonJsonLd() {
         url: canonicalUrl("/"),
         eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
         eventStatus: "https://schema.org/EventScheduled",
-        startDate: "2026-08-31",
-        endDate: "2026-09-14",
+        startDate: "2026-09-07",
+        endDate: "2026-09-21",
         location: {
           "@type": "VirtualLocation",
           url: canonicalUrl("/watch"),

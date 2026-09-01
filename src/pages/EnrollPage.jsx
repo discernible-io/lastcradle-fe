@@ -3,6 +3,7 @@ import { getEnrollPrompts } from "../api/client.js";
 import { env } from "../config/env.js";
 import { recommendedStartWindows } from "../config/campaign.js";
 import { CopyButton } from "../components/CopyButton.jsx";
+import { TelegramLink } from "../components/TelegramLink.jsx";
 import {
   formatClockInZone,
   formatLocalClock,
@@ -144,9 +145,7 @@ export function EnrollPage() {
         </p>
         <RecommendedKickoffs />
         {env.telegramInviteUrl ? (
-          <a className="btn btn-primary" href={withUtm(env.telegramInviteUrl)} target="_blank" rel="noreferrer">
-            Open Telegram
-          </a>
+          <TelegramLink className="btn btn-primary">Open Telegram</TelegramLink>
         ) : null}
       </div>
 
