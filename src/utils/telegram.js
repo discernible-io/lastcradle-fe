@@ -3,13 +3,35 @@ import { withUtm } from "./utm.js";
 const WEB_TELEGRAM_HOST = /^(?:www\.)?web\.telegram\.org$/i;
 const T_ME_HOST = /^(?:www\.)?(?:t\.me|telegram\.me)$/i;
 const HASH_USERNAME = /^#@([A-Za-z0-9_]{3,})$/;
+const T_ME_USERNAME = /^\/(?:s\/)?([A-Za-z0-9_]{3,32})\/?$/;
+const RESERVED_T_ME_PATHS = /^(joinchat|addstickers|proxy|socks|share|c|iv)$/i;
 
 /** IdentyClaw Concierge bot used on discernible.io and the Join page. */
 export const TELEGRAM_CONCIERGE_BOT = "identyclawconcierge_bot";
 
+function telegramPublicHandle(url) {
+  if (!url || typeof url !== "string") return null;
+  let parsed;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return null;
+  }
+
+  if (WEB_TELEGRAM_HOST.test(parsed.hostname)) {
+    const match = parsed.hash.match(HASH_USERNAME);
+    return match ? match[1] : null;
+  }
+
+  if (!T_ME_HOST.test(parsed.hostname)) return null;
+  const match = parsed.pathname.match(T_ME_USERNAME);
+  if (!match || RESERVED_T_ME_PATHS.test(match[1])) return null;
+  return match[1];
+}
+
 /**
- * Telegram Web K (`web.telegram.org/k/#@user`) only works in desktop browsers.
- * `t.me/user` is the universal link: native app on mobile, web/desktop otherwise.
+ * Canonical `t.me` URL for schema/copy. Click handlers should use `telegramInviteHref`
+ * so desktop opens Web K and mobile hands off to the native app.
  */
 export function toTelegramUniversalUrl(url) {
   if (!url || typeof url !== "string") return url;
@@ -38,8 +60,21 @@ export function toTelegramUniversalUrl(url) {
   return next.toString();
 }
 
+/** Desktop Telegram Web K deep link (`web.telegram.org/k/#@user`). */
+export function toTelegramWebKUrl(url) {
+  const handle = telegramPublicHandle(url);
+  if (!handle) return url;
+  return `https://web.telegram.org/k/#@${handle}`;
+}
+
+/**
+ * Channel / group invite: same split as Lemuel's concierge bot.
+ * Desktop: Web K opens the chat. Mobile: t.me so the native app can take over.
+ */
 export function telegramInviteHref(url) {
-  return withUtm(toTelegramUniversalUrl(url));
+  if (!url) return url;
+  const resolved = prefersNativeTelegram() ? toTelegramUniversalUrl(url) : toTelegramWebKUrl(url);
+  return withUtm(resolved);
 }
 
 /** Same-tab navigation so iOS/Android can hand `t.me` off to the Telegram app. */

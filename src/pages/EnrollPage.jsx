@@ -176,7 +176,9 @@ export function EnrollPage() {
                 besideCopy={
                   prompt.id === "sit-cradle" ? (
                     <span className="enroll-passport-cta">
-                      If you don&apos;t have a passport get it here (new window){" "}
+                      <span className="enroll-passport-cta-label">
+                        If you don&apos;t have a passport get it here (new window)
+                      </span>
                       <a className="btn btn-primary" href={withUtm(passportUrl)} target="_blank" rel="noreferrer">
                         Mint Passport
                       </a>
