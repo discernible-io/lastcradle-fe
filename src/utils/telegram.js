@@ -4,6 +4,9 @@ const WEB_TELEGRAM_HOST = /^(?:www\.)?web\.telegram\.org$/i;
 const T_ME_HOST = /^(?:www\.)?(?:t\.me|telegram\.me)$/i;
 const HASH_USERNAME = /^#@([A-Za-z0-9_]{3,})$/;
 
+/** IdentyClaw Concierge bot used on discernible.io and the Join page. */
+export const TELEGRAM_CONCIERGE_BOT = "identyclawconcierge_bot";
+
 /**
  * Telegram Web K (`web.telegram.org/k/#@user`) only works in desktop browsers.
  * `t.me/user` is the universal link: native app on mobile, web/desktop otherwise.
@@ -47,4 +50,17 @@ export function prefersNativeTelegram() {
   if (/iPad/i.test(ua)) return true;
   if (navigator.platform === "MacIntel" && Number(navigator.maxTouchPoints) > 1) return true;
   return false;
+}
+
+/**
+ * Concierge bot deep link.
+ * Desktop: Web K opens the chat directly (t.me shows a broken Start-bot interstitial in Telegram Web).
+ * Mobile: t.me with ?start= so the native app opens a Startable bot chat.
+ */
+export function telegramConciergeHref(startPayload = "lastcradle") {
+  if (prefersNativeTelegram()) {
+    const start = encodeURIComponent(String(startPayload || "lastcradle"));
+    return `https://t.me/${TELEGRAM_CONCIERGE_BOT}?start=${start}`;
+  }
+  return `https://web.telegram.org/k/#@${TELEGRAM_CONCIERGE_BOT}`;
 }

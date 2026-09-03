@@ -7,7 +7,6 @@ export const concierge = {
   photoUrl: "https://nbg1.your-objectstorage.com/identyclaw/lemuel.png",
   emailHref: "mailto:identyclaw@agenthood.me?subject=IdentyClaw%20Concierge",
   discordUrl: "https://discord.gg/J8XG923PP",
-  telegramUrl: "https://web.telegram.org/k/#@identyclawconcierge_bot",
 };
 
 function EmailIcon() {
@@ -71,7 +70,7 @@ export function ConciergeContact({ blurb }) {
           <DiscordIcon />
           <span className="concierge-label">Discord</span>
         </a>
-        <TelegramLink className="concierge-link" href={concierge.telegramUrl} aria-label="Telegram">
+        <TelegramLink className="concierge-link" concierge aria-label="Telegram">
           <TelegramIcon />
           <span className="concierge-label">Telegram</span>
         </TelegramLink>

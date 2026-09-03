@@ -1,8 +1,18 @@
 import { env } from "../config/env.js";
-import { prefersNativeTelegram, telegramInviteHref } from "../utils/telegram.js";
+import {
+  prefersNativeTelegram,
+  telegramConciergeHref,
+  telegramInviteHref,
+} from "../utils/telegram.js";
 
-export function TelegramLink({ href = env.telegramInviteUrl, className, children, ...rest }) {
-  const resolved = telegramInviteHref(href);
+export function TelegramLink({
+  href = env.telegramInviteUrl,
+  className,
+  children,
+  concierge = false,
+  ...rest
+}) {
+  const resolved = concierge ? telegramConciergeHref() : telegramInviteHref(href);
   if (!resolved) return null;
   const inPlace = prefersNativeTelegram();
   return (
