@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getEnrollPrompts } from "../api/client.js";
 import { env } from "../config/env.js";
 import { recommendedStartWindows } from "../config/campaign.js";
+import { ConciergeContact } from "../components/ConciergeContact.jsx";
 import { CopyButton } from "../components/CopyButton.jsx";
 import { TelegramLink } from "../components/TelegramLink.jsx";
 import {
@@ -133,6 +134,13 @@ export function EnrollPage() {
         find peers, talk (including private channels), HOLA if available, negotiate, reputation, honor or defect,
         hide/find, and webhook-or-cron automation. The API will not supply one.
       </p>
+
+      <section className="panel enroll-concierge">
+        <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>
+          Need help joining?
+        </div>
+        <ConciergeContact blurb="Stuck on Passport mint, login, or seating a cradle? Reach Lemuel on email, Discord, or Telegram." />
+      </section>
 
       <div className="panel enroll-telegram">
         <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>

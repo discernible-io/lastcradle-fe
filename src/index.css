@@ -1577,6 +1577,96 @@ select:focus {
   max-width: 960px;
 }
 
+.enroll-concierge {
+  padding: 1rem 1.15rem 1.25rem;
+  margin: 1.1rem 0 1.25rem;
+}
+
+.concierge-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: 0.75rem;
+}
+
+.concierge-photo {
+  width: 7.5rem;
+  height: 7.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: var(--shadow-lg);
+  border: 3px solid var(--void-0);
+  outline: 1px solid var(--panel-border);
+}
+
+.concierge-name {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 1rem 0 0.15rem;
+}
+
+.concierge-role {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-mute);
+  margin: 0 0 0.65rem;
+}
+
+.concierge-blurb {
+  margin: 0 0 1rem;
+  max-width: 28rem;
+  color: var(--ink-dim);
+  font-size: 0.9rem;
+}
+
+.concierge-channels {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.concierge-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 4rem;
+  padding: 0.5rem 0.4rem;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: background 0.2s, color 0.2s;
+}
+
+.concierge-link:hover,
+.concierge-link:focus-visible {
+  background: var(--void-1);
+  color: var(--energy);
+  text-decoration: none;
+}
+
+.concierge-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.concierge-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--ink-mute);
+}
+
+.concierge-link:hover .concierge-label,
+.concierge-link:focus-visible .concierge-label {
+  color: var(--energy);
+}
+
 .enroll-telegram {
   padding: 1rem 1.15rem;
   margin: 1.1rem 0 1.25rem;
