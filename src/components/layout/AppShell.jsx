@@ -4,7 +4,6 @@ import { TelegramLink } from "../TelegramLink.jsx";
 
 const links = [
   { to: "/about", label: "About" },
-  { to: "/identyclaw", label: "IdentyClaw" },
   { to: "/game", label: "The Game" },
   { to: "/watch", label: "Arena" },
   { to: "/enroll", label: "Join" },
@@ -32,6 +31,9 @@ export function AppShell({ children, bleed = false }) {
               Telegram
             </TelegramLink>
           )}
+          <NavLink to="/identyclaw" className={({ isActive }) => (isActive ? "active" : undefined)}>
+            IdentyClaw
+          </NavLink>
         </nav>
         <span className="deploy-chip">{env.deployLabel}</span>
       </header>
