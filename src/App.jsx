@@ -6,6 +6,7 @@ import { WatchLobbyPage } from "./pages/WatchLobbyPage.jsx";
 import { PrizesPage } from "./pages/PrizesPage.jsx";
 import { EnrollPage } from "./pages/EnrollPage.jsx";
 import { AboutPage } from "./pages/AboutPage.jsx";
+import { IdentyClawPage } from "./pages/IdentyClawPage.jsx";
 import { GamePage } from "./pages/GamePage.jsx";
 import { NotFoundPage } from "./pages/NotFoundPage.jsx";
 import { usePageMeta } from "./hooks/usePageMeta.js";
@@ -107,6 +108,14 @@ export default function App() {
             element={
               <AppShell>
                 <AboutPage />
+              </AppShell>
+            }
+          />
+          <Route
+            path="/identyclaw"
+            element={
+              <AppShell>
+                <IdentyClawPage />
               </AppShell>
             }
           />

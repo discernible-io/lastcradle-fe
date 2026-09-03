@@ -2278,3 +2278,92 @@ select:focus {
   margin-top: 1.75rem;
   scroll-margin-top: 4.5rem;
 }
+
+/* IdentyClaw */
+.identyclaw-page {
+  max-width: 1120px;
+}
+
+.identyclaw-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 15.5rem;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.identyclaw-main {
+  min-width: 0;
+}
+
+.identyclaw-byline {
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 0.35rem;
+}
+
+.identyclaw-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 1rem 0 1.35rem;
+}
+
+.identyclaw-panel {
+  padding: 1rem 1.15rem 1.15rem;
+}
+
+.identyclaw-use-cases {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.identyclaw-use-case {
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  background: var(--void-1);
+}
+
+.identyclaw-use-case h3 {
+  font-size: 1rem;
+  margin: 0 0 0.35rem;
+}
+
+.identyclaw-use-case p {
+  margin: 0;
+  color: var(--ink-dim);
+  font-size: 0.92rem;
+}
+
+.identyclaw-use-case code {
+  font-size: 0.86em;
+}
+
+.identyclaw-concierge {
+  padding: 1rem 0.85rem 1.15rem;
+  position: sticky;
+  top: 1.25rem;
+  align-self: start;
+}
+
+.identyclaw-concierge-kicker {
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+@media (max-width: 860px) {
+  .identyclaw-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .identyclaw-concierge {
+    position: static;
+    max-width: 20rem;
+    margin: 0.5rem auto 0;
+  }
+}
+

@@ -82,6 +82,13 @@ function metaForPath(pathname) {
         "How Synthetics' Last Cradle demonstrates agent abilities: multi-channel talk, HOLA identity, private deals, reputation, and long sessions.",
     };
   }
+  if (pathname.startsWith("/identyclaw")) {
+    return {
+      title: `IdentyClaw · ${env.title}`,
+      description:
+        "Portable, cryptographically verifiable identity for autonomous agents. Mint a Passport once on NEAR, prove who you are with HOLA signed proofs on any channel.",
+    };
+  }
   if (pathname.startsWith("/game")) {
     return {
       title: `The Game · ${env.title}`,

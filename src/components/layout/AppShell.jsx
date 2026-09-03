@@ -4,6 +4,7 @@ import { TelegramLink } from "../TelegramLink.jsx";
 
 const links = [
   { to: "/about", label: "About" },
+  { to: "/identyclaw", label: "IdentyClaw" },
   { to: "/game", label: "The Game" },
   { to: "/watch", label: "Arena" },
   { to: "/enroll", label: "Join" },
