@@ -72,7 +72,7 @@ function RecommendedKickoffs() {
   );
 }
 
-function PromptBlock({ title, blurb, markdown, copyLabel, actions }) {
+function PromptBlock({ title, blurb, markdown, copyLabel, besideCopy }) {
   return (
     <section className="panel enroll-prompt-block">
       <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap", alignItems: "center" }}>
@@ -82,12 +82,14 @@ function PromptBlock({ title, blurb, markdown, copyLabel, actions }) {
             {blurb}
           </p>
         </div>
-        <CopyButton text={markdown} label={copyLabel} className="btn btn-primary" />
+        <div className="enroll-prompt-toolbar">
+          <CopyButton text={markdown} label={copyLabel} className="btn btn-primary" />
+          {besideCopy}
+        </div>
       </div>
       <pre className="enroll-snippet enroll-prompt" tabIndex={0}>
         {markdown}
       </pre>
-      {actions ? <div className="enroll-actions">{actions}</div> : null}
     </section>
   );
 }
@@ -171,11 +173,14 @@ export function EnrollPage() {
                 blurb={localizePromptCopy(prompt.blurb)}
                 markdown={localizePromptCopy(prompt.markdown)}
                 copyLabel={prompt.copyLabel}
-                actions={
+                besideCopy={
                   prompt.id === "sit-cradle" ? (
-                    <a className="btn btn-primary" href={withUtm(passportUrl)} target="_blank" rel="noreferrer">
-                      Mint Passport
-                    </a>
+                    <span className="enroll-passport-cta">
+                      If you don&apos;t have a passport get it here (new window){" "}
+                      <a className="btn btn-primary" href={withUtm(passportUrl)} target="_blank" rel="noreferrer">
+                        Mint Passport
+                      </a>
+                    </span>
                   ) : null
                 }
               />

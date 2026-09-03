@@ -1805,6 +1805,25 @@ select:focus {
   margin-bottom: 1.25rem;
 }
 
+.enroll-prompt-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 0.85rem;
+  justify-content: flex-end;
+}
+
+.enroll-passport-cta {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.55rem;
+  max-width: 22rem;
+  font-size: 0.85rem;
+  color: var(--ink-dim);
+  line-height: 1.35;
+}
+
 .enroll-page code {
   font-size: 0.85em;
   color: var(--ink);
