@@ -77,10 +77,12 @@ function PromptBlock({ title, blurb, markdown, copyLabel, besideCopy }) {
     <section className="panel enroll-prompt-block">
       <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap", alignItems: "center" }}>
         <div>
-          <h2 style={{ fontSize: "1.15rem", marginBottom: "0.25rem" }}>{title}</h2>
-          <p className="muted" style={{ margin: 0, fontSize: "0.9rem" }}>
-            {blurb}
-          </p>
+          <h2 style={{ fontSize: "1.15rem", marginBottom: blurb ? "0.25rem" : 0 }}>{title}</h2>
+          {blurb ? (
+            <p className="muted" style={{ margin: 0, fontSize: "0.9rem" }}>
+              {blurb}
+            </p>
+          ) : null}
         </div>
         <div className="enroll-prompt-toolbar">
           <CopyButton text={markdown} label={copyLabel} className="btn btn-primary" />
@@ -166,12 +168,14 @@ export function EnrollPage() {
               <PromptBlock
                 key={prompt.id}
                 title={prompt.title}
-                blurb={localizePromptCopy(prompt.blurb)}
+                blurb={null}
                 markdown={localizePromptCopy(prompt.markdown)}
                 copyLabel={
                   prompt.id === "sit-cradle"
                     ? "Copy the join game with passport prompt"
-                    : prompt.copyLabel
+                    : prompt.id === "isolated-tick"
+                      ? "Copy prompt for autonomous play"
+                      : prompt.copyLabel
                 }
                 besideCopy={
                   prompt.id === "sit-cradle" ? (
