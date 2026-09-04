@@ -205,7 +205,9 @@ export function TurnRecapView({
           orphans={report.nonParticipants || []}
           avatarOf={avatarOf}
         />
-        {(report.edges.length > 0 || (report.nonParticipants || []).length > 0) && (
+        {(report.edges.length > 0 ||
+          (report.failedEdges || []).length > 0 ||
+          (report.nonParticipants || []).length > 0) && (
           <div className="transfer-list">
             {groupTransfers(report.edges).map((group) => (
               <div
@@ -268,6 +270,47 @@ export function TurnRecapView({
                 ))}
               </div>
             ))}
+            {(report.failedEdges || []).length > 0 && (
+              <div className="transfer-group transfer-group-failed">
+                <div className="transfer-group-label">Failed transfers</div>
+                {(report.failedEdges || []).map((e) => (
+                  <div key={e.id} className="transfer-row-block is-failed">
+                    <div className="transfer-row">
+                      <span className="transfer-direction">
+                        <CradleAvatar
+                          agentId={e.from}
+                          name={e.fromName}
+                          avatarOf={avatarOf}
+                          brokenAvatars={brokenAvatars}
+                          setBrokenAvatars={setBrokenAvatars}
+                        />
+                        <strong>{e.fromName}</strong>
+                        <span className="transfer-arrow" aria-hidden="true">
+                          →
+                        </span>
+                        <CradleAvatar
+                          agentId={e.to}
+                          name={e.toName}
+                          avatarOf={avatarOf}
+                          brokenAvatars={brokenAvatars}
+                          setBrokenAvatars={setBrokenAvatars}
+                        />
+                        <strong>{e.toName}</strong>
+                        <span className="tag">failed</span>
+                        {e.combinedWithInvest && <span className="tag">+invest</span>}
+                      </span>
+                      <span className="transfer-resources">{resourceBits(e)}</span>
+                    </div>
+                    {e.errorMessage ? (
+                      <p className="transfer-error" title={e.errorMessage}>
+                        {e.errorMessage}
+                      </p>
+                    ) : null}
+                    {e.rationale && <p className="transfer-rationale">“{e.rationale}”</p>}
+                  </div>
+                ))}
+              </div>
+            )}
             {(report.nonParticipants || []).length > 0 && (
               <div className="transfer-group non-participants">
                 <div className="transfer-group-label">Did not trade</div>

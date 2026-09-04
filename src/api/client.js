@@ -44,8 +44,14 @@ export function listGames({ status, contestMode, limit = 40, offset = 0, signal 
   return apiGet(`/api/game/games?${q}`, { signal });
 }
 
-export function getGameState(gameId, { signal } = {}) {
-  return apiGet(`/api/game/games/${encodeURIComponent(gameId)}/state`, { signal });
+export function getGameState(gameId, { view, signal } = {}) {
+  const q = new URLSearchParams();
+  if (view) q.set("view", String(view));
+  const qs = q.toString();
+  return apiGet(
+    `/api/game/games/${encodeURIComponent(gameId)}/state${qs ? `?${qs}` : ""}`,
+    { signal },
+  );
 }
 
 export function getMessages(gameId, turn, { signal } = {}) {
@@ -53,9 +59,24 @@ export function getMessages(gameId, turn, { signal } = {}) {
   return apiGet(`/api/game/games/${encodeURIComponent(gameId)}/messages${q}`, { signal });
 }
 
-export function getTrades(gameId, turn, { signal } = {}) {
-  const q = turn == null ? "" : `?turn=${encodeURIComponent(turn)}`;
-  return apiGet(`/api/game/games/${encodeURIComponent(gameId)}/trades${q}`, { signal });
+/**
+ * Public transfer ledger. After resolve, pass the prior turn (or history=true) —
+ * default `turn` is game.current_turn and is often empty mid-negotiation.
+ * Optional toAgentId filters inbound legs for one recipient ULID.
+ */
+export function getTrades(gameId, turn, { history = false, toAgentId, signal } = {}) {
+  const q = new URLSearchParams();
+  if (history) {
+    q.set("history", "1");
+  } else if (turn != null && turn !== "") {
+    q.set("turn", String(turn));
+  }
+  if (toAgentId) q.set("toAgentId", String(toAgentId));
+  const qs = q.toString();
+  return apiGet(
+    `/api/game/games/${encodeURIComponent(gameId)}/trades${qs ? `?${qs}` : ""}`,
+    { signal },
+  );
 }
 
 /** Turn activity index. Optional playedOnly=true → only cycles with messages/trades/eliminations. */

@@ -66,7 +66,10 @@ export function TradeTicker({ trades = [], agents = [], tradesTurn = null }) {
             passportNameByRodit,
           );
           return (
-            <div key={t.id} className="ticker-row ticker-row-block">
+            <div
+              key={t.id}
+              className={`ticker-row ticker-row-block${t.status === "failed" ? " is-failed" : ""}`}
+            >
               <div className="ticker-row-main">
                 <span className="tag">{t.status}</span>
                 {t.combinedWithInvest && <span className="tag">+invest</span>}
@@ -84,6 +87,11 @@ export function TradeTicker({ trades = [], agents = [], tradesTurn = null }) {
                   </span>
                 )}
               </div>
+              {t.status === "failed" && t.errorMessage ? (
+                <div className="ticker-error" title={t.errorMessage}>
+                  {t.errorMessage}
+                </div>
+              ) : null}
               <DealSnippets snippets={snippets} />
             </div>
           );

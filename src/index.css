@@ -981,6 +981,18 @@ select:focus {
   flex-wrap: wrap;
 }
 
+.ticker-row.is-failed {
+  opacity: 0.92;
+}
+
+.ticker-error,
+.transfer-error {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--danger);
+  line-height: 1.35;
+}
+
 .deal-snippets {
   display: flex;
   flex-direction: column;
@@ -1021,6 +1033,10 @@ select:focus {
   font-size: 0.78rem;
   color: var(--ink-dim);
   font-style: italic;
+}
+
+.transfer-row-block.is-failed .transfer-row {
+  opacity: 0.9;
 }
 
 .survival-pressure {

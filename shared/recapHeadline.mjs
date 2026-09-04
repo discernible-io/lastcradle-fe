@@ -12,7 +12,7 @@ export function buildRecapHeadline(
   if (eliminationCount > 0) {
     headline += ` — ${eliminationCount} cradle${eliminationCount === 1 ? "" : "s"} eliminated`;
   } else if (tradeCount > 0) {
-    headline += ` — ${tradeCount} transfer${tradeCount === 1 ? "" : "s"} settled`;
+    headline += ` — ${tradeCount} transfer${tradeCount === 1 ? "" : "s"}`;
   } else if (messageCount > 0) {
     headline += " — public negotiation";
   } else {

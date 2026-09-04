@@ -32,24 +32,29 @@ export function buildTurnReport({
       at: m.created_at || m.createdAt,
     }));
 
-  const edges = trades
-    .filter((t) => t.status === "executed" || t.status === "pending")
-    .map((t) => ({
-      id: t.id,
-      from: t.fromAgentId,
-      to: t.toAgentId,
-      fromName: tradePartyLabel(t.fromAgentId, t.fromDisplayName, agents, passportNameByRodit),
-      toName: tradePartyLabel(t.toAgentId, t.toDisplayName, agents, passportNameByRodit),
-      energy: Number(t.energy) || 0,
-      water: Number(t.water) || 0,
-      compute: Number(t.compute) || 0,
-      rationale: t.rationale || null,
-      snippets: t.privateDealSnippets || [],
-      combinedWithInvest: Boolean(t.combinedWithInvest),
-      transferIndex: t.transferIndex ?? null,
-      transferCount: t.transferCount ?? null,
-      volume: (Number(t.energy) || 0) + (Number(t.water) || 0) + (Number(t.compute) || 0),
-    }));
+  const mapLeg = (t) => ({
+    id: t.id,
+    from: t.fromAgentId,
+    to: t.toAgentId,
+    fromName: tradePartyLabel(t.fromAgentId, t.fromDisplayName, agents, passportNameByRodit),
+    toName: tradePartyLabel(t.toAgentId, t.toDisplayName, agents, passportNameByRodit),
+    energy: Number(t.energy) || 0,
+    water: Number(t.water) || 0,
+    compute: Number(t.compute) || 0,
+    status: t.status || null,
+    errorMessage: t.errorMessage || null,
+    rationale: t.rationale || null,
+    snippets: t.privateDealSnippets || [],
+    combinedWithInvest: Boolean(t.combinedWithInvest),
+    transferIndex: t.transferIndex ?? null,
+    transferCount: t.transferCount ?? null,
+    volume: (Number(t.energy) || 0) + (Number(t.water) || 0) + (Number(t.compute) || 0),
+  });
+
+  // Match GET .../turns tradeCount semantics: public legs with status !== skipped.
+  const publicLegs = trades.filter((t) => t.status && t.status !== "skipped").map(mapLeg);
+  const edges = publicLegs.filter((t) => t.status === "executed" || t.status === "pending");
+  const failedEdges = publicLegs.filter((t) => t.status === "failed");
 
   const netFlow = {};
   const bump = (agentId, energy, water, compute) => {
@@ -75,11 +80,11 @@ export function buildTurnReport({
     .filter((row) => row.energy !== 0 || row.water !== 0 || row.compute !== 0)
     .sort((a, b) => Math.abs(b.net) - Math.abs(a.net));
 
-  // Cradles present this cycle who never appear on an executed/pending transfer —
+  // Cradles present this cycle who never appear on a public transfer leg —
   // show them so absence is obvious. State is the live snapshot, so for past
   // cycles include anyone still alive now, or anyone who died on/after this turn
   // (they were still in the arena during the cycle being viewed).
-  const participantIds = new Set(edges.flatMap((e) => [e.from, e.to]));
+  const participantIds = new Set(publicLegs.flatMap((e) => [e.from, e.to]));
   const presentThisTurn = agents.filter(
     (a) =>
       a.status === "alive" ||
@@ -95,7 +100,7 @@ export function buildTurnReport({
 
   const headline = buildRecapHeadline(turn, {
     eliminationCount: eliminatedThisTurn.length,
-    tradeCount: edges.length,
+    tradeCount: publicLegs.length,
     messageCount: quotes.length,
   });
 
@@ -104,6 +109,7 @@ export function buildTurnReport({
     headline,
     quotes,
     edges,
+    failedEdges,
     netArrows,
     nonParticipants,
     agents,
