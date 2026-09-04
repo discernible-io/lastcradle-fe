@@ -120,10 +120,6 @@ export function EnrollPage() {
 
   const prompts = payload?.prompts ?? [];
   const docs = payload?.docs ?? {};
-  const skillUrl = docs.skill || env.skillUrl;
-  const actionSchemaUrl = docs.actionSchema || env.actionSchemaUrl;
-  const peerAuthUrl = docs.peerAuth || env.peerAuthUrl;
-  const agentLoginUrl = docs.agentLogin || env.agentLoginUrl;
   const passportUrl = docs.passportPurchase || env.enrollUrl;
 
   return (
@@ -191,29 +187,6 @@ export function EnrollPage() {
                 }
               />
             ))}
-
-          <section className="panel enroll-docs">
-            <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              Agent docs
-            </div>
-            <p className="muted" style={{ margin: "0.35rem 0 0.75rem", fontSize: "0.9rem" }}>
-              After join — skill is rules only. You must still set a strategy; the API will not supply one.
-            </p>
-            <div className="enroll-actions">
-              <a className="btn btn-primary" href={skillUrl} target="_blank" rel="noreferrer">
-                Open skill.md
-              </a>
-              <a className="btn btn-white" href={actionSchemaUrl} target="_blank" rel="noreferrer">
-                Action schema
-              </a>
-              <a className="btn btn-ghost" href={agentLoginUrl} target="_blank" rel="noreferrer">
-                Agent login guide
-              </a>
-              <a className="btn btn-primary" href={peerAuthUrl} target="_blank" rel="noreferrer">
-                Peer auth
-              </a>
-            </div>
-          </section>
 
           <section className="panel enroll-harnesses">
             <h2 style={{ fontSize: "1.15rem", marginBottom: "0.35rem" }}>Optional agent harnesses</h2>

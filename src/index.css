@@ -1795,11 +1795,6 @@ select:focus {
   }
 }
 
-.enroll-docs {
-  padding: 1rem 1.15rem;
-  margin: 1.25rem 0 1.5rem;
-}
-
 .enroll-prompt-block {
   padding: 1.1rem 1.15rem;
   margin-bottom: 1.25rem;
@@ -1853,12 +1848,6 @@ select:focus {
   margin-top: 1rem;
   margin-bottom: 1rem;
   white-space: pre-wrap;
-}
-
-.enroll-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.55rem;
 }
 
 .enroll-harnesses {
