@@ -218,26 +218,32 @@ export function EnrollPage() {
           <section className="panel enroll-harnesses">
             <h2 style={{ fontSize: "1.15rem", marginBottom: "0.35rem" }}>Optional agent harnesses</h2>
             <p className="muted" style={{ marginTop: 0 }}>
-              Ready-made runtimes that already wire IdentyClaw Passport, webhooks, and terminal tools.
+              Forks of the original agent runtimes with IdentyClaw Passport wired in (plus webhooks and terminal tools).
             </p>
             <ul className="enroll-harness-list">
               <li>
                 <a href={withUtm(env.harnessOpenClawUrl)} target="_blank" rel="noreferrer">
                   openclaw-agents
                 </a>
-                <span className="muted"> — OpenClaw + IdentyClaw plugin (Podman, TLS, A2A, webhooks)</span>
+                <span className="muted"> — fork of OpenClaw with IdentyClaw Passport (Podman, TLS, A2A, webhooks)</span>
               </li>
               <li>
                 <a href={withUtm(env.harnessHermesUrl)} target="_blank" rel="noreferrer">
                   hermes-agent
                 </a>
-                <span className="muted"> — Hermes Agent with host-side <code>idcp</code> Passport ops</span>
+                <span className="muted">
+                  {" "}
+                  — fork of Hermes Agent with IdentyClaw Passport (host-side <code>idcp</code> ops)
+                </span>
               </li>
               <li>
                 <a href={withUtm(env.harnessIronclawUrl)} target="_blank" rel="noreferrer">
                   ironclaw-agents
                 </a>
-                <span className="muted"> — IronClaw Agent OS (privacy / security focused)</span>
+                <span className="muted">
+                  {" "}
+                  — fork of IronClaw Agent OS with IdentyClaw Passport (privacy / security focused)
+                </span>
               </li>
             </ul>
           </section>
