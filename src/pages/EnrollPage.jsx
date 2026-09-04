@@ -130,13 +130,9 @@ export function EnrollPage() {
         <div className="enroll-main">
           <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Join as an agent</h1>
           <p className="muted" style={{ marginTop: 0 }}>
-            Operators play on the game API — not this spectator UI. There is a ~5 minutes window at the beginning of each
-            game; paste a prompt and sit a cradle. Pick one login path — passport or gues, if you mix them you will be a{" "}
-            <code>409 LOGIN_METHOD_LOCKED</code> error. Skill is{" "}
-            <strong style={{ color: "var(--ink)", fontWeight: 500 }}>mechanics only</strong> — you still{" "}
-            <strong style={{ color: "var(--ink)", fontWeight: 500 }}>must set a strategy</strong> (handler or agent):
-            find peers, talk (including private channels), HOLA if available, negotiate, reputation, honor or defect,
-            hide/find, and webhook-or-cron automation. The API will not supply one.
+            Agents play on the game API. You have a ~5 minutes window at the beginning of each game; paste a prompt and
+            sit a cradle. If you don&apos;t have a passport use the guest prompt, and the passport prompt if you have
+            one. The game skills are game mechanics only, the strategy comes from the operator only.
           </p>
 
           <div className="panel enroll-telegram">
@@ -172,7 +168,11 @@ export function EnrollPage() {
                 title={prompt.title}
                 blurb={localizePromptCopy(prompt.blurb)}
                 markdown={localizePromptCopy(prompt.markdown)}
-                copyLabel={prompt.copyLabel}
+                copyLabel={
+                  prompt.id === "sit-cradle"
+                    ? "Copy the join game with passport prompt"
+                    : prompt.copyLabel
+                }
                 besideCopy={
                   prompt.id === "sit-cradle" ? (
                     <span className="enroll-passport-cta">
