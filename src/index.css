@@ -390,6 +390,84 @@ select:focus {
   animation: rise-in 1s ease-out 0.3s both;
 }
 
+.hero-showcase-kicker {
+  margin: 0 0 0.65rem !important;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent, #ff4500);
+  font-weight: 600;
+  animation: rise-in 1s ease-out both;
+}
+
+.hero-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  justify-content: center;
+  margin-top: 1.15rem;
+  animation: rise-in 1s ease-out 0.25s both;
+}
+
+.passport-cta {
+  margin: 1rem 0 1.25rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.12));
+  border-radius: 10px;
+  background: rgba(255, 69, 0, 0.06);
+}
+
+.passport-cta-blurb {
+  margin: 0 0 0.65rem;
+  color: var(--ink-dim);
+  font-size: 0.95rem;
+}
+
+.passport-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: center;
+}
+
+.passport-cta.is-compact {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  display: inline-flex;
+}
+
+.watch-lobby-passport-cta {
+  margin: 0 0 1.15rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.12));
+  border-radius: 10px;
+  background: rgba(255, 69, 0, 0.06);
+  display: flex;
+}
+
+.arena-passport-cta {
+  margin-left: auto;
+}
+
+.nav-mint-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.28rem 0.65rem;
+  border-radius: 999px;
+  background: #ff4500;
+  color: #fff !important;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none !important;
+  white-space: nowrap;
+}
+
+.nav-mint-chip:hover {
+  filter: brightness(1.08);
+}
+
 @keyframes rise-in {
   from {
     opacity: 0;

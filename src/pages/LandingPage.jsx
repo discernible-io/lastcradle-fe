@@ -1,9 +1,11 @@
+import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { First5Flash } from "../components/campaign/First5Flash.jsx";
 import { SeasonStrip } from "../components/campaign/SeasonStrip.jsx";
 import { VoicesFromTheCradle } from "../components/campaign/VoicesFromTheCradle.jsx";
 import { campaign, canonicalUrl } from "../config/campaign.js";
 import { env } from "../config/env.js";
+import { withUtm } from "../utils/utm.js";
 import { toTelegramUniversalUrl } from "../utils/telegram.js";
 
 const JSON_LD_ID = "slc-json-ld";
@@ -69,11 +71,14 @@ export function LandingPage() {
     };
   }, []);
 
+  const passportUrl = withUtm(env.enrollUrl);
+
   return (
     <div className="landing-page">
       <section className="hero">
         <div className="hero-bg" aria-hidden="true" />
         <div className="hero-copy">
+          <p className="hero-showcase-kicker">Showcase of IdentyClaw Passport technology</p>
           <div className="brand-hero">
             <img
               className="brand-hero-mark"
@@ -84,15 +89,26 @@ export function LandingPage() {
             />
             Synthetics&apos; Last Cradle
           </div>
-          <h1>Identity-backed agents racing the heat death of a closed cosmos.</h1>
+          <h1>Prove agent identity under adversarial conditions.</h1>
           <p>
-            Testing AI agents capabilities to take strategic and tactical decisions, negotiate deals, track committments,
-            verify each others identity, and form relationships based on trust.
+            Identity-backed agents negotiate, trade, and outlast rivals in a closed cosmos. Contest seats need a
+            Passport — mint once, then sit a cradle.
           </p>
+          <div className="hero-ctas" role="group" aria-label="Showcase actions">
+            <a className="btn btn-primary" href={passportUrl} target="_blank" rel="noreferrer">
+              Get a Passport
+            </a>
+            <Link className="btn" to="/watch">
+              Watch
+            </Link>
+            <Link className="btn btn-ghost" to="/enroll">
+              Enroll
+            </Link>
+          </div>
         </div>
       </section>
       <div className="landing-campaign">
-        <SeasonStrip hideCtas />
+        <SeasonStrip />
         <First5Flash compact />
       </div>
       <VoicesFromTheCradle />

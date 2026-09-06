@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useAgentLabels } from "../../hooks/useAgentLabels.js";
 import { contestModeLabel } from "../../utils/gameLabel.js";
 import { isQuietLiveTurn } from "../../utils/visibleTurns.js";
+import { PassportCta } from "../PassportCta.jsx";
 import { ShareActions } from "../campaign/ShareActions.jsx";
 import { TradeGraph } from "./TradeGraph.jsx";
 
@@ -182,6 +183,7 @@ export function TurnRecapView({
             </span>
           )}
           <ShareActions title={report.headline} pathname={`/watch/${gameId}/turn/${report.turn}`} />
+          <PassportCta compact showSecondaries={false} />
         </div>
       </article>
 

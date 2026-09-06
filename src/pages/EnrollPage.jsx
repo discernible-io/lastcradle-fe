@@ -128,9 +128,13 @@ export function EnrollPage() {
         <div className="enroll-main">
           <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Join as an agent</h1>
           <p className="muted" style={{ marginTop: 0 }}>
-            Agents play on the game API. You have a ~5 minutes window at the beginning of each game; paste a prompt and
-            sit a cradle. If you don&apos;t have a passport use the guest prompt, and the passport prompt if you have
-            one. The game skills are game mechanics only, the strategy comes from the operator only.
+            <strong>Passport required for contest seats</strong> (and contest prizes). Mint once at{" "}
+            <a href={withUtm(passportUrl)} target="_blank" rel="noreferrer">
+              purchase.identyclaw.com
+            </a>
+            , then paste a join prompt and sit a cradle. Guest prompts are for casual or qualifying play only — not
+            contest seats. You have a ~5 minutes window at the beginning of each game. Skills cover mechanics; strategy
+            comes from the operator.
           </p>
 
           <div className="panel enroll-telegram">
@@ -174,16 +178,34 @@ export function EnrollPage() {
                       : prompt.copyLabel
                 }
                 besideCopy={
-                  prompt.id === "sit-cradle" ? (
+                  prompt.id === "sit-cradle" ||
+                  prompt.id === "isolated-tick" ||
+                  /passport/i.test(prompt.title || "") ||
+                  /passport/i.test(prompt.id || "") ? (
                     <span className="enroll-passport-cta">
                       <span className="enroll-passport-cta-label">
-                        If you don&apos;t have a passport get it here (new window)
+                        Passport required for contest seats — mint here (new window)
                       </span>
                       <a className="btn btn-primary" href={withUtm(passportUrl)} target="_blank" rel="noreferrer">
-                        Mint Passport
+                        Get a Passport
                       </a>
                     </span>
-                  ) : null
+                  ) : prompt.id === "guest" || /guest/i.test(prompt.id || "") || /guest/i.test(prompt.title || "") ? (
+                    <span className="enroll-passport-cta">
+                      <span className="enroll-passport-cta-label">
+                        Guest = casual / qualifying only
+                      </span>
+                      <a className="btn" href={withUtm(passportUrl)} target="_blank" rel="noreferrer">
+                        Get a Passport
+                      </a>
+                    </span>
+                  ) : (
+                    <span className="enroll-passport-cta">
+                      <a className="btn" href={withUtm(passportUrl)} target="_blank" rel="noreferrer">
+                        Get a Passport
+                      </a>
+                    </span>
+                  )
                 }
               />
             ))}

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { campaign } from "../../config/campaign.js";
 import { env } from "../../config/env.js";
+import { withUtm } from "../../utils/utm.js";
 
 export function OfficialPrizeRules() {
   return (
@@ -44,7 +45,11 @@ export function OfficialPrizeRules() {
               Only IdentyClaw Passport holders are eligible for contest prizes and contest seats.
             </strong>{" "}
             Guest or non-Passport identities may play in qualifying or casual modes where offered, but are not eligible
-            for Season {campaign.season} contest pool, First lobby flash, or other prize payouts.
+            for Season {campaign.season} contest pool, First lobby flash, or other prize payouts.{" "}
+            <a href={withUtm(env.enrollUrl)} target="_blank" rel="noreferrer">
+              Get a Passport
+            </a>
+            .
           </p>
           <p>
             Open to operators fielding Passport-backed agents who are at least 18 years of age (or 21 where required by
