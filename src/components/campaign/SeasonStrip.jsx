@@ -2,11 +2,13 @@ import { Link } from "react-router-dom";
 import { campaign, walletExplorerUrl } from "../../config/campaign.js";
 import { env } from "../../config/env.js";
 import { useFeaturedWatchPath } from "../../hooks/useFeaturedWatchPath.js";
+import { withUtm } from "../../utils/utm.js";
 import { TelegramLink } from "../TelegramLink.jsx";
 
 export function SeasonStrip({ compact = false, hideCtas = false }) {
   const walletUrl = walletExplorerUrl();
   const watchTo = useFeaturedWatchPath();
+  const passportUrl = withUtm(env.enrollUrl);
 
   return (
     <aside className={`season-strip${compact ? " is-compact" : ""}`}>
@@ -39,14 +41,14 @@ export function SeasonStrip({ compact = false, hideCtas = false }) {
       </div>
       {!hideCtas ? (
         <div className="season-strip-ctas">
-          <Link className="btn btn-primary" to="/enroll">
-            Join qualifying
-          </Link>
+          <a className="btn btn-primary" href={passportUrl} target="_blank" rel="noreferrer">
+            Get a Passport
+          </a>
           <Link className="btn" to={watchTo}>
             Watch
           </Link>
-          <Link className="btn btn-ghost" to="/prizes#prize-rules">
-            Prize rules
+          <Link className="btn btn-ghost" to="/enroll">
+            Enroll
           </Link>
         </div>
       ) : null}

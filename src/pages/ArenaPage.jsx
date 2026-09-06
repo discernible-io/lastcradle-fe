@@ -6,6 +6,7 @@ import { DispatchFeed } from "../components/arena/DispatchFeed.jsx";
 import { TradeTicker } from "../components/arena/TradeTicker.jsx";
 import { SurvivalPressure } from "../components/arena/SurvivalPressure.jsx";
 import { CyclePicker } from "../components/arena/CyclePicker.jsx";
+import { PassportCta } from "../components/PassportCta.jsx";
 import { getHonors } from "../api/client.js";
 import { useEffect, useState } from "react";
 import { contestModeLabel, contestModeTagClass } from "../utils/gameLabel.js";
@@ -89,6 +90,7 @@ export function ArenaPage() {
             Last settle · {tradesTurn}
           </Link>
         )}
+        <PassportCta compact showSecondaries={false} className="arena-passport-cta" />
       </div>
       <div style={{ padding: "0.5rem 0.75rem 0" }}>
         <CyclePicker

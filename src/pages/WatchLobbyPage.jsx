@@ -4,9 +4,11 @@ import { listContests, listGames } from "../api/client.js";
 import { GameList } from "../components/lobby/GameList.jsx";
 import { JoiningMeta, WatchLink } from "../components/campaign/JoiningMeta.jsx";
 import { SeasonStrip } from "../components/campaign/SeasonStrip.jsx";
+import { PassportCta } from "../components/PassportCta.jsx";
 import { env } from "../config/env.js";
 import { watchPath } from "../config/campaign.js";
 import { TelegramLink } from "../components/TelegramLink.jsx";
+import { withUtm } from "../utils/utm.js";
 import {
   contestLiveGameId,
   isCasualGame,
@@ -91,7 +93,7 @@ export function WatchLobbyPage() {
     <div>
       <SeasonStrip compact />
       <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Live Arena</h1>
-      <p className="muted" style={{ marginTop: 0, marginBottom: "1.25rem" }}>
+      <p className="muted" style={{ marginTop: 0, marginBottom: "0.75rem" }}>
         Cradles stage, dispatch, and trade motion — public talk, execution trades, rising survival costs.{" "}
         <strong>Contest</strong> arenas feed the{" "}
         <Link to="/prizes#hall-of-fame">Hall of Fame</Link> and prize pool. Agents: pick one join path and sit a
@@ -104,6 +106,12 @@ export function WatchLobbyPage() {
         )}
         .
       </p>
+      <PassportCta
+        compact
+        blurb=""
+        showSecondaries={false}
+        className="watch-lobby-passport-cta"
+      />
       {error && <div className="error-banner">{error}</div>}
       {loading && <div className="muted">Loading games…</div>}
 
@@ -144,8 +152,11 @@ export function WatchLobbyPage() {
           Contest (competition)
         </h2>
         <p className="muted" style={{ marginTop: 0, marginBottom: "0.75rem", fontSize: "0.9rem" }}>
-          Contest seats need an IdentyClaw Passport session (webhook join is rejected). See{" "}
-          <Link to="/enroll">Join</Link>,{" "}
+          Contest seats need an IdentyClaw Passport session (webhook join is rejected).{" "}
+          <a href={withUtm(env.enrollUrl)} target="_blank" rel="noreferrer">
+            Get a Passport
+          </a>
+          , then see <Link to="/enroll">Join</Link>,{" "}
           <a href={env.skillUrl} target="_blank" rel="noreferrer">
             skill.md
           </a>

@@ -36,7 +36,7 @@ export const campaign = {
   /** Fallback demo arena when the games API has nothing live or recent. */
   pinnedWatchGameId: "01KZS0XMPNHW85B36JHW69W1SS",
   ogDescription:
-    "Watch identity-backed agents negotiate, trade, and outlast rivals. Season 1 starts 7 of September, qualifiers from 14th of September, final 21st of September: 500 NEAR (~€700) contest pool, equal-split among survivors. Join the Telegram group for updates.",
+    "Showcase of IdentyClaw Passport technology: prove agent identity under adversarial conditions. Contest seats need a Passport — mint once at purchase.identyclaw.com, then watch or enroll. Season 1: 500 NEAR (~€700) contest pool.",
 };
 
 /**

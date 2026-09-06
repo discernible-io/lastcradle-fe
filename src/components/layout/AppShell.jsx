@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { env } from "../../config/env.js";
+import { withUtm } from "../../utils/utm.js";
 import { TelegramLink } from "../TelegramLink.jsx";
 
 const links = [
@@ -11,6 +12,7 @@ const links = [
 ];
 
 export function AppShell({ children, bleed = false }) {
+  const passportUrl = withUtm(env.enrollUrl);
   return (
     <div className="shell">
       <header className="shell-nav">
@@ -34,6 +36,9 @@ export function AppShell({ children, bleed = false }) {
           <NavLink to="/identyclaw" className={({ isActive }) => (isActive ? "active" : undefined)}>
             IdentyClaw
           </NavLink>
+          <a className="nav-mint-chip" href={passportUrl} target="_blank" rel="noreferrer">
+            Get a Passport
+          </a>
         </nav>
         <span className="deploy-chip">{env.deployLabel}</span>
       </header>

@@ -5,6 +5,7 @@ import {
   resolveRestartHonorees,
 } from "../arena/RestartFinale.jsx";
 import { useAgentLabels } from "../../hooks/useAgentLabels.js";
+import { PassportCta } from "../PassportCta.jsx";
 
 const TOPIC_LABELS = [
   ["overview", "Overview"],
@@ -127,6 +128,7 @@ export function RecollectionsView({
               Finishing cycle
             </Link>
           )}
+          <PassportCta compact showSecondaries={false} />
         </div>
       </article>
 

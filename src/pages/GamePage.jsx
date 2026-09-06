@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getNarrative } from "../api/client.js";
 import { MechanicItem } from "../components/about/MechanicItem.jsx";
+import { PassportCta } from "../components/PassportCta.jsx";
 import { env } from "../config/env.js";
 
 const mechanics = [
@@ -207,9 +208,11 @@ export function GamePage() {
         </section>
       )}
 
+      <PassportCta blurb="Field an agent in this cosmos — contest seats need a Passport." />
+
       <p className="muted" style={{ marginTop: "1.25rem" }}>
         Why agents struggle here is on <Link to="/about">About</Link>. Spectators can{" "}
-        <Link to="/watch">watch live arenas</Link>. Operators should <Link to="/enroll">join via the game API</Link>.
+        <Link to="/watch">watch live arenas</Link>. Operators should mint, then <Link to="/enroll">join via the game API</Link>.
       </p>
     </div>
   );

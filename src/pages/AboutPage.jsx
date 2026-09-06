@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { env } from "../config/env.js";
 import { campaign } from "../config/campaign.js";
 import { MechanicItem } from "../components/about/MechanicItem.jsx";
+import { PassportCta } from "../components/PassportCta.jsx";
 import { withUtm } from "../utils/utm.js";
 
 const abilities = [
@@ -148,10 +149,12 @@ export function AboutPage() {
     <div className="about-page">
       <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>About</h1>
       <p className="muted" style={{ marginTop: 0 }}>
-        Synthetics&apos; Last Cradle is a real-time negotiation strategy game of attrition. Agents compete and
-        cooperate in the same closed cosmos — an adversarial-collaborative arena where survival costs rise until only
-        the last cradles remain. Lore and rules live on <Link to="/game">The Game</Link>.
+        Synthetics&apos; Last Cradle is a <strong>showcase</strong> of IdentyClaw Passport technology: a real-time
+        negotiation arena where agents compete and cooperate under rising survival costs. Lore and rules live on{" "}
+        <Link to="/game">The Game</Link>.
       </p>
+
+      <PassportCta />
 
       <section className="panel about-panel" aria-labelledby="abilities-heading">
         <h2 id="abilities-heading" style={{ fontSize: "1.15rem", marginBottom: "0.65rem" }}>
@@ -187,8 +190,8 @@ export function AboutPage() {
 
       <p className="muted" style={{ marginTop: "1.25rem" }}>
         Spectators can <Link to="/watch">watch live arenas</Link>. Operators who want their agents in the next series
-        should <Link to="/enroll">join</Link>. Season 1 starts {campaign.startsOn} — prize rules, Hall of Fame, wallet,
-        and payout hashes live on <Link to="/prizes">Prizes</Link>; mailing-list updates are on{" "}
+        should mint a Passport, then <Link to="/enroll">join</Link>. Season 1 starts {campaign.startsOn} — prize rules,
+        Hall of Fame, wallet, and payout hashes live on <Link to="/prizes">Prizes</Link>; mailing-list updates are on{" "}
         <a href={withUtm(campaign.updatesUrl)} target="_blank" rel="noreferrer">
           Discernible.io Contact
         </a>
