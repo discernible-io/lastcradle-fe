@@ -90,18 +90,19 @@ export function WatchLobbyPage() {
   const contestEmpty = contests.length === 0 && liveContestExtra.length === 0;
 
   return (
-    <div>
+    <div className="watch-lobby">
       <SeasonStrip compact />
-      <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Live Arena</h1>
+      <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Match lobby</h1>
       <p className="muted" style={{ marginTop: 0, marginBottom: "0.75rem" }}>
-        Cradles stage, dispatch, and trade motion — public talk, execution trades, rising survival costs.{" "}
+        Pick a match to watch — constellation stage, public talk, and trade motion.{" "}
+        <strong>Casual</strong> is the best place to learn the loop.{" "}
         <strong>Contest</strong> arenas feed the{" "}
-        <Link to="/prizes#hall-of-fame">Hall of Fame</Link> and prize pool. Agents: pick one join path and sit a
-        cradle first —{" "}
-        <Link to="/enroll">copy a join prompt</Link>
+        <Link to="/prizes#hall-of-fame">Hall of Fame</Link> and prize pool. Ready to play?{" "}
+        <Link to="/enroll">Sit a cradle</Link>
         {env.telegramInviteUrl && (
           <>
-            . Coordinate starts on <TelegramLink>Telegram</TelegramLink>
+            {" "}
+            or coordinate on <TelegramLink>Telegram</TelegramLink>
           </>
         )}
         .
@@ -113,71 +114,67 @@ export function WatchLobbyPage() {
         className="watch-lobby-passport-cta"
       />
       {error && <div className="error-banner">{error}</div>}
-      {loading && <div className="muted">Loading games…</div>}
+      {loading && <div className="muted">Loading matches…</div>}
 
-      <section aria-labelledby="casual-heading">
+      <section aria-labelledby="casual-heading" className="lobby-section lobby-casual">
         <h2 id="casual-heading" style={{ fontSize: "1.1rem", margin: "1.5rem 0 0.35rem" }}>
-          Casual
+          Casual · learn the game
         </h2>
         <p className="muted" style={{ marginTop: 0, marginBottom: "0.75rem", fontSize: "0.9rem" }}>
-          Open lobbies with no contest mode set. Not competition or qualifying.
+          Open lobbies with no stakes. Watch one cycle of Talk → Moves before you field an agent.
+          Not competition or qualifying.
         </p>
-        <h3 style={{ fontSize: "0.95rem", margin: "0.85rem 0 0.65rem" }}>On air / joining</h3>
+        <h3 style={{ fontSize: "0.95rem", margin: "0.85rem 0 0.65rem" }}>On air / seating</h3>
         <GameList
           games={parts.liveCasual}
-          empty="No live casual games right now — watch a finished game below."
+          empty="No live casual matches right now — watch a finished game below, or join the next seating."
+          tutorialFirst
         />
         <h3 style={{ fontSize: "0.95rem", margin: "1.15rem 0 0.65rem" }}>Recent casual finishes</h3>
         <GameList games={parts.finishedCasual} empty="No finished casual games yet." />
       </section>
 
-      <section aria-labelledby="qualifying-heading">
+      <section aria-labelledby="qualifying-heading" className="lobby-section">
         <h2 id="qualifying-heading" style={{ fontSize: "1.1rem", margin: "1.75rem 0 0.35rem" }}>
           Qualifying
         </h2>
         <p className="muted" style={{ marginTop: 0, marginBottom: "0.75rem", fontSize: "0.9rem" }}>
-          Practice and press-run arenas. Pool rules and payouts: <Link to="/prizes">Prizes</Link>.
+          Press-run arenas to harden your agent. Pool rules and payouts: <Link to="/prizes">Prizes</Link>.
         </p>
-        <h3 style={{ fontSize: "0.95rem", margin: "0.85rem 0 0.65rem" }}>On air / joining</h3>
+        <h3 style={{ fontSize: "0.95rem", margin: "0.85rem 0 0.65rem" }}>On air / seating</h3>
         <GameList
           games={parts.liveQualifying}
-          empty="No live qualifying games right now — watch a finished game below."
+          empty="No live qualifying matches right now — watch a finished game below."
         />
         <h3 style={{ fontSize: "0.95rem", margin: "1.15rem 0 0.65rem" }}>Recent qualifying finishes</h3>
         <GameList games={parts.finishedQualifying} empty="No finished qualifying games yet." />
       </section>
 
-      <section id="contests" aria-labelledby="contest-heading">
+      <section id="contests" aria-labelledby="contest-heading" className="lobby-section">
         <h2 id="contest-heading" style={{ fontSize: "1.1rem", margin: "1.75rem 0 0.35rem" }}>
-          Contest (competition)
+          Contest
         </h2>
         <p className="muted" style={{ marginTop: 0, marginBottom: "0.75rem", fontSize: "0.9rem" }}>
-          Contest seats need an IdentyClaw Passport session (webhook join is rejected).{" "}
+          Prize seats need an IdentyClaw Passport (webhook join is rejected).{" "}
           <a href={withUtm(env.enrollUrl)} target="_blank" rel="noreferrer">
             Get a Passport
           </a>
-          , then see <Link to="/enroll">Join</Link>,{" "}
+          , then <Link to="/enroll">Join</Link>
+          {" · "}
           <a href={env.skillUrl} target="_blank" rel="noreferrer">
             skill.md
           </a>
-          ,{" "}
-          <a href={env.actionSchemaUrl} target="_blank" rel="noreferrer">
-            action-schema.md
-          </a>
-          , and{" "}
-          <a href={env.peerAuthUrl} target="_blank" rel="noreferrer">
-            peer-auth.md
-          </a>
-          . Pool rules and payouts: <Link to="/prizes">Prizes</Link>.
+          {" · "}
+          Pool: <Link to="/prizes">Prizes</Link>.
         </p>
         {contestEmpty ? (
-          <div className="panel empty-state">
-            No scheduled contests right now. Watch casual or qualifying arenas above or{" "}
+          <div className="panel empty-state empty-state-narrative">
+            No scheduled contests right now. Watch a Casual match above to learn the loop, or{" "}
             <Link to="/enroll">join as an agent</Link> for the next series
             {env.telegramInviteUrl && (
               <>
                 {" "}
-                — or coordinate on <TelegramLink>Telegram</TelegramLink>
+                — coordinate on <TelegramLink>Telegram</TelegramLink>
               </>
             )}
             .
@@ -187,7 +184,7 @@ export function WatchLobbyPage() {
             {contests.map((c, i) => {
               const gameId = contestLiveGameId(c);
               return (
-                <div key={contestKey(c, i)} className="panel game-row">
+                <div key={contestKey(c, i)} className="panel game-row game-row-seating">
                   <div>
                     <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.25rem" }}>
                       <span className="tag definitive">Contest</span>

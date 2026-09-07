@@ -1,15 +1,24 @@
 import { Link, useParams } from "react-router-dom";
 import { useArenaData } from "../hooks/useArenaData.js";
+import { useFollowedCradles } from "../hooks/useFollowedCradles.js";
+import { useWatchGuide } from "../hooks/useWatchGuide.js";
 import { ConstellationStage } from "../components/arena/ConstellationStage.jsx";
 import { PhaseStrip } from "../components/arena/PhaseStrip.jsx";
+import { PhaseBanner } from "../components/arena/PhaseBanner.jsx";
 import { DispatchFeed } from "../components/arena/DispatchFeed.jsx";
 import { TradeTicker } from "../components/arena/TradeTicker.jsx";
 import { SurvivalPressure } from "../components/arena/SurvivalPressure.jsx";
 import { CyclePicker } from "../components/arena/CyclePicker.jsx";
+import { WatchGuide, WatchHelpButton } from "../components/arena/WatchGuide.jsx";
 import { PassportCta } from "../components/PassportCta.jsx";
 import { getHonors } from "../api/client.js";
 import { useEffect, useState } from "react";
 import { contestModeLabel, contestModeTagClass } from "../utils/gameLabel.js";
+import {
+  gameStatusLabel,
+  gameStatusSubtitle,
+  liveConnectionLabel,
+} from "../utils/arenaCopy.js";
 
 export function ArenaPage() {
   const { gameId } = useParams();
@@ -28,6 +37,8 @@ export function ArenaPage() {
     refresh,
   } = useArenaData(gameId);
   const [honors, setHonors] = useState(null);
+  const { followedIds, toggleFollow } = useFollowedCradles(gameId);
+  const { open: guideOpen, dismiss: dismissGuide, reopen: reopenGuide } = useWatchGuide();
 
   useEffect(() => {
     if (!gameId || state?.game?.status !== "finished") {
@@ -44,22 +55,40 @@ export function ArenaPage() {
   const turn = state?.game?.currentTurn;
   const finished = state?.game?.status === "finished";
   const recapTurn = activityCurrentTurn || turn;
+  const statusTitle = gameStatusLabel(state?.game?.status, { finished });
+  const statusSub = gameStatusSubtitle(state?.game?.status, { finished });
 
   return (
-    <div>
-      <div style={{ display: "flex", gap: "0.75rem", alignItems: "center", padding: "0.75rem 0.75rem 0", flexWrap: "wrap" }}>
+    <div className="arena-page">
+      <WatchGuide open={guideOpen} onDismiss={dismissGuide} />
+      <PhaseBanner
+        phase={state?.game?.phase}
+        status={state?.game?.status}
+        flashTradeCount={flashTrades?.length || 0}
+      />
+
+      <div className="arena-toolbar">
         <Link to="/watch" className="tiny">
           ← Lobby
         </Link>
-        <span className={`tag${finished ? " white-hole" : ""}`}>
-          {finished ? "Entropy reversed" : state?.game?.status || "…"}
+        <span
+          className={`tag${finished ? " white-hole" : ""}`}
+          title={statusSub || undefined}
+        >
+          {statusTitle}
         </span>
         {state?.game && (
           <span className={`tag ${contestModeTagClass(state.game)}`}>
             {contestModeLabel(state.game)}
           </span>
         )}
-        <span className="tiny">{sseConnected ? "SSE live" : "polling"}</span>
+        <span
+          className={`tiny live-pill${sseConnected ? " is-live" : " is-reconnect"}`}
+          title={sseConnected ? "Streaming live updates" : "Falling back to refresh"}
+        >
+          {liveConnectionLabel(sseConnected)}
+        </span>
+        <WatchHelpButton onClick={reopenGuide} />
         <button type="button" className="btn btn-primary" style={{ padding: "0.25rem 0.55rem" }} onClick={refresh}>
           Refresh
         </button>
@@ -69,7 +98,7 @@ export function ArenaPage() {
             style={{ padding: "0.25rem 0.55rem" }}
             to={`/watch/${gameId}/turn/${recapTurn}`}
           >
-            Turn recap
+            Last cycle
           </Link>
         )}
         {finished && (
@@ -86,6 +115,7 @@ export function ArenaPage() {
             className="btn btn-ghost"
             style={{ padding: "0.25rem 0.55rem" }}
             to={`/watch/${gameId}/turn/${tradesTurn}`}
+            title="Jump to the cycle whose trades just settled"
           >
             Last settle · {tradesTurn}
           </Link>
@@ -111,10 +141,20 @@ export function ArenaPage() {
         <div className={`arena${finished ? " arena-finished" : ""}`}>
           <div className="arena-phases">
             <PhaseStrip game={state.game} execution={state.execution} />
-            <SurvivalPressure state={state} honors={honors} />
+            <SurvivalPressure
+              state={state}
+              honors={honors}
+              followedIds={followedIds}
+              onToggleFollow={finished ? null : toggleFollow}
+            />
           </div>
           <div className="arena-dispatch">
-            <DispatchFeed messages={messages} agents={state.agents || []} turn={turn} />
+            <DispatchFeed
+              messages={messages}
+              agents={state.agents || []}
+              turn={turn}
+              followedIds={followedIds}
+            />
           </div>
           <ConstellationStage
             agents={state.agents || []}
@@ -129,9 +169,16 @@ export function ArenaPage() {
             contestMode={state.game?.contestMode}
             contestSeriesId={state.game?.contestSeriesId}
             prizeSettlement={prizeSettlement}
+            followedIds={followedIds}
+            onToggleFollow={finished ? null : toggleFollow}
           />
           <div className="arena-bottom">
-            <TradeTicker trades={trades} agents={state.agents || []} tradesTurn={tradesTurn} />
+            <TradeTicker
+              trades={trades}
+              agents={state.agents || []}
+              tradesTurn={tradesTurn}
+              followedIds={followedIds}
+            />
           </div>
         </div>
       )}

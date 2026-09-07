@@ -6,6 +6,10 @@ import {
   KNOWN_AGENT_TYPES,
   normalizeAgentType,
 } from "../../utils/agentRuntime.js";
+import {
+  agentSurvivalChipLabel,
+  agentSurvivalChipTitle,
+} from "../../utils/arenaCopy.js";
 import { survivalPressurePercent } from "../../utils/cyclePressure.js";
 import { resolveRestartHonorees } from "./RestartFinale.jsx";
 
@@ -39,13 +43,19 @@ function AgentTypeLegend({ agents = [] }) {
   );
 }
 
-export function SurvivalPressure({ state, honors = null }) {
+export function SurvivalPressure({
+  state,
+  honors = null,
+  followedIds = [],
+  onToggleFollow = null,
+}) {
   const agents = state?.agents || [];
   const { labelOf } = useAgentLabels(agents);
   const turn = state?.game?.currentTurn || 0;
   const living = state?.livingAgentCount ?? agents.filter((a) => a.status === "alive").length ?? 0;
   const finished = state?.game?.status === "finished";
   const pressure = survivalPressurePercent(state?.game, turn, living);
+  const followed = new Set(followedIds.map(String));
   const honorees = finished
     ? resolveRestartHonorees({
         honors,
@@ -61,7 +71,7 @@ export function SurvivalPressure({ state, honors = null }) {
       <div className="panel survival-pressure is-finished">
         <div className="pressure-header" style={{ padding: 0, border: "none", marginBottom: "0.35rem" }}>
           <span>Restart</span>
-          <span className="tiny">entropy reversed</span>
+          <span className="tiny">Game over · entropy reversed</span>
         </div>
         <p className="tiny" style={{ margin: "0 0 0.65rem" }}>
           The white hole carries the last cradles forward
@@ -104,24 +114,38 @@ export function SurvivalPressure({ state, honors = null }) {
           {living} living{survivorHint}
         </span>
       </div>
+      <p className="tiny pressure-gloss" title="Costs rise each cycle; fewer living cradles means higher pressure">
+        Costs climb each cycle — fewer living cradles, higher pressure.
+      </p>
       <div className="pressure-meter" aria-label={`Pressure ${pressure}%`}>
         <span style={{ width: `${pressure}%` }} />
       </div>
       <AgentTypeLegend agents={agents} />
+      {onToggleFollow && (
+        <p className="tiny follow-hint">Tap a cradle to follow (up to 2) — lights up on the stage.</p>
+      )}
       <div className="cradle-afford">
         {agents.map((a) => {
           let cls = "chip";
-          let label = a.status === "dead" ? "husk" : "fog";
+          const label = agentSurvivalChipLabel(a.status);
           if (a.status === "dead") cls += " fail";
-          else if (a.status === "alive") {
-            cls += " ok";
-            label = "alive";
-          }
+          else if (a.status === "alive") cls += " ok";
+          if (followed.has(String(a.id))) cls += " followed";
           const name = labelOf(a);
+          const title = agentSurvivalChipTitle(name, a.status);
+          const interactive = typeof onToggleFollow === "function" && a.status !== "dead";
+          const Tag = interactive ? "button" : "span";
           return (
-            <span key={a.id} className={cls} title={name}>
-              {name.toString().slice(0, 16)} · {label}
-            </span>
+            <Tag
+              key={a.id}
+              type={interactive ? "button" : undefined}
+              className={cls}
+              title={interactive ? `${title} · click to ${followed.has(String(a.id)) ? "unfollow" : "follow"}` : title}
+              onClick={interactive ? () => onToggleFollow(a.id) : undefined}
+            >
+              {followed.has(String(a.id)) ? "★ " : ""}
+              {name.toString().slice(0, 14)} · {label}
+            </Tag>
           );
         })}
       </div>

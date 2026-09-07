@@ -99,10 +99,10 @@ export function LandingPage() {
               Get a Passport
             </a>
             <Link className="btn" to="/watch">
-              Watch
+              Watch a match
             </Link>
             <Link className="btn btn-ghost" to="/enroll">
-              Enroll
+              Sit a cradle
             </Link>
           </div>
         </div>
