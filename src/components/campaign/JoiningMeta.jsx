@@ -10,17 +10,22 @@ export function JoiningMeta({ entity, agentCount, maxAgents }) {
   const cap = maxAgents ?? entity?.maxAgents ?? entity?.capacity ?? entity?.maxSeats;
 
   const bits = [];
-  if (filled != null && cap != null) bits.push(`${filled} / ${cap} seats`);
-  else if (filled != null) bits.push(`${filled} cradles`);
+  if (filled != null && cap != null) {
+    const left = Math.max(0, Number(cap) - Number(filled));
+    bits.push(`${filled} / ${cap} seats`);
+    if (left > 0 && left <= 3) bits.push(`${left} left`);
+  } else if (filled != null) {
+    bits.push(`${filled} cradles seated`);
+  }
 
-  if (window?.open && ends && !ends.expired) bits.push(`joining closes in ${ends.label}`);
+  if (window?.open && ends && !ends.expired) bits.push(`join closes in ${ends.label}`);
   else if (starts && !starts.expired) bits.push(`opens in ${starts.label}`);
 
   if (bits.length === 0) return null;
   return <div className="tiny joining-meta">{bits.join(" · ")}</div>;
 }
 
-export function WatchLink({ gameId, className = "btn btn-primary", children = "Watch" }) {
+export function WatchLink({ gameId, className = "btn btn-primary", children = "Watch match" }) {
   if (!gameId) {
     return (
       <Link className={className} to="/watch">

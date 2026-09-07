@@ -238,11 +238,14 @@ export function ConstellationStage({
   contestMode = null,
   contestSeriesId = null,
   prizeSettlement = null,
+  followedIds = [],
+  onToggleFollow = null,
 }) {
   const width = 900;
   const height = 560;
   const { labelOf, avatarOf, contactOf } = useAgentLabels(agents);
   const [brokenAvatars, setBrokenAvatars] = useState(() => new Set());
+  const followed = useMemo(() => new Set(followedIds.map(String)), [followedIds]);
 
   const { pos, cx, cy } = useMemo(() => layoutPositions(agents, width, height), [agents]);
 
@@ -254,10 +257,18 @@ export function ConstellationStage({
     [finished, honors, agents, winnerIds, labelOf],
   );
   const titlesById = useMemo(() => honorTitleByAgentId(honorees), [honorees]);
+  const phaseHint =
+    !finished && phase
+      ? String(phase).toLowerCase().includes("negot")
+        ? "talk"
+        : String(phase).toLowerCase().includes("exec")
+          ? "moves"
+          : String(phase)
+      : null;
 
   return (
     <div
-      className={`panel arena-stage${finished ? " is-finished" : ""}`}
+      className={`panel arena-stage${finished ? " is-finished" : ""}${followed.size ? " has-follows" : ""}`}
       style={{ padding: 0 }}
     >
       <div
@@ -274,8 +285,13 @@ export function ConstellationStage({
       >
         <span className="tag">Cradle Constellation</span>
         {turn != null && <span className="tiny">Cycle {turn}</span>}
-        {phase && !finished && <span className="tiny">{phase}</span>}
+        {phaseHint && <span className="tiny">{phaseHint}</span>}
         {finished && <span className="tag white-hole">Restart</span>}
+        {followed.size > 0 && (
+          <span className="tiny follow-count">
+            Following {followed.size}
+          </span>
+        )}
       </div>
 
       {!finished && (
@@ -288,12 +304,17 @@ export function ConstellationStage({
             <i style={{ background: "var(--compute)" }} />
             a2a
           </span>
-          <span className="tiny">from RODiT ContactURI + webhook</span>
+          {onToggleFollow && (
+            <span className="tiny">tap a vessel to follow</span>
+          )}
+          {!onToggleFollow && (
+            <span className="tiny">from RODiT ContactURI + webhook</span>
+          )}
         </div>
       )}
 
       <svg
-        className={`constellation${finished ? " constellation-finished" : ""}`}
+        className={`constellation${finished ? " constellation-finished" : ""}${followed.size ? " has-follows" : ""}`}
         viewBox={`0 0 ${width} ${height}`}
         role="img"
         aria-label={finished ? "White hole restart — entropy reversed" : "Cradle constellation stage"}
@@ -376,6 +397,8 @@ export function ConstellationStage({
           const showAvatar = Boolean(avatarUrl) && !brokenAvatars.has(agent.id);
           const honorTitle = !dead ? titlesById.get(agent.id) : null;
           const isAnchor = honorTitle === "White Hole Anchor";
+          const isFollowed = followed.has(String(agent.id));
+          const canFollow = typeof onToggleFollow === "function" && !dead && !finished;
           const typeLabel = agentTypeLabel(agent.agentType);
           const modelFull = String(agent.llmModel || "").trim();
           const runtimeBits = [typeLabel, modelFull].filter(Boolean);
@@ -387,14 +410,52 @@ export function ConstellationStage({
             : honorTitle
               ? `${honorTitle} — ${label}${runtimeBits.length ? ` · ${runtimeBits.join(" · ")}` : ""}`
               : [label, ...runtimeBits, ...contactBits].filter(Boolean).join(" · ");
+          const followHint = canFollow
+            ? isFollowed
+              ? " · click to unfollow"
+              : " · click to follow"
+            : "";
 
           return (
             <g
               key={agent.id}
-              className={`vessel ${agent.status}${justPassed ? " just-passed" : ""}${honorTitle ? " honoree" : ""}${isAnchor ? " anchor" : ""}`}
+              className={`vessel ${agent.status}${justPassed ? " just-passed" : ""}${honorTitle ? " honoree" : ""}${isAnchor ? " anchor" : ""}${isFollowed ? " followed" : ""}${canFollow ? " followable" : ""}`}
               transform={`translate(${p.x}, ${p.y})`}
+              style={canFollow ? { cursor: "pointer" } : undefined}
+              onClick={
+                canFollow
+                  ? (e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      onToggleFollow(agent.id);
+                    }
+                  : undefined
+              }
+              role={canFollow ? "button" : undefined}
+              tabIndex={canFollow ? 0 : undefined}
+              onKeyDown={
+                canFollow
+                  ? (e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        onToggleFollow(agent.id);
+                      }
+                    }
+                  : undefined
+              }
             >
-              <title>{epitaph}</title>
+              <title>{epitaph}{followHint}</title>
+              {isFollowed && !dead && (
+                <circle
+                  className="vessel-follow-ring"
+                  cx="0"
+                  cy={AVATAR.y}
+                  r={AVATAR.r + 10}
+                  fill="none"
+                  stroke="rgba(255,69,0,0.75)"
+                  strokeWidth="2"
+                />
+              )}
               <CradleContact email={contact.email} a2aUrl={contact.a2aUrl} dead={dead} />
               {showAvatar && (
                 <g className="vessel-avatar">
@@ -406,13 +467,15 @@ export function ConstellationStage({
                     stroke={
                       dead
                         ? "rgba(180,35,24,0.55)"
-                        : isAnchor
-                          ? "rgba(255,69,0,0.9)"
-                          : honorTitle
-                            ? "rgba(0,0,0,0.7)"
-                            : "rgba(0,0,0,0.18)"
+                        : isFollowed
+                          ? "rgba(255,69,0,0.95)"
+                          : isAnchor
+                            ? "rgba(255,69,0,0.9)"
+                            : honorTitle
+                              ? "rgba(0,0,0,0.7)"
+                              : "rgba(0,0,0,0.18)"
                     }
-                    strokeWidth={honorTitle ? 1.75 : 1.25}
+                    strokeWidth={honorTitle || isFollowed ? 1.75 : 1.25}
                   />
                   <image
                     href={avatarUrl}
@@ -472,6 +535,7 @@ export function ConstellationStage({
                 fontSize="13"
                 fontFamily="var(--font-body)"
               >
+                {isFollowed && !dead ? "★ " : ""}
                 {label.length > 16 ? `${label.slice(0, 14)}…` : label}
               </text>
               <AgentRuntimeMeta

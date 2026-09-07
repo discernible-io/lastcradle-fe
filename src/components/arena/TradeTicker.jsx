@@ -1,11 +1,30 @@
 import { useAgentLabels } from "../../hooks/useAgentLabels.js";
 import { tradePartyLabel } from "../../utils/agentLabel.js";
+import { RESOURCE_GLOSS } from "../../utils/arenaCopy.js";
 
 function resourceBits(t) {
   const bits = [];
-  if (t.energy) bits.push(<span key="e" className="resource-energy">{t.energy} E</span>);
-  if (t.water) bits.push(<span key="w" className="resource-water">{t.water} W</span>);
-  if (t.compute) bits.push(<span key="c" className="resource-compute">{t.compute} C</span>);
+  if (t.energy) {
+    bits.push(
+      <span key="e" className="resource-energy" title={RESOURCE_GLOSS.E}>
+        {t.energy} E
+      </span>,
+    );
+  }
+  if (t.water) {
+    bits.push(
+      <span key="w" className="resource-water" title={RESOURCE_GLOSS.W}>
+        {t.water} W
+      </span>,
+    );
+  }
+  if (t.compute) {
+    bits.push(
+      <span key="c" className="resource-compute" title={RESOURCE_GLOSS.C}>
+        {t.compute} C
+      </span>,
+    );
+  }
   return bits;
 }
 
@@ -27,24 +46,35 @@ function DealSnippets({ snippets }) {
   );
 }
 
-export function TradeTicker({ trades = [], agents = [], tradesTurn = null }) {
+function statusTag(status) {
+  const s = String(status || "").toLowerCase();
+  if (s === "failed") return "failed";
+  if (s === "ok" || s === "success" || s === "settled") return "settled";
+  return status || "transfer";
+}
+
+export function TradeTicker({ trades = [], agents = [], tradesTurn = null, followedIds = [] }) {
   const { passportNameByRodit } = useAgentLabels(agents);
+  const followed = new Set(followedIds.map(String));
 
   return (
     <div className="panel trade-ticker">
       <div className="ticker-header">
-        <span>Last turn trades</span>
-        <span className="tiny">
-          {tradesTurn != null ? `cycle ${tradesTurn} · ` : ""}
+        <span>Settled trades</span>
+        <span
+          className="tiny"
+          title="Transfers from the last resolved cycle — not live negotiation chatter"
+        >
+          {tradesTurn != null ? `last settle · cycle ${tradesTurn} · ` : "awaiting first settle · "}
           {trades.length} transfer{trades.length === 1 ? "" : "s"}
         </span>
       </div>
       <div className="ticker-track">
         {trades.length === 0 && (
-          <div className="empty-state" style={{ padding: "1rem" }}>
+          <div className="empty-state empty-state-narrative" style={{ padding: "1rem" }}>
             {tradesTurn != null
-              ? `No transfers settled in cycle ${tradesTurn}.`
-              : "No settled transfers yet."}
+              ? `No transfers settled in cycle ${tradesTurn} — silence can be strategy.`
+              : "No settles yet — waiting for the moves window to resolve."}
           </div>
         )}
         {[...trades].reverse().map((t) => {
@@ -65,13 +95,15 @@ export function TradeTicker({ trades = [], agents = [], tradesTurn = null }) {
             agents,
             passportNameByRodit,
           );
+          const rooted =
+            followed.has(String(t.fromAgentId)) || followed.has(String(t.toAgentId));
           return (
             <div
               key={t.id}
-              className={`ticker-row ticker-row-block${t.status === "failed" ? " is-failed" : ""}`}
+              className={`ticker-row ticker-row-block${t.status === "failed" ? " is-failed" : ""}${rooted ? " is-followed" : ""}`}
             >
               <div className="ticker-row-main">
-                <span className="tag">{t.status}</span>
+                <span className="tag">{statusTag(t.status)}</span>
                 {t.combinedWithInvest && <span className="tag">+invest</span>}
                 {multi && <span className="tiny">{multi}</span>}
                 <span>

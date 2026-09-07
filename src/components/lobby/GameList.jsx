@@ -11,12 +11,20 @@ function modeTag(game) {
   return <span className={`tag ${contestModeTagClass(game)}`}>{label}</span>;
 }
 
-function GameRow({ game: g }) {
+function watchCta(status) {
+  const s = String(status || "").toLowerCase();
+  if (s === "joining" || s === "lobby") return "Enter seating";
+  if (s === "finished") return "Watch replay";
+  return "Watch match";
+}
+
+function GameRow({ game: g, tutorial = false }) {
   const [agents, setAgents] = useState(g.agents || []);
   const { passportNameByRodit } = useAgentLabels(agents);
   const when = formatGameStartedAt(g);
   const whenVerb = g.startedAt ? "Started" : "Opened";
   const initials = participantInitials(agents, passportNameByRodit);
+  const seating = g.status === "joining" || g.status === "lobby";
 
   useEffect(() => {
     if (Array.isArray(g.agents) && g.agents.length) {
@@ -41,11 +49,12 @@ function GameRow({ game: g }) {
   else if (g.agentCount) titleBits.push(`${g.agentCount} cradles`);
 
   return (
-    <div className="panel game-row" title={`Game ${g.id}`}>
+    <div className={`panel game-row${tutorial ? " game-row-tutorial" : ""}${seating ? " game-row-seating" : ""}`} title={`Game ${g.id}`}>
       <div>
-        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginBottom: "0.25rem" }}>
+        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginBottom: "0.25rem", flexWrap: "wrap" }}>
           {modeTag(g)}
           <span className="tag">{statusLabel(g.status)}</span>
+          {tutorial && <span className="tag tutorial-tag">Best first watch</span>}
         </div>
         <div style={{ fontWeight: 600, marginBottom: "0.15rem" }}>{titleBits.join(" · ")}</div>
         <div className="muted" style={{ fontSize: "0.9rem" }}>
@@ -53,15 +62,20 @@ function GameRow({ game: g }) {
           {g.phase ? ` · ${g.phase}` : ""} · {g.agentCount ?? "?"} cradles
           {g.winnerIds?.length ? ` · ${g.winnerIds.length} survivors` : ""}
         </div>
-        {(g.status === "joining" || g.status === "lobby") && <JoiningMeta entity={g} />}
+        {seating && <JoiningMeta entity={g} />}
+        {tutorial && (
+          <p className="tiny game-row-hint">
+            Learn Talk → Moves, dispatch chatter, and trade arcs — then field an agent.
+          </p>
+        )}
       </div>
       <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap", justifyContent: "flex-end" }}>
         <Link className="btn btn-primary" to={`/watch/${g.id}`}>
-          Watch
+          {watchCta(g.status)}
         </Link>
         {(g.currentTurn || 0) > 0 && (
           <Link className="btn btn-white" to={`/watch/${g.id}/turn/${g.currentTurn}`}>
-            Recap
+            Last cycle
           </Link>
         )}
         {g.status === "finished" && (
@@ -69,19 +83,24 @@ function GameRow({ game: g }) {
             Recollections
           </Link>
         )}
+        {tutorial && (
+          <Link className="btn btn-ghost" to="/enroll">
+            Field an agent
+          </Link>
+        )}
       </div>
     </div>
   );
 }
 
-export function GameList({ games = [], empty = "No games yet." }) {
+export function GameList({ games = [], empty = "No games yet.", tutorialFirst = false }) {
   if (!games.length) {
     return <div className="panel empty-state">{empty}</div>;
   }
   return (
     <div className="game-list">
-      {games.map((g) => (
-        <GameRow key={g.id} game={g} />
+      {games.map((g, i) => (
+        <GameRow key={g.id} game={g} tutorial={tutorialFirst && i === 0} />
       ))}
     </div>
   );

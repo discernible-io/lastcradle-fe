@@ -18,8 +18,12 @@ export function formatGameStartedAt(game, { fallback = "Start time unknown" } = 
 }
 
 export function statusLabel(status) {
-  const s = String(status || "").trim();
+  const s = String(status || "").trim().toLowerCase();
   if (!s) return "Unknown";
+  if (s === "running") return "Live";
+  if (s === "joining" || s === "lobby") return "Seating";
+  if (s === "finished") return "Finished";
+  if (s === "scheduled") return "Scheduled";
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 

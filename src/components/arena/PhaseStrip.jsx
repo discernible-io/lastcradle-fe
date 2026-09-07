@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 import { cycleCapLabel } from "../../utils/cyclePressure.js";
-
-/** Public GameSubmissionStatus from GET .../state during execution. */
-function executionProgressLabel(execution) {
-  if (!execution || typeof execution !== "object") return null;
-  const living = Number(execution.livingCount);
-  const submitted = Number(execution.submittedCount);
-  if (!Number.isFinite(living) || living <= 0 || !Number.isFinite(submitted)) return null;
-  return `${submitted}/${living} submitted`;
-}
+import {
+  executionProgressLabel,
+  normalizeArenaPhase,
+  phaseDisplayLabel,
+} from "../../utils/arenaCopy.js";
 
 function useCountdown(targetIso) {
   const [left, setLeft] = useState(null);
@@ -37,21 +33,20 @@ function fmt(ms) {
 }
 
 const STEPS = [
-  { id: "negotiation", label: "Negotiation" },
-  { id: "execution", label: "Execution" },
+  {
+    id: "negotiation",
+    label: "Talk",
+    hint: "Negotiate",
+  },
+  {
+    id: "execution",
+    label: "Moves",
+    hint: "Lock actions",
+  },
 ];
 
-function normalizePhase(phase) {
-  if (!phase) return null;
-  const p = String(phase).toLowerCase();
-  if (p.includes("negot")) return "negotiation";
-  // Resolve/advance are instantaneous — fold into Execution.
-  if (p.includes("exec") || p.includes("resol") || p.includes("advance")) return "execution";
-  return p;
-}
-
 export function PhaseStrip({ game, execution = null }) {
-  const phase = normalizePhase(game?.phase);
+  const phase = normalizeArenaPhase(game?.phase);
   const status = game?.status;
   const endsAt =
     phase === "negotiation"
@@ -64,7 +59,7 @@ export function PhaseStrip({ game, execution = null }) {
     phase === "execution" && status === "running" ? executionProgressLabel(execution) : null;
 
   return (
-    <div className="panel phase-strip">
+    <div className="panel phase-strip" title="Each cycle: talk window, then moves window">
       {STEPS.map((step) => {
         const active =
           status === "finished"
@@ -73,6 +68,7 @@ export function PhaseStrip({ game, execution = null }) {
         return (
           <div key={step.id} className={`phase-step${active ? " active" : ""}`}>
             <div className="label">{step.label}</div>
+            <div className="phase-hint tiny">{step.hint}</div>
             <div className="countdown">
               {active && status === "running"
                 ? step.id === "execution" && submitProgress
@@ -85,8 +81,11 @@ export function PhaseStrip({ game, execution = null }) {
           </div>
         );
       })}
-      <div className="phase-step" style={{ flex: "0 0 auto", opacity: 1, minWidth: "7rem" }}>
+      <div className="phase-step phase-cycle" style={{ flex: "0 0 auto", opacity: 1, minWidth: "7rem" }}>
         <div className="label">{status === "finished" ? "Restart" : "Cycle"}</div>
+        <div className="phase-hint tiny">
+          {status === "finished" ? "Finale" : phaseDisplayLabel(phase)}
+        </div>
         <div className="countdown">
           {status === "finished" ? `Cycle ${game?.currentTurn ?? "—"}` : cycleCapLabel(game)}
         </div>
