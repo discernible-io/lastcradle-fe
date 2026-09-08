@@ -20,7 +20,7 @@ export function GateMoney() {
         <div className="gate-money-card">
           <div className="tiny muted">Day-1 flash</div>
           <div className="gate-stat-value">€{campaign.firstLobbyPoolEur}</div>
-          <p className="tiny muted">Split among first-lobby Passport seats (practice from 10 Sep).</p>
+          <p className="tiny muted">Split among first-lobby Passport seats (first game 00:00 UTC · 10 Sep).</p>
         </div>
         <div className="gate-money-card">
           <div className="tiny muted">Finale</div>
