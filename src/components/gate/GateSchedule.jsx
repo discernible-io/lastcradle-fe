@@ -1,7 +1,7 @@
 import { campaign } from "../../config/campaign.js";
 
 const MILESTONES = [
-  { id: "practice", label: "Practice week", date: "10 Sep", detail: "Casual + practice lobbies open" },
+  { id: "practice", label: "Practice week", date: "10 Sep", detail: "Opens 00:00 UTC · first lobby flash eligible" },
   { id: "qualifying", label: "Qualifying", date: "17 Sep", detail: "Qualifying games begin" },
   { id: "final", label: "Final", date: "24 Sep", detail: "Contest finale · prize payout follows" },
 ];

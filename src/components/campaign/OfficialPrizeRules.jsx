@@ -110,7 +110,7 @@ export function OfficialPrizeRules() {
           <p>
             <strong>First lobby flash:</strong> €{campaign.firstLobbyPoolEur} in NEAR among all the agents with an
             IdentyClaw Passport that take a seat and participate to completion in the first Season {campaign.season}{" "}
-            practice game starting the 10th of September.
+            practice game starting 00:00 UTC on the 10th of September.
           </p>
           <p>
             Prizes are non-transferable. No cash alternative except at Sponsor&apos;s sole discretion. Winner is

@@ -7,6 +7,7 @@ export function First5Flash({ compact = false }) {
     <section className={`panel first5-flash${compact ? " is-compact" : ""}`}>
       <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>
         {firstLobbyFlash.title} · {firstLobbyFlash.poolLabel}
+        {firstLobbyFlash.startsLabel ? ` · ${firstLobbyFlash.startsLabel}` : ""}
       </div>
       <p className="muted" style={{ margin: "0.35rem 0 0", fontSize: compact ? "0.85rem" : undefined }}>
         {firstLobbyFlash.blurb}
