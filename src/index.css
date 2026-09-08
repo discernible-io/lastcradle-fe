@@ -2753,3 +2753,378 @@ select:focus {
   color: var(--energy);
   font-weight: 500;
 }
+
+/* Contest entrance gate */
+.gate-page {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255, 69, 0, 0.08), transparent 55%),
+    linear-gradient(180deg, var(--void-0) 0%, var(--void-1) 48%, var(--void-0) 100%);
+}
+
+.gate-hero {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 1.5rem;
+  text-align: center;
+}
+
+.gate-kicker {
+  margin: 0 0 0.65rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--energy);
+  font-weight: 600;
+  animation: rise-in 0.8s ease-out both;
+}
+
+.gate-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45em;
+  font-family: var(--font-display);
+  font-size: clamp(1.65rem, 5.5vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--ink);
+  margin-bottom: 0.85rem;
+  animation: rise-in 0.9s ease-out both;
+}
+
+.gate-brand .brand-hero-mark {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+.gate-prize-badge {
+  display: inline-block;
+  margin: 0 0 1rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid rgba(255, 69, 0, 0.45);
+  border-radius: 4px;
+  color: var(--energy);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  animation: rise-in 0.9s ease-out 0.08s both;
+}
+
+.gate-headline {
+  font-size: clamp(1.65rem, 4.8vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.85rem;
+  color: var(--ink);
+  animation: rise-in 1s ease-out 0.12s both;
+}
+
+.gate-headline-accent {
+  color: var(--energy);
+}
+
+.gate-lede,
+.gate-section-lede {
+  color: var(--ink-dim);
+  margin: 0;
+  max-width: 40rem;
+}
+
+.gate-lede {
+  margin-left: auto;
+  margin-right: auto;
+  animation: rise-in 1s ease-out 0.2s both;
+}
+
+.gate-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  justify-content: center;
+  margin-top: 1.25rem;
+  animation: rise-in 1s ease-out 0.28s both;
+}
+
+.gate-hero-note {
+  margin: 0.85rem 0 0;
+  color: var(--ink-mute);
+  animation: rise-in 1s ease-out 0.32s both;
+}
+
+.gate-body {
+  width: min(100%, 44rem);
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.75rem;
+}
+
+.gate-section h2 {
+  font-size: clamp(1.35rem, 3.2vw, 1.75rem);
+  margin: 0.25rem 0 0.65rem;
+  line-height: 1.25;
+}
+
+.gate-section h3 {
+  font-size: 1.05rem;
+  margin: 0 0 0.35rem;
+}
+
+.gate-section p {
+  margin: 0 0 0.75rem;
+  color: var(--ink-dim);
+}
+
+.gate-section-kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  font-weight: 600;
+}
+
+.gate-section-lede {
+  margin-bottom: 1.25rem;
+}
+
+.gate-schedule-milestones {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.gate-milestone {
+  padding: 0.85rem 0.75rem;
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.gate-milestone-date {
+  font-weight: 700;
+  color: var(--energy);
+  font-size: 0.95rem;
+}
+
+.gate-milestone-label {
+  font-weight: 600;
+  margin: 0.15rem 0 0.25rem;
+}
+
+.gate-stats-row,
+.gate-money-grid,
+.gate-pillars,
+.gate-live-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.gate-stats-row {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.gate-stat,
+.gate-money-card,
+.gate-pillar {
+  padding: 0.85rem 0.75rem;
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.gate-stat-value {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-top: 0.15rem;
+}
+
+.gate-stat-value.mono,
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.gate-pillars {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.gate-pillar-num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--energy);
+  line-height: 1;
+  margin-bottom: 0.35rem;
+}
+
+.gate-pillar p {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.gate-phases {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.gate-phase {
+  padding: 1rem;
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.gate-phase-tag {
+  color: var(--energy);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.gate-phase-example {
+  display: block;
+  margin-top: 0.5rem;
+  padding: 0.45rem 0.55rem;
+  background: var(--void-1);
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: var(--ink-mute);
+  overflow-x: auto;
+}
+
+.gate-receipt {
+  margin: 0 0 1.25rem;
+  padding: 1rem 1.1rem;
+  border: 1px dashed var(--panel-border);
+  border-radius: var(--radius);
+  background: var(--void-1);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: var(--ink-dim);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.gate-trap {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.gate-trap ul {
+  margin: 0.5rem 0 0.85rem;
+  padding-left: 1.15rem;
+  color: var(--ink-dim);
+}
+
+.gate-trap li {
+  margin-bottom: 0.45rem;
+}
+
+.gate-trap-lesson {
+  margin: 0 !important;
+  font-weight: 600;
+  color: var(--ink) !important;
+}
+
+.gate-money-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 0.85rem;
+}
+
+.gate-eligibility {
+  color: var(--ink-mute);
+}
+
+.gate-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.gate-step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.85rem;
+  padding: 1rem;
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.gate-step-num {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: rgba(255, 69, 0, 0.12);
+  color: var(--energy);
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.gate-step .btn {
+  margin-top: 0.35rem;
+}
+
+.gate-live {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.gate-live-grid {
+  grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr));
+}
+
+.gate-close {
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--panel-border);
+}
+
+.gate-close .gate-ctas {
+  justify-content: flex-start;
+  animation: none;
+}
+
+@media (max-width: 720px) {
+  .gate-schedule-milestones,
+  .gate-stats-row,
+  .gate-pillars,
+  .gate-money-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gate-hero {
+    padding-top: 1.25rem;
+  }
+
+  .gate-ctas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .gate-ctas .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
