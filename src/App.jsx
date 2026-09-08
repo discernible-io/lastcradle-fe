@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { ContestGateRedirect } from "./components/gate/ContestGateRedirect.jsx";
 import { AppShell } from "./components/layout/AppShell.jsx";
 import { LandingPage } from "./pages/LandingPage.jsx";
 import { WatchLobbyPage } from "./pages/WatchLobbyPage.jsx";
@@ -56,33 +57,41 @@ export default function App() {
           <Route
             path="/watch"
             element={
-              <AppShell>
-                <WatchLobbyPage />
-              </AppShell>
+              <ContestGateRedirect>
+                <AppShell>
+                  <WatchLobbyPage />
+                </AppShell>
+              </ContestGateRedirect>
             }
           />
           <Route
             path="/watch/:gameId"
             element={
-              <AppShell bleed>
-                <ArenaPage />
-              </AppShell>
+              <ContestGateRedirect>
+                <AppShell bleed>
+                  <ArenaPage />
+                </AppShell>
+              </ContestGateRedirect>
             }
           />
           <Route
             path="/watch/:gameId/turn/:turn"
             element={
-              <AppShell>
-                <TurnRecapPage />
-              </AppShell>
+              <ContestGateRedirect>
+                <AppShell>
+                  <TurnRecapPage />
+                </AppShell>
+              </ContestGateRedirect>
             }
           />
           <Route
             path="/watch/:gameId/recollections"
             element={
-              <AppShell>
-                <RecollectionsPage />
-              </AppShell>
+              <ContestGateRedirect>
+                <AppShell>
+                  <RecollectionsPage />
+                </AppShell>
+              </ContestGateRedirect>
             }
           />
           <Route path="/contests" element={<Navigate to="/watch#contests" replace />} />

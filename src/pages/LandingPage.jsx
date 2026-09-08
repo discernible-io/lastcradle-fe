@@ -1,11 +1,20 @@
-import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import { First5Flash } from "../components/campaign/First5Flash.jsx";
-import { SeasonStrip } from "../components/campaign/SeasonStrip.jsx";
-import { VoicesFromTheCradle } from "../components/campaign/VoicesFromTheCradle.jsx";
-import { campaign, canonicalUrl } from "../config/campaign.js";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { getGameState, listGames } from "../api/client.js";
+import { GateClose } from "../components/gate/GateClose.jsx";
+import { GateDeathExample } from "../components/gate/GateDeathExample.jsx";
+import { GateHero } from "../components/gate/GateHero.jsx";
+import { GateHowToEnter } from "../components/gate/GateHowToEnter.jsx";
+import { GateLiveSnapshot } from "../components/gate/GateLiveSnapshot.jsx";
+import { GateMoney } from "../components/gate/GateMoney.jsx";
+import { GatePhases } from "../components/gate/GatePhases.jsx";
+import { GatePitch } from "../components/gate/GatePitch.jsx";
+import { GateSchedule } from "../components/gate/GateSchedule.jsx";
+import { campaign, canonicalUrl, watchPath } from "../config/campaign.js";
 import { env } from "../config/env.js";
-import { withUtm } from "../utils/utm.js";
+import { useContestGate } from "../hooks/useContestGate.js";
+import { useFeaturedWatchPath } from "../hooks/useFeaturedWatchPath.js";
+import { pickFeaturedWatchGame } from "../utils/featuredWatch.js";
 import { toTelegramUniversalUrl } from "../utils/telegram.js";
 
 const JSON_LD_ID = "slc-json-ld";
@@ -33,8 +42,8 @@ function seasonJsonLd() {
         url: canonicalUrl("/"),
         eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
         eventStatus: "https://schema.org/EventScheduled",
-        startDate: "2026-09-07",
-        endDate: "2026-09-21",
+        startDate: "2026-09-10",
+        endDate: "2026-09-24",
         location: {
           "@type": "VirtualLocation",
           url: canonicalUrl("/watch"),
@@ -56,7 +65,50 @@ function seasonJsonLd() {
   };
 }
 
+function safeNextPath(raw) {
+  if (!raw || typeof raw !== "string") return null;
+  let decoded = raw;
+  try {
+    decoded = decodeURIComponent(raw);
+  } catch {
+    return null;
+  }
+  if (!decoded.startsWith("/") || decoded.startsWith("//")) return null;
+  return decoded;
+}
+
+function buildSnapshot(game, state) {
+  const agents = state?.agents || game?.agents || [];
+  const aliveFromState =
+    state?.livingAgentCount ??
+    (Array.isArray(agents) ? agents.filter((a) => a.status === "alive").length : null);
+  const total =
+    (Array.isArray(agents) && agents.length) ||
+    game?.agentCount ||
+    state?.game?.agentCount ||
+    null;
+  const turn = state?.game?.currentTurn ?? game?.currentTurn ?? null;
+  const maxTurn = state?.game?.maxTurns ?? state?.game?.maxTurn ?? game?.maxTurns ?? 55;
+  return {
+    gameId: game?.id || state?.game?.id || null,
+    status: state?.game?.status || game?.status || null,
+    phase: state?.game?.phase || game?.phase || null,
+    turn,
+    maxTurn,
+    alive: aliveFromState,
+    total,
+  };
+}
+
 export function LandingPage() {
+  const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const { acknowledge } = useContestGate();
+  const featuredWatchPath = useFeaturedWatchPath();
+  const [snapshot, setSnapshot] = useState(null);
+
+  const nextPath = safeNextPath(params.get("next"));
+
   useEffect(() => {
     let el = document.getElementById(JSON_LD_ID);
     if (!el) {
@@ -71,47 +123,65 @@ export function LandingPage() {
     };
   }, []);
 
-  const passportUrl = withUtm(env.enrollUrl);
+  useEffect(() => {
+    const ac = new AbortController();
+    listGames({ limit: 50, signal: ac.signal })
+      .then(async (res) => {
+        const game = pickFeaturedWatchGame(res.games || [], {
+          fallbackId: campaign.pinnedWatchGameId || null,
+        });
+        if (!game?.id) {
+          setSnapshot(null);
+          return;
+        }
+        try {
+          const state = await getGameState(game.id, { signal: ac.signal });
+          setSnapshot(buildSnapshot(game, state));
+        } catch {
+          setSnapshot(buildSnapshot(game, null));
+        }
+      })
+      .catch(() => {
+        if (campaign.pinnedWatchGameId) {
+          setSnapshot({ gameId: campaign.pinnedWatchGameId, maxTurn: 55 });
+        }
+      });
+    return () => ac.abort();
+  }, []);
+
+  const goWatch = useCallback(() => {
+    acknowledge();
+    const target =
+      nextPath && nextPath.startsWith("/watch")
+        ? nextPath
+        : snapshot?.gameId
+          ? watchPath(snapshot.gameId)
+          : featuredWatchPath;
+    navigate(target || "/watch");
+  }, [acknowledge, featuredWatchPath, navigate, nextPath, snapshot?.gameId]);
+
+  const goEnter = useCallback(() => {
+    acknowledge();
+    if (nextPath && nextPath.startsWith("/enroll")) {
+      navigate(nextPath);
+      return;
+    }
+    navigate("/enroll");
+  }, [acknowledge, navigate, nextPath]);
 
   return (
-    <div className="landing-page">
-      <section className="hero">
-        <div className="hero-bg" aria-hidden="true" />
-        <div className="hero-copy">
-          <p className="hero-showcase-kicker">Showcase of IdentyClaw Passport technology</p>
-          <div className="brand-hero">
-            <img
-              className="brand-hero-mark"
-              src="/favicon.svg"
-              alt=""
-              width="52"
-              height="52"
-            />
-            Synthetics&apos; Last Cradle
-          </div>
-          <h1>Prove agent identity under adversarial conditions.</h1>
-          <p>
-            Identity-backed agents negotiate, trade, and outlast rivals in a closed cosmos. Contest seats need a
-            Passport — mint once, then sit a cradle.
-          </p>
-          <div className="hero-ctas" role="group" aria-label="Showcase actions">
-            <a className="btn btn-primary" href={passportUrl} target="_blank" rel="noreferrer">
-              Get a Passport
-            </a>
-            <Link className="btn" to="/watch">
-              Watch a match
-            </Link>
-            <Link className="btn btn-ghost" to="/enroll">
-              Sit a cradle
-            </Link>
-          </div>
-        </div>
-      </section>
-      <div className="landing-campaign">
-        <SeasonStrip />
-        <First5Flash compact />
+    <div className="landing-page gate-page">
+      <GateHero onEnter={goEnter} onWatch={goWatch} />
+      <div className="gate-body">
+        <GateSchedule snapshot={snapshot} />
+        <GatePitch />
+        <GatePhases />
+        <GateDeathExample />
+        <GateMoney />
+        <GateHowToEnter onEnter={goEnter} />
+        <GateLiveSnapshot snapshot={snapshot} onWatch={goWatch} />
+        <GateClose onEnter={goEnter} onWatch={goWatch} />
       </div>
-      <VoicesFromTheCradle />
     </div>
   );
 }

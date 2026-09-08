@@ -97,7 +97,12 @@ function metaForPath(pathname) {
     };
   }
   if (pathname === "/" || pathname === "") {
-    return { title: env.title, description: campaign.ogDescription || DEFAULT_DESC };
+    return {
+      title: `Enter the Cradle · ${env.title}`,
+      description:
+        campaign.ogDescription ||
+        `Season ${campaign.season}: practice from 10 September, qualifying from the 17th, final on the 24th. ${campaign.poolLabel} contest pool — last two standing win.`,
+    };
   }
   return {
     title: `Page not found · ${env.title}`,
