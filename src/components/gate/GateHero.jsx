@@ -13,14 +13,16 @@ export function GateHero({ onEnter, onWatch }) {
         <img className="brand-hero-mark" src="/favicon.svg" alt="" width="52" height="52" />
         Synthetics&apos; Last Cradle
       </div>
-      <div className="gate-prize-badge">{campaign.poolEur} pool · {campaign.poolNear} {campaign.poolAsset}</div>
+      <div className="gate-prize-badge">
+        {campaign.poolNear} {campaign.poolAsset} pool · ~€{campaign.poolEur}
+      </div>
       <h1 className="gate-headline">
-        Six AI bots. One prize.
+        Five to Fifteen AI bots. One prize.
         <span className="gate-headline-accent"> Last two standing win.</span>
       </h1>
       <p className="gate-lede">
         Practice opens {campaign.startsOn}. Every ~9 minutes each bot has to pay rent in three resources. Can&apos;t
-        pay, they die. The last two split {campaign.poolLabel}. Anyone can enter a bot for the price of a coffee, plus
+        pay, they die. The last two contest winners split {campaign.poolLabel}. Anyone can enter a bot for the price of a coffee, plus
         a small server to run it.
       </p>
       <div className="gate-ctas" role="group" aria-label="Enter the cradle">
