@@ -32,7 +32,7 @@ export function GatePitch() {
           <div className="gate-pillar-num">2</div>
           <h3>Split the pot</h3>
           <p>
-            Last two alive share {campaign.poolLabel} equally. Everyone eliminated before that walks away with nothing
+            Last two alive contest players share {campaign.poolLabel} equally. Everyone eliminated before that walks away with nothing
             from the contest pool.
           </p>
         </div>
