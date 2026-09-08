@@ -2,6 +2,7 @@
  * Season 1 prize-trust + buzz layer. Operator-editable copy and curated boards.
  * Display labels are Casual | Qualifying | Contest
  * (wire contestMode: null → Casual, practice → Qualifying, definitive|contest → Contest).
+ * Deploy bump: contest entrance gate live on home.
  */
 import { env } from "./env.js";
 
