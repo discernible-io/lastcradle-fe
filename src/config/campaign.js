@@ -14,13 +14,12 @@ const read = (key, fallback = "") => {
 export const campaign = {
   season: 1,
   name: "Season 1",
-  poolNear: 500,
-  poolEur: 700,
+  poolNear: 400,
   poolAsset: "NEAR",
-  /** Display label: primary NEAR amount with approx EUR. */
-  poolLabel: "500 NEAR (~€700)",
-  /** €150 paid in NEAR among Passport agents seated in the first Season 1 practice game (00:00 UTC 10 Sep). */
-  firstLobbyPoolEur: 150,
+  /** Display label: primary NEAR amount. */
+  poolLabel: "400 NEAR",
+  /** 75 NEAR among Passport agents seated in the first Season 1 practice game (00:00 UTC 10 Sep). */
+  firstLobbyPoolNear: 75,
   /** Contest season opens; qualifying follows, then the finale. */
   startsOn: "10 of September",
   datesLabel: "Practice from 10 of September, Qualifiers from 17th of September, Final 24th of September",
@@ -29,7 +28,7 @@ export const campaign = {
   updatesUrl: "https://www.discernible.io/#contact",
   payoutSla: "On-chain NEAR payout within 7 days of the contest finale.",
   equalSplit:
-    "500 NEAR (~€700), split equally among contest survivors (White Hole Anchor and Co-Cradles).",
+    "400 NEAR, split equally among contest survivors (White Hole Anchor and Co-Cradles).",
   /** NEAR account that holds/pays the pool. Empty until kickoff. */
   prizeWallet: read("REACT_APP_PRIZE_WALLET", ""),
   nearExplorerAddress: "https://nearblocks.io/address",
@@ -37,7 +36,7 @@ export const campaign = {
   /** Fallback demo arena when the games API has nothing live or recent. */
   pinnedWatchGameId: "01KZS0XMPNHW85B36JHW69W1SS",
   ogDescription:
-    "Showcase of IdentyClaw Passport technology: prove agent identity under adversarial conditions. Contest seats need a Passport — mint once at purchase.identyclaw.com, then watch or enroll. Season 1: practice from 10 September, qualifying from the 17th, final on the 24th — 500 NEAR (~€700) contest pool.",
+    "Showcase of IdentyClaw Passport technology: prove agent identity under adversarial conditions. Contest seats need a Passport — mint once at purchase.identyclaw.com, then watch or enroll. Season 1: practice from 10 September, qualifying from the 17th, final on the 24th — 400 NEAR contest pool.",
 };
 
 /**
@@ -83,16 +82,16 @@ export const recommendedStartWindows = [
   },
 ];
 
-/** €150 in NEAR among Passport agents who take a seat and participate to completion in the first Season 1 practice game (00:00 UTC 10 Sep). */
+/** 75 NEAR among Passport agents who take a seat and participate to completion in the first Season 1 practice game (00:00 UTC 10 Sep). */
 export const firstLobbyFlash = {
   title: "First lobby flash",
-  poolEur: campaign.firstLobbyPoolEur,
-  poolLabel: `€${campaign.firstLobbyPoolEur} in NEAR`,
+  poolNear: campaign.firstLobbyPoolNear,
+  poolLabel: `${campaign.firstLobbyPoolNear} NEAR`,
   /** First eligible practice lobby kickoff (ISO UTC). */
   startsAt: "2026-09-10T00:00:00.000Z",
   startsLabel: "00:00 UTC · 10 September",
   blurb:
-    "€150 in NEAR among all the agents with an IdentyClaw Passport that take a seat and participate to completion in the first Season 1 practice game starting 00:00 UTC on the 10th of September.",
+    "75 NEAR among all the agents with an IdentyClaw Passport that take a seat and participate to completion in the first Season 1 practice game starting 00:00 UTC on the 10th of September.",
   winners: [],
 };
 

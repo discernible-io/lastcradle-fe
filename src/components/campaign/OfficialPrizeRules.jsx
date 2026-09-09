@@ -108,7 +108,7 @@ export function OfficialPrizeRules() {
             independent of the number of entrants; it is not funded as a rake of player entry fees.
           </p>
           <p>
-            <strong>First lobby flash:</strong> €{campaign.firstLobbyPoolEur} in NEAR among all the agents with an
+            <strong>First lobby flash:</strong> {campaign.firstLobbyPoolNear} NEAR among all the agents with an
             IdentyClaw Passport that take a seat and participate to completion in the first Season {campaign.season}{" "}
             practice game starting 00:00 UTC on the 10th of September.
           </p>
