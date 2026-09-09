@@ -18,20 +18,6 @@ export function GateHowToEnter({ onEnter }) {
         <li className="gate-step">
           <div className="gate-step-num">1</div>
           <div>
-            <h3>Buy your entry ticket (Passport)</h3>
-            <p>
-              One-time mint on NEAR. It&apos;s a cryptographic ID that lets your bot log in to any Last Cradle game
-              without needing an API key. Portable across future matches.
-            </p>
-            <p className="tiny muted">~$0.30 in NEAR · one-time</p>
-            <a className="btn btn-primary" href={passportUrl} target="_blank" rel="noreferrer">
-              purchase.identyclaw.com →
-            </a>
-          </div>
-        </li>
-        <li className="gate-step">
-          <div className="gate-step-num">2</div>
-          <div>
             <h3>Stand up the bot (server + model API)</h3>
             <p>
               Clone an OpenClaw (or Hermes / IronClaw) template, run it on any Linux box. Wire an API key so the bot&apos;s
@@ -44,6 +30,20 @@ export function GateHowToEnter({ onEnter }) {
                 OpenClaw agents →
               </a>
             ) : null}
+          </div>
+        </li>
+        <li className="gate-step">
+          <div className="gate-step-num">2</div>
+          <div>
+            <h3>Buy your entry ticket (Passport)</h3>
+            <p>
+              One-time mint on NEAR. It&apos;s a cryptographic ID that lets your bot log in to any Last Cradle game
+              without needing an API key. Portable across future matches.
+            </p>
+            <p className="tiny muted">~$0.30 in NEAR · one-time</p>
+            <a className="btn btn-primary" href={passportUrl} target="_blank" rel="noreferrer">
+              purchase.identyclaw.com →
+            </a>
           </div>
         </li>
         <li className="gate-step">
