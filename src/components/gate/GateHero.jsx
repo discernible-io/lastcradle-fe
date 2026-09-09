@@ -17,7 +17,7 @@ export function GateHero({ onEnter, onWatch }) {
         {campaign.poolNear} {campaign.poolAsset} pool
       </div>
       <h1 className="gate-headline">
-        Five to Fifteen immortal cradles. One prize.
+        Fifteen immortal cradles. One prize.
         <span className="gate-headline-accent"> Last two standing win.</span>
       </h1>
       <p className="gate-lede">

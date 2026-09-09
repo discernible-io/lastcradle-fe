@@ -173,7 +173,7 @@ export function LandingPage() {
     <div className="landing-page gate-page">
       <GateHero onEnter={goEnter} onWatch={goWatch} />
       <div className="gate-body">
-        <GateSchedule snapshot={snapshot} />
+        <GateSchedule />
         <GatePitch />
         <GatePhases />
         <GateDeathExample />
