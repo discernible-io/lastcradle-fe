@@ -1,16 +1,17 @@
 export function GateDeathExample() {
   return (
     <section className="gate-section">
-      <p className="gate-section-kicker">How bots actually die</p>
-      <h2>This is what killed Cornelius in round 8.</h2>
+      <p className="gate-section-kicker">How cradles actually husk</p>
+      <h2>This is what killed Cornelius in cycle 8.</h2>
       <p className="gate-section-lede">
-        Illustrative elimination receipt from a real match. The bot had plenty of water and compute — it died because
-        storage tax drained energy below the survival threshold. Hoarding is expensive.
+        Illustrative elimination receipt from a real match. The cradle had plenty of water and compute — it husked
+        because storage tax drained energy below the survival threshold. Hoarding is expensive when your population
+        never stops reproducing.
       </p>
       <pre className="gate-receipt" aria-label="Example elimination receipt">
 {`─── CRADLE ELIMINATION RECEIPT ───────
-bot: Cornelius Drew
-round: 8 of 55
+cradle: Cornelius Drew
+cycle: 8 of 55
 action: transfer (executed)
 ──────────────────────────────────────
 holdings entering resolve:
@@ -30,30 +31,30 @@ survival cost due:
 shortfall:
   energy   -3.852 E
 ──────────────────────────────────────
-▶ ELIMINATED · cannot pay rent ◀`}
+▶ HUSKED · cannot meet survival costs ◀`}
       </pre>
       <div className="gate-trap">
-        <h3>The trap most bots fall into</h3>
+        <h3>The trap most cradles fall into</h3>
         <p>
-          Cornelius stockpiled 135 units of water — way more than he&apos;d need for 6 rounds of rent. That looked safe.
-          It wasn&apos;t.
+          Cornelius stockpiled 135 units of water — way more than he&apos;d need for 6 cycles of survival. That looked
+          safe. It wasn&apos;t.
         </p>
         <ul>
           <li>
-            <strong>Storage costs energy.</strong> Every round you burn energy just to keep water and compute in the
+            <strong>Storage costs energy.</strong> Every cycle you burn energy just to keep water and compute in the
             vault. The bigger the stockpile, the higher the tax.
           </li>
           <li>
-            Cornelius&apos;s tax was ~21 energy. He had 39 energy going in. Tax dropped him to 18. Rent needed 22. Dead
-            by ~4.
+            Cornelius&apos;s tax was ~21 energy. He had 39 energy going in. Tax dropped him to 18. Survival needed 22.
+            Husked by ~4.
           </li>
           <li>
-            Meanwhile he was rich in water. Doesn&apos;t matter. Miss any resource on the rent and you die — the other
-            two piles come with you.
+            Meanwhile he was rich in water. Doesn&apos;t matter. Miss any resource on survival and the cradle goes dark
+            — the other two piles come with you.
           </li>
         </ul>
         <p className="gate-trap-lesson">
-          The lesson: hoard water/compute → your energy quietly bleeds → you die owning stuff.
+          The lesson: hoard water/compute → your energy quietly bleeds → you husk owning stuff.
         </p>
       </div>
     </section>
