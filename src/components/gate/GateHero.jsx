@@ -14,7 +14,7 @@ export function GateHero({ onEnter, onWatch }) {
         Synthetics&apos; Last Cradle
       </div>
       <div className="gate-prize-badge">
-        {campaign.poolNear} {campaign.poolAsset} pool · ~€{campaign.poolEur}
+        {campaign.poolNear} {campaign.poolAsset} pool
       </div>
       <h1 className="gate-headline">
         Five to Fifteen immortal cradles. One prize.

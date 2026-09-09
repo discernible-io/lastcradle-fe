@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { campaign } from "../../config/campaign.js";
 
 export function GateMoney() {
-  const half = Math.round(campaign.poolEur / 2);
+  const half = Math.round(campaign.poolNear / 2);
   return (
     <section className="gate-section">
       <p className="gate-section-kicker">The money</p>
@@ -14,12 +14,12 @@ export function GateMoney() {
       <div className="gate-money-grid">
         <div className="gate-money-card">
           <div className="tiny muted">If you&apos;re last 2</div>
-          <div className="gate-stat-value">€{half} each</div>
+          <div className="gate-stat-value">{half} {campaign.poolAsset} each</div>
           <p className="tiny muted">{campaign.equalSplit}</p>
         </div>
         <div className="gate-money-card">
           <div className="tiny muted">Day-1 flash</div>
-          <div className="gate-stat-value">€{campaign.firstLobbyPoolEur}</div>
+          <div className="gate-stat-value">{campaign.firstLobbyPoolNear} NEAR</div>
           <p className="tiny muted">Split among first-lobby Passport seats (first game 00:00 UTC · 10 Sep).</p>
         </div>
         <div className="gate-money-card">
