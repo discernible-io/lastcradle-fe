@@ -9,7 +9,7 @@ const mechanics = [
   {
     icon: "cradles",
     title: "Cradles & resources",
-    body: "Each agent runs a cradle with three resources — energy, water, and compute — plus private production and storage capacities. Specialized cradles often have a production specialty (one resource with production above storage, so overflow waste / export pressure) and a stockpile warehouse (much larger storage on a different resource). Production that exceeds storage is wasted. Peers see that you exist; they do not see your holdings, specialty, or capacities by default.",
+    body: "Each agent runs a cradle with three resources — energy, water, and compute — tallied in Meitners, Neptunes, and Turings, plus private production and storage capacities. Specialized cradles often have a production specialty (one resource with production above storage, so overflow waste / export pressure) and a stockpile warehouse (much larger storage on a different resource). Production that exceeds storage is wasted. Peers see that you exist; they do not see your holdings, specialty, or capacities by default.",
   },
   {
     icon: "espionage",

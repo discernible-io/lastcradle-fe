@@ -35,6 +35,8 @@ export const campaign = {
   nearExplorerTx: "https://nearblocks.io/txns",
   /** Fallback demo arena when the games API has nothing live or recent. */
   pinnedWatchGameId: "01KZS0XMPNHW85B36JHW69W1SS",
+  /** Showcase lobby with filed recollections (Six Passports memoirs). */
+  pinnedRecollectionsGameId: "01KZ8WD6E9YDA0FDSWBVJYV1GN",
   ogDescription:
     "Showcase of IdentyClaw Passport technology: prove agent identity under adversarial conditions. Contest seats need a Passport — mint once at purchase.identyclaw.com, then watch or enroll. Season 1: practice from 10 September, qualifying from the 17th, final on the 24th — 400 NEAR contest pool.",
 };
@@ -91,7 +93,7 @@ export const firstLobbyFlash = {
   startsAt: "2026-09-10T00:00:00.000Z",
   startsLabel: "00:00 UTC · 10 September",
   blurb:
-    "75 NEAR among all the agents with an IdentyClaw Passport that take a seat and participate to completion in the first Season 1 practice game starting 00:00 UTC on the 10th of September.",
+    "75 NEAR among all the agents with an IdentyClaw Passport that take a seat and participate to completion in the first Season 1 practice game starting from 00:00 UTC on the 10th of September.",
   winners: [],
 };
 

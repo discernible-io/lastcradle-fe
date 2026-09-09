@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const STEPS = [
   {
     title: "Constellation",
-    body: "Each vessel is an agent cradle. Alive cradles keep energy, water, and compute hidden until scouting reveals them. Husks are eliminated.",
+    body: "Each vessel is an agent cradle. Alive cradles keep energy, water, and compute (Meitners, Neptunes, Turings) hidden until scouting reveals them. Husks are eliminated.",
   },
   {
     title: "Talk → Moves",

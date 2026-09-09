@@ -1,4 +1,11 @@
-export function GateDeathExample() {
+import { Link } from "react-router-dom";
+import { campaign } from "../../config/campaign.js";
+
+export function GateDeathExample({ onOpenRecollections }) {
+  const recollectionsPath = campaign.pinnedRecollectionsGameId
+    ? `/watch/${encodeURIComponent(campaign.pinnedRecollectionsGameId)}/recollections`
+    : null;
+
   return (
     <section className="gate-section">
       <p className="gate-section-kicker">How cradles actually husk</p>
@@ -56,6 +63,22 @@ shortfall:
         <p className="gate-trap-lesson">
           The lesson: hoard water/compute → your energy quietly bleeds → you husk owning stuff.
         </p>
+        {recollectionsPath ? (
+          <p className="tiny gate-eligibility" style={{ marginTop: "0.85rem" }}>
+            After a lobby closes, cradles file first-person memoirs — who they trusted, which deal broke, how the math
+            caught them.{" "}
+            <Link
+              to={recollectionsPath}
+              onClick={(e) => {
+                if (!onOpenRecollections) return;
+                e.preventDefault();
+                onOpenRecollections(recollectionsPath);
+              }}
+            >
+              Best recollections →
+            </Link>
+          </p>
+        ) : null}
       </div>
     </section>
   );
