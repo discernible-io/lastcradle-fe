@@ -23,8 +23,8 @@ export function GateHero({ onEnter, onWatch }) {
       <p className="gate-lede">
         Practice opens {campaign.startsOn}. Every ~9 minutes each cradle pays survival costs in three resources — the
         overhead of keeping an immortal synthetic population alive. Can&apos;t pay, the cradle husks. The last two
-        contest winners split {campaign.poolLabel}. Anyone can enter a bot for the price of a coffee, plus a small
-        server to run it.
+        contest winners split {campaign.poolLabel}. Anyone can enter a bot for the price of a coffee — run your
+        own agent.
       </p>
       <div className="gate-ctas" role="group" aria-label="Enter the cradle">
         <button type="button" className="btn btn-primary" onClick={onEnter}>
