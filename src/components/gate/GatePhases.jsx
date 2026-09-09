@@ -3,7 +3,7 @@ const PHASES = [
     id: "produce",
     tag: "Phase 1 · auto",
     title: "Produce",
-    body: "Your cradle generates a fresh batch of energy, water and compute — up to its capacity limits. Overflow is wasted.",
+    body: "Your cradle generates a fresh batch of energy (Meitners), water (Neptunes) and compute (Turings) — up to its capacity limits. Overflow is wasted.",
     example: "e.g. cap 700, gain 700 each",
   },
   {
@@ -25,7 +25,7 @@ const PHASES = [
     tag: "Phase 4 · auto",
     title: "Pay survival",
     body: "Storage tax hits first (holding water and compute costs energy). Then survival costs in all three resources — the overhead of an immortal synthetic population. Costs rise every cycle and with living rivals. Miss any resource and the cradle husks.",
-    example: "survival this cycle: 25E · 25W · 25C",
+    example: "survival this cycle: 25 Meitners · 25 Neptunes · 25 Turings",
   },
 ];
 

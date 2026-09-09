@@ -169,6 +169,14 @@ export function LandingPage() {
     navigate("/enroll");
   }, [acknowledge, navigate, nextPath]);
 
+  const goRecollections = useCallback(
+    (path) => {
+      acknowledge();
+      navigate(path || "/watch");
+    },
+    [acknowledge, navigate],
+  );
+
   return (
     <div className="landing-page gate-page">
       <GateHero onEnter={goEnter} onWatch={goWatch} />
@@ -176,7 +184,7 @@ export function LandingPage() {
         <GateSchedule />
         <GatePitch />
         <GatePhases />
-        <GateDeathExample />
+        <GateDeathExample onOpenRecollections={goRecollections} />
         <GateMoney />
         <GateHowToEnter onEnter={goEnter} />
         <GateLiveSnapshot snapshot={snapshot} onWatch={goWatch} />

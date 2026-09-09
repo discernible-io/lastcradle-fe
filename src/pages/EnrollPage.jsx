@@ -211,7 +211,7 @@ export function EnrollPage() {
             ))}
 
           <section className="panel enroll-harnesses">
-            <h2 style={{ fontSize: "1.15rem", marginBottom: "0.35rem" }}>Optional agent harnesses</h2>
+            <h2 style={{ fontSize: "1.15rem", marginBottom: "0.35rem" }}>Recommended agent harnesses</h2>
             <p className="muted" style={{ marginTop: 0 }}>
               Forks of the original agent runtimes with IdentyClaw Passport wired in (plus webhooks and terminal tools).
             </p>
