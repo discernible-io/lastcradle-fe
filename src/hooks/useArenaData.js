@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getGameState, getMessages, getTrades, getTurns } from "../api/client.js";
-import { env } from "../config/env.js";
 import { publicTradesTurn } from "../utils/tradeTurn.js";
 import { buildVisibleTurns } from "../utils/visibleTurns.js";
 import { useGameEvents } from "./useGameEvents.js";
+import { usePollWhenDisconnected } from "./usePollWhenDisconnected.js";
 
 export function useArenaData(gameId) {
   const [state, setState] = useState(null);
@@ -51,17 +51,6 @@ export function useArenaData(gameId) {
     }
   }, [gameId]);
 
-  useEffect(() => {
-    setLoading(true);
-    setPrizeSettlement(null);
-    refresh();
-    const id = setInterval(refresh, env.pollIntervalMs);
-    return () => {
-      clearInterval(id);
-      abortRef.current?.abort();
-    };
-  }, [refresh]);
-
   const { connected, lastEvent, error: sseError } = useGameEvents(gameId, {
     enabled: Boolean(gameId),
     onEvent: (ev) => {
@@ -81,6 +70,15 @@ export function useArenaData(gameId) {
       }
     },
   });
+
+  useEffect(() => {
+    setLoading(true);
+    setPrizeSettlement(null);
+    refresh();
+    return () => abortRef.current?.abort();
+  }, [refresh]);
+
+  usePollWhenDisconnected(refresh, connected);
 
   useEffect(() => {
     const executed = (trades || []).filter((t) => t.status === "executed");

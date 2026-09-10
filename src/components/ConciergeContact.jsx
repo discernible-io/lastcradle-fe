@@ -50,6 +50,8 @@ export function ConciergeContact({ blurb }) {
         src={concierge.photoUrl}
         width={160}
         height={160}
+        loading="lazy"
+        decoding="async"
         alt={`${concierge.name}, ${concierge.role}`}
       />
       <p className="concierge-name">{concierge.name}</p>

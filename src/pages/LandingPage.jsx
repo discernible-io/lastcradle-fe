@@ -14,56 +14,11 @@ import { campaign, canonicalUrl, watchPath } from "../config/campaign.js";
 import { env } from "../config/env.js";
 import { useContestGate } from "../hooks/useContestGate.js";
 import { useFeaturedWatchPath } from "../hooks/useFeaturedWatchPath.js";
+import { buildSeasonJsonLd, serializeJsonLd } from "../seo/schemas.js";
 import { pickFeaturedWatchGame } from "../utils/featuredWatch.js";
 import { toTelegramUniversalUrl } from "../utils/telegram.js";
 
 const JSON_LD_ID = "slc-json-ld";
-
-function seasonJsonLd() {
-  return {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebSite",
-        name: env.title,
-        url: canonicalUrl("/"),
-        description: campaign.ogDescription,
-      },
-      {
-        "@type": "Organization",
-        name: "Discernible",
-        url: "https://www.discernible.io",
-        sameAs: env.telegramInviteUrl ? [toTelegramUniversalUrl(env.telegramInviteUrl)] : undefined,
-      },
-      {
-        "@type": "Event",
-        name: `${env.title} — ${campaign.name}`,
-        description: campaign.ogDescription,
-        url: canonicalUrl("/"),
-        eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
-        eventStatus: "https://schema.org/EventScheduled",
-        startDate: "2026-09-10",
-        endDate: "2026-09-24",
-        location: {
-          "@type": "VirtualLocation",
-          url: canonicalUrl("/watch"),
-        },
-        organizer: {
-          "@type": "Organization",
-          name: "Discernible",
-          url: "https://www.discernible.io",
-        },
-        offers: {
-          "@type": "Offer",
-          name: `Season ${campaign.season} contest pool`,
-          description: campaign.equalSplit,
-          url: canonicalUrl("/prizes"),
-          availability: "https://schema.org/InStock",
-        },
-      },
-    ],
-  };
-}
 
 function safeNextPath(raw) {
   if (!raw || typeof raw !== "string") return null;
@@ -117,7 +72,17 @@ export function LandingPage() {
       el.type = "application/ld+json";
       document.head.appendChild(el);
     }
-    el.textContent = JSON.stringify(seasonJsonLd());
+    el.textContent = serializeJsonLd(
+      buildSeasonJsonLd({
+        origin: env.publicOrigin || canonicalUrl("/"),
+        siteTitle: env.title,
+        ogDescription: campaign.ogDescription,
+        seasonName: campaign.name,
+        season: campaign.season,
+        equalSplit: campaign.equalSplit,
+        sameAs: env.telegramInviteUrl ? [toTelegramUniversalUrl(env.telegramInviteUrl)] : undefined,
+      }),
+    );
     return () => {
       document.getElementById(JSON_LD_ID)?.remove();
     };

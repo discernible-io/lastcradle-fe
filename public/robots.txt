@@ -3,4 +3,6 @@
 User-agent: *
 Allow: /
 
+Disallow: /spa-shell.html
+
 Sitemap: https://lastcradle.io/sitemap.xml
