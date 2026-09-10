@@ -5,6 +5,7 @@ import { lookupPassportDisplayName } from "../api/roditLookup.js";
 import { buildTurnReport } from "../api/turnReport.js";
 import { TurnRecapView } from "../components/recap/TurnRecapView.jsx";
 import { useGameEvents } from "../hooks/useGameEvents.js";
+import { usePollWhenDisconnected } from "../hooks/usePollWhenDisconnected.js";
 import { env } from "../config/env.js";
 import { campaign } from "../config/campaign.js";
 import { recapDocumentTitle, recapOgDescription } from "../../shared/recapHeadline.mjs";
@@ -122,17 +123,7 @@ export function TurnRecapPage() {
     }
   }, [gameId, selectedTurn, navigate]);
 
-  useEffect(() => {
-    setLoading(true);
-    load();
-    const id = setInterval(load, env.pollIntervalMs);
-    return () => {
-      clearInterval(id);
-      abortRef.current?.abort();
-    };
-  }, [load]);
-
-  useGameEvents(gameId, {
+  const { connected } = useGameEvents(gameId, {
     enabled: Boolean(gameId),
     onEvent: (ev) => {
       if (
@@ -147,6 +138,14 @@ export function TurnRecapPage() {
       }
     },
   });
+
+  useEffect(() => {
+    setLoading(true);
+    load();
+    return () => abortRef.current?.abort();
+  }, [load]);
+
+  usePollWhenDisconnected(load, connected);
 
   return (
     <div>

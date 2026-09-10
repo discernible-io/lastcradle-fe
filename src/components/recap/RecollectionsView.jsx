@@ -167,6 +167,10 @@ export function RecollectionsView({
                     <img
                       src={avatarUrl}
                       alt=""
+                      width={40}
+                      height={40}
+                      loading="lazy"
+                      decoding="async"
                       onError={() => {
                         setBrokenAvatars((prev) => {
                           if (prev.has(avatarKey)) return prev;

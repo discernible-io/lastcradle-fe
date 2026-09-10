@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getGameState, getHonors, getRecollections } from "../api/client.js";
 import { RecollectionsView } from "../components/recap/RecollectionsView.jsx";
-import { env } from "../config/env.js";
 import { useGameEvents } from "../hooks/useGameEvents.js";
+import { usePollWhenDisconnected } from "../hooks/usePollWhenDisconnected.js";
 
 export function RecollectionsPage() {
   const { gameId } = useParams();
@@ -57,17 +57,7 @@ export function RecollectionsPage() {
     }
   }, [gameId]);
 
-  useEffect(() => {
-    setLoading(true);
-    load();
-    const id = setInterval(load, env.pollIntervalMs);
-    return () => {
-      clearInterval(id);
-      abortRef.current?.abort();
-    };
-  }, [load]);
-
-  useGameEvents(gameId, {
+  const { connected } = useGameEvents(gameId, {
     enabled: Boolean(gameId),
     onEvent: (ev) => {
       if (
@@ -82,6 +72,14 @@ export function RecollectionsPage() {
       }
     },
   });
+
+  useEffect(() => {
+    setLoading(true);
+    load();
+    return () => abortRef.current?.abort();
+  }, [load]);
+
+  usePollWhenDisconnected(load, connected);
 
   return (
     <div>

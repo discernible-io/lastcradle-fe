@@ -3,8 +3,17 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "REACT_APP_");
+  const publicOrigin = env.REACT_APP_PUBLIC_ORIGIN || "";
   return {
-    plugins: [react()],
+    plugins: [
+      react(),
+      {
+        name: "html-env-replace",
+        transformIndexHtml(html) {
+          return html.replace(/%REACT_APP_PUBLIC_ORIGIN%/g, publicOrigin);
+        },
+      },
+    ],
     envPrefix: "REACT_APP_",
     publicDir: "public",
     build: {
@@ -18,20 +27,6 @@ export default defineConfig(({ mode }) => {
     },
     define: {
       __DEPLOY_LABEL__: JSON.stringify(env.REACT_APP_DEPLOY_LABEL || ""),
-      global: "globalThis",
-    },
-    resolve: {
-      alias: {
-        buffer: "buffer/",
-      },
-    },
-    optimizeDeps: {
-      include: ["buffer", "near-api-js"],
-      esbuildOptions: {
-        define: {
-          global: "globalThis",
-        },
-      },
     },
   };
 });

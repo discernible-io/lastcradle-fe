@@ -50,6 +50,10 @@ export function DispatchFeed({ messages = [], agents = [], turn, followedIds = [
                   <img
                     src={avatarUrl}
                     alt=""
+                    width={28}
+                    height={28}
+                    loading="lazy"
+                    decoding="async"
                     onError={() => {
                       setBrokenAvatars((prev) => {
                         if (prev.has(agentId)) return prev;

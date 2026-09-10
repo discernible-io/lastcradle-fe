@@ -26,6 +26,10 @@ function CradleAvatar({ agentId, name, avatarOf, brokenAvatars, setBrokenAvatars
         <img
           src={avatarUrl}
           alt=""
+          width={22}
+          height={22}
+          loading="lazy"
+          decoding="async"
           onError={() => {
             setBrokenAvatars((prev) => {
               if (prev.has(agentId)) return prev;

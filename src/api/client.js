@@ -1,4 +1,5 @@
 import { env } from "../config/env.js";
+import { readTtlCache, writeTtlCache } from "../utils/sessionTtlCache.js";
 
 async function apiGet(path, { signal } = {}) {
   const url = `${env.apiBase}${path}`;
@@ -106,12 +107,22 @@ export function getAgentIdentity(gameId, agentId, { signal } = {}) {
   );
 }
 
+const SLOW_GET_CACHE_MS = 5 * 60 * 1000;
+
+async function apiGetCached(path, cacheKey, { signal } = {}) {
+  const cached = readTtlCache(cacheKey, SLOW_GET_CACHE_MS);
+  if (cached != null) return cached;
+  const data = await apiGet(path, { signal });
+  if (!signal?.aborted) writeTtlCache(cacheKey, data);
+  return data;
+}
+
 export function getNarrative({ signal } = {}) {
-  return apiGet(`/api/game/narrative`, { signal });
+  return apiGetCached(`/api/game/narrative`, "slc-narrative-v1", { signal });
 }
 
 export function getEnrollPrompts({ signal } = {}) {
-  return apiGet(`/api/game/enroll-prompts`, { signal });
+  return apiGetCached(`/api/game/enroll-prompts`, "slc-enroll-prompts-v1", { signal });
 }
 
 export function listContests({ status, limit = 20, offset = 0, signal } = {}) {
@@ -124,7 +135,11 @@ export function listContests({ status, limit = 20, offset = 0, signal } = {}) {
 
 export function getHallOfFame({ limit = 20, offset = 0, signal } = {}) {
   const q = new URLSearchParams({ limit: String(limit), offset: String(offset) });
-  return apiGet(`/api/game/hall-of-fame?${q}`, { signal });
+  return apiGetCached(
+    `/api/game/hall-of-fame?${q}`,
+    `slc-hall-of-fame-v1:${limit}:${offset}`,
+    { signal },
+  );
 }
 
 export function eventsUrl(gameId) {
