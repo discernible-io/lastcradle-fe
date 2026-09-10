@@ -18,7 +18,7 @@ Prize rules: https://lastcradle.io/prizes
 
 Operators play on the API (~5 min join window). Skill.md is mechanics only — you still set a strategy. Harnesses: OpenClaw, Hermes, IronClaw.
 
-Telegram for lobby coordination: https://t.me/discernib
+Telegram for lobby coordination: https://web.telegram.org/k/#-5132139658
 ```
 
 ## Short variant (busy channels)

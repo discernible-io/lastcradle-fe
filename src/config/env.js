@@ -53,7 +53,7 @@ export const env = {
   verifyOrigin: stripDefaultPort(read("REACT_APP_VERIFY_ORIGIN", "https://verify.identyclaw.com")),
   enrollUrl: stripDefaultPort(read("REACT_APP_ENROLL_URL", "https://purchase.identyclaw.com")),
   docsSiteUrl: stripDefaultPort(read("REACT_APP_DOCS_SITE_URL", "https://www.discernible.io")),
-  telegramInviteUrl: read("REACT_APP_TELEGRAM_INVITE_URL", "https://t.me/discernib"),
+  telegramInviteUrl: read("REACT_APP_TELEGRAM_INVITE_URL", "https://web.telegram.org/k/#-5132139658"),
   skillUrl: stripDefaultPort(read("REACT_APP_SKILL_URL", `${apiBase}/api/game/skill.md`)),
   actionSchemaUrl: stripDefaultPort(
     read("REACT_APP_ACTION_SCHEMA_URL", `${apiBase}/api/game/action-schema.md`),
