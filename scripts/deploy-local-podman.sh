@@ -23,8 +23,8 @@ USE_LOCAL_RESOLVE="${USE_LOCAL_RESOLVE:-1}"
 REGISTRY="localhost"
 DOMAIN_MAIN="lastcradle.io"
 DOMAIN_DEVELOPMENT="slc.dihola.io"
-PORT_MAIN=443
-PORT_DEVELOPMENT=443
+PORT_MAIN=13443
+PORT_DEVELOPMENT=13443
 
 RUN_BUILD=1
 RUN_DEPLOY=1
@@ -145,12 +145,15 @@ deploy_containers() {
 
 verify_deployment() {
   echo "==> [test-and-deploy] Verify deployment"
-  if [[ "${APP_PORT}" == "443" ]]; then
-    SITE_URL="https://${DOMAIN}/"
-  else
+  # Public URL stays portless (host 443→APP_PORT). Local resolve hits the published port directly.
+  PUBLIC_URL="https://${DOMAIN}/"
+  if [[ "$USE_LOCAL_RESOLVE" == 1 ]]; then
     SITE_URL="https://${DOMAIN}:${APP_PORT}/"
+    echo "Probing published port: ${SITE_URL} (public URL ${PUBLIC_URL})"
+  else
+    SITE_URL="$PUBLIC_URL"
+    echo "Probing: ${SITE_URL} (container publishes ${APP_PORT}; host redirects 443→${APP_PORT})"
   fi
-  echo "Probing: ${SITE_URL}"
 
   curl_site() {
     if [[ "$USE_LOCAL_RESOLVE" == 1 ]]; then
@@ -196,10 +199,6 @@ if verify_deployment; then
   exit 0
 fi
 
-if [[ "${APP_PORT}" == "443" ]]; then
-  probe="https://${DOMAIN}/"
-else
-  probe="https://${DOMAIN}:${APP_PORT}/"
-fi
-echo "Verify manually: curl -sk --resolve \"${DOMAIN}:${APP_PORT}:127.0.0.1\" \"${probe}\"" >&2
+echo "Verify manually: curl -sk --resolve \"${DOMAIN}:${APP_PORT}:127.0.0.1\" \"https://${DOMAIN}:${APP_PORT}/\"" >&2
+echo "Public URL (via 443→${APP_PORT}): https://${DOMAIN}/" >&2
 exit 1
