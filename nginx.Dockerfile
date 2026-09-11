@@ -35,6 +35,6 @@ RUN chmod +x /docker-entrypoint-og.sh && \
     chown -R nginx:nginx /etc/nginx/nginx.conf /var/cache/nginx /var/log/nginx /etc/nginx/conf.d /app /usr/share/nginx/html /docker-entrypoint-og.sh
 
 USER nginx
-EXPOSE 13443
+EXPOSE 443
 
 CMD ["/docker-entrypoint-og.sh"]
