@@ -38,7 +38,7 @@ After a finale, append tx hashes to `prizeSettlements` in that file (the arena a
 - **Public URLs:** `.env.development` / `.env.main` (copied to transient `.env` by `npm run env:sync`)
 - **Image:** GHCR `…/slcfrontend-nginx` (Vite `dist/` baked in; nginx terminates TLS and serves the SPA)
 - **Host runtime:** `~/slcfrontend-app` (certs, logs, secrets) — not this git tree
-- **Ports:** both tiers listen on `443` (public URLs omit the port). Development pins the API on `:9443`; main omits the port in page copy
+- **Ports:** both tiers publish `13443`; host `443→13443` REDIRECT (`~/infra`). Public URLs omit the port. Development pins the API on `:9443`
 - **Domains:** `slc.dihola.io` (dev) / `lastcradle.io` + `www.lastcradle.io` (main; API `api.lastcradle.io`). Apex and www are distinct browser origins — the API CORS allowlist must include both.
 
 Workflow: `.github/workflows/deploy.yml`  
@@ -48,7 +48,7 @@ Local mirror: `./scripts/deploy-local-podman.sh`
 
 1. Create GitHub repo + Actions secrets (`SSH_HOST_*`, `SSH_USER_*`, `SSH_PRIVATE_KEY_*`, `SSH_KNOWN_HOSTS_*`, `GHCR_PULL_TOKEN`).
 2. On the host: `mkdir -p ~/slcfrontend-app/{certs,logs/nginx,data,nginx,secrets}` and install TLS PEMs covering `lastcradle.io` and `www.lastcradle.io` (main) or `slc.dihola.io` (development).
-3. Open firewall / infra for port **443**. If a host still has a 443→13443 REDIRECT, remove it so traffic reaches the container on 443.
+3. Open firewall / infra for port **13443**, and enable the permanent **443→13443** REDIRECT (`~/infra/configure-port-forwarding-oneoff.sh`).
 4. Push to `development` or run the workflow.
 
 ## API feeds
