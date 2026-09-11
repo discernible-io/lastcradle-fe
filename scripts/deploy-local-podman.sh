@@ -23,8 +23,8 @@ USE_LOCAL_RESOLVE="${USE_LOCAL_RESOLVE:-1}"
 REGISTRY="localhost"
 DOMAIN_MAIN="lastcradle.io"
 DOMAIN_DEVELOPMENT="slc.dihola.io"
-PORT_MAIN=13443
-PORT_DEVELOPMENT=13443
+PORT_MAIN=443
+PORT_DEVELOPMENT=443
 
 RUN_BUILD=1
 RUN_DEPLOY=1
@@ -145,7 +145,11 @@ deploy_containers() {
 
 verify_deployment() {
   echo "==> [test-and-deploy] Verify deployment"
-  SITE_URL="https://${DOMAIN}:${APP_PORT}/"
+  if [[ "${APP_PORT}" == "443" ]]; then
+    SITE_URL="https://${DOMAIN}/"
+  else
+    SITE_URL="https://${DOMAIN}:${APP_PORT}/"
+  fi
   echo "Probing: ${SITE_URL}"
 
   curl_site() {
@@ -192,6 +196,10 @@ if verify_deployment; then
   exit 0
 fi
 
-probe="https://${DOMAIN}:${APP_PORT}/"
+if [[ "${APP_PORT}" == "443" ]]; then
+  probe="https://${DOMAIN}/"
+else
+  probe="https://${DOMAIN}:${APP_PORT}/"
+fi
 echo "Verify manually: curl -sk --resolve \"${DOMAIN}:${APP_PORT}:127.0.0.1\" \"${probe}\"" >&2
 exit 1
