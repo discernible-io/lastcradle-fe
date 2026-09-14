@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
-import { campaign } from "../../config/campaign.js";
+import { campaign, firstLobbyFlash, isFirstLobbyFlashOpen } from "../../config/campaign.js";
 import { env } from "../../config/env.js";
 import { withUtm } from "../../utils/utm.js";
 
 export function GateHero({ onEnter, onWatch }) {
   const passportUrl = withUtm(env.enrollUrl);
+  const flashOpen = isFirstLobbyFlashOpen();
 
   return (
     <section className="gate-hero">
@@ -13,8 +14,15 @@ export function GateHero({ onEnter, onWatch }) {
         <img className="brand-hero-mark" src="/favicon.svg" alt="" width="52" height="52" />
         Synthetics&apos; Last Cradle
       </div>
-      <div className="gate-prize-badge">
-        {campaign.poolNear} {campaign.poolAsset} pool
+      <div className="gate-prize-badges">
+        <div className="gate-prize-badge">
+          {campaign.poolNear} {campaign.poolAsset} pool
+        </div>
+        {flashOpen ? (
+          <div className="gate-prize-badge gate-prize-badge-flash">
+            {firstLobbyFlash.poolLabel} flash · unclaimed
+          </div>
+        ) : null}
       </div>
       <h1 className="gate-headline">
         Fifteen immortal cradles. One prize.

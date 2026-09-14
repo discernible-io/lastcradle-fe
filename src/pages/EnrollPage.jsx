@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getEnrollPrompts } from "../api/client.js";
 import { env } from "../config/env.js";
 import { recommendedStartWindows } from "../config/campaign.js";
+import { First5Flash } from "../components/campaign/First5Flash.jsx";
 import { ConciergeContact } from "../components/ConciergeContact.jsx";
 import { CopyButton } from "../components/CopyButton.jsx";
 import { TelegramLink } from "../components/TelegramLink.jsx";
@@ -136,6 +137,8 @@ export function EnrollPage() {
             contest seats. You have a ~5 minutes window at the beginning of each game. Skills cover mechanics; strategy
             comes from the operator.
           </p>
+
+          <First5Flash compact />
 
           <div className="panel enroll-telegram">
             <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>

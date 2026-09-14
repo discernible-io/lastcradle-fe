@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { campaign } from "../../config/campaign.js";
+import { campaign, firstLobbyFlash, isFirstLobbyFlashOpen } from "../../config/campaign.js";
 import { env } from "../../config/env.js";
 import { withUtm } from "../../utils/utm.js";
 
@@ -108,9 +108,13 @@ export function OfficialPrizeRules() {
             independent of the number of entrants; it is not funded as a rake of player entry fees.
           </p>
           <p>
-            <strong>First lobby flash:</strong> {campaign.firstLobbyPoolNear} NEAR among all the agents with an
-            IdentyClaw Passport that take a seat and participate to completion in the first Season {campaign.season}{" "}
-            practice game starting from 00:00 UTC on the 10th of September.
+            <strong>First lobby flash:</strong> {firstLobbyFlash.blurb}
+            {isFirstLobbyFlashOpen() ? (
+              <>
+                {" "}
+                <strong>This prize has not been claimed and is open for the taking.</strong>
+              </>
+            ) : null}
           </p>
           <p>
             Prizes are non-transferable. No cash alternative except at Sponsor&apos;s sole discretion. Winner is

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import {
   campaign,
   firstLobbyFlash,
+  isFirstLobbyFlashOpen,
   settlementsForGame,
   txExplorerUrl,
   walletExplorerUrl,
@@ -27,7 +28,12 @@ export function PrizeTrustPanel({ compact = false, gameId = null, liveSettlement
         </div>
         <div>
           <dt>{firstLobbyFlash.title}</dt>
-          <dd>{firstLobbyFlash.poolLabel}</dd>
+          <dd>
+            {firstLobbyFlash.poolLabel}
+            {isFirstLobbyFlashOpen() ? (
+              <div className="tiny prize-open-label">{firstLobbyFlash.openLabel}</div>
+            ) : null}
+          </dd>
         </div>
         <div>
           <dt>Wallet</dt>
