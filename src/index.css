@@ -2311,6 +2311,52 @@ select:focus {
   padding: 1rem 1.15rem;
 }
 
+.first5-flash-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.45rem 0.85rem;
+}
+
+.first5-flash-kicker {
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.first5-flash.is-open {
+  border-color: rgba(255, 69, 0, 0.45);
+  border-left: 4px solid var(--energy);
+  background: linear-gradient(180deg, rgba(255, 69, 0, 0.06), transparent 58%);
+}
+
+.flash-open-badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid rgba(255, 69, 0, 0.5);
+  border-radius: 4px;
+  color: var(--energy);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.first5-open-call {
+  margin: 0.55rem 0 0;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.prize-open-label {
+  margin-top: 0.2rem;
+  color: var(--energy);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
 .prize-trust-kicker {
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -2798,9 +2844,18 @@ select:focus {
   flex-shrink: 0;
 }
 
+.gate-prize-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin: 0 0 1rem;
+  animation: rise-in 0.9s ease-out 0.08s both;
+}
+
 .gate-prize-badge {
   display: inline-block;
-  margin: 0 0 1rem;
+  margin: 0;
   padding: 0.35rem 0.7rem;
   border: 1px solid rgba(255, 69, 0, 0.45);
   border-radius: 4px;
@@ -2808,7 +2863,10 @@ select:focus {
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  animation: rise-in 0.9s ease-out 0.08s both;
+}
+
+.gate-prize-badge-flash {
+  background: rgba(255, 69, 0, 0.08);
 }
 
 .gate-headline {
@@ -3044,6 +3102,36 @@ select:focus {
   margin-bottom: 0.85rem;
 }
 
+.gate-money-card.is-open {
+  border-color: rgba(255, 69, 0, 0.45);
+  border-left: 3px solid var(--energy);
+  background: linear-gradient(180deg, rgba(255, 69, 0, 0.07), var(--panel) 55%);
+}
+
+.gate-money-card.is-open .tiny.muted {
+  color: var(--ink-dim);
+}
+
+.gate-flash-open {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.45rem 0.65rem;
+  margin: 0 0 0.85rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid rgba(255, 69, 0, 0.45);
+  border-left: 3px solid var(--energy);
+  border-radius: var(--radius);
+  background: rgba(255, 69, 0, 0.06);
+  color: var(--ink);
+  font-size: 0.88rem;
+}
+
+.enroll-main .first5-flash,
+.lobby-section .first5-flash {
+  margin: 0.35rem 0 1.1rem;
+}
+
 .gate-eligibility {
   color: var(--ink-mute);
 }
@@ -3125,6 +3213,15 @@ select:focus {
   .gate-ctas .btn {
     width: 100%;
     text-align: center;
+  }
+
+  .first5-flash-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .flash-open-badge {
+    white-space: normal;
   }
 }
 

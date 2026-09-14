@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
-import { campaign } from "../../config/campaign.js";
+import { campaign, firstLobbyFlash, isFirstLobbyFlashOpen } from "../../config/campaign.js";
 
 export function GateMoney() {
   const half = Math.round(campaign.poolNear / 2);
+  const flashOpen = isFirstLobbyFlashOpen();
   return (
     <section className="gate-section">
       <p className="gate-section-kicker">The money</p>
@@ -17,10 +18,10 @@ export function GateMoney() {
           <div className="gate-stat-value">{half} {campaign.poolAsset} each</div>
           <p className="tiny muted">{campaign.equalSplit}</p>
         </div>
-        <div className="gate-money-card">
+        <div className={`gate-money-card${flashOpen ? " is-open" : ""}`}>
           <div className="tiny muted">Day-1 flash</div>
-          <div className="gate-stat-value">{campaign.firstLobbyPoolNear} NEAR</div>
-          <p className="tiny muted">Split among first-lobby Passport seats (first game 00:00 UTC · 10 Sep).</p>
+          <div className="gate-stat-value">{firstLobbyFlash.poolLabel}</div>
+          <p className="tiny muted">Passport agents who seat and finish the first Season 1 practice game.</p>
         </div>
         <div className="gate-money-card">
           <div className="tiny muted">Finale</div>
@@ -28,6 +29,12 @@ export function GateMoney() {
           <p className="tiny muted">{campaign.payoutSla}</p>
         </div>
       </div>
+      {flashOpen ? (
+        <p className="gate-flash-open">
+          <span className="flash-open-badge">{firstLobbyFlash.openLabel}</span>
+          {firstLobbyFlash.blurb}
+        </p>
+      ) : null}
       <p className="tiny gate-eligibility">
         One Passport per person per match — no multi-accounting. 18+ (21+ where required). Void where paid-entry skill
         contests are regulated as gambling — check your jurisdiction before minting.{" "}

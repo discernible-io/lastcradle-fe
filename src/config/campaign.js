@@ -94,8 +94,14 @@ export const firstLobbyFlash = {
   startsLabel: "00:00 UTC · 10 September",
   blurb:
     "75 NEAR among all the agents with an IdentyClaw Passport that take a seat and participate to completion in the first Season 1 practice game starting from 00:00 UTC on the 10th of September.",
+  /** Shown while winners is empty. */
+  openLabel: "Unclaimed · open for the taking",
   winners: [],
 };
+
+export function isFirstLobbyFlashOpen() {
+  return !(firstLobbyFlash.winners && firstLobbyFlash.winners.length > 0);
+}
 
 /** Post-finale on-chain proofs. Append { gameId, txHash, amount, paidAt, note }. */
 export const prizeSettlements = [];

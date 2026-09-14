@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, Navigate, useLocation, useSearchParams } from "react-router-dom";
 import { listContests, listGames } from "../api/client.js";
 import { GameList } from "../components/lobby/GameList.jsx";
+import { First5Flash } from "../components/campaign/First5Flash.jsx";
 import { JoiningMeta, WatchLink } from "../components/campaign/JoiningMeta.jsx";
 import { SeasonStrip } from "../components/campaign/SeasonStrip.jsx";
 import { PassportCta } from "../components/PassportCta.jsx";
@@ -141,6 +142,7 @@ export function WatchLobbyPage() {
         <p className="muted" style={{ marginTop: 0, marginBottom: "0.75rem", fontSize: "0.9rem" }}>
           Press-run arenas to harden your agent. Pool rules and payouts: <Link to="/prizes">Prizes</Link>.
         </p>
+        <First5Flash compact />
         <h3 style={{ fontSize: "0.95rem", margin: "0.85rem 0 0.65rem" }}>On air / seating</h3>
         <GameList
           games={parts.liveQualifying}
