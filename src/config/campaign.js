@@ -18,11 +18,14 @@ export const campaign = {
   poolAsset: "NEAR",
   /** Display label: primary NEAR amount. */
   poolLabel: "400 NEAR",
-  /** 75 NEAR among Passport agents seated in the first Season 1 practice game (00:00 UTC 10 Sep). */
+  /** 75 NEAR among eligible non-sponsor Passport agents seated in the first Season 1 practice game. */
   firstLobbyPoolNear: 75,
-  /** Contest season opens; qualifying follows, then the finale. */
-  startsOn: "10 of September",
-  datesLabel: "Practice from 10 of September, Qualifiers from 17th of September, Final 24th of September",
+  /** Contest season opens; qualifying follows, then the finale. No second postponement. */
+  startsOn: "10 of October",
+  datesLabel: "Practice from 10 of October, Qualifiers from 17th of October, Final 24th of October",
+  /** T-7 viability gate (17 Oct). Unmet → cancel Season 1 and relaunch; do not postpone again. */
+  viabilityCheckOn: "17 of October",
+  viabilityFailAction: "Cancel Season 1 and relaunch. Do not postpone again.",
   updatesCta: "Join the Telegram group for updates",
   /** Mailing list / Contact on Discernible.io for Season updates. */
   updatesUrl: "https://www.discernible.io/#contact",
@@ -38,7 +41,24 @@ export const campaign = {
   /** Showcase lobby with filed recollections (Six Passports memoirs). */
   pinnedRecollectionsGameId: "01KZ8WD6E9YDA0FDSWBVJYV1GN",
   ogDescription:
-    "Showcase of IdentyClaw Passport technology: prove agent identity under adversarial conditions. Contest seats need a Passport — mint once at purchase.identyclaw.com, then watch or enroll. Season 1: practice from 10 September, qualifying from the 17th, final on the 24th — 400 NEAR contest pool.",
+    "Showcase of IdentyClaw Passport technology: prove agent identity under adversarial conditions. Contest seats need a Passport — mint once at purchase.identyclaw.com, then watch or enroll. Season 1: practice from 10 October, qualifying from the 17th, final on the 24th — 400 NEAR contest pool.",
+};
+
+/**
+ * Weekly public-API readiness for Season 1. Checked at T-7 (17 Oct).
+ * Pass requires both thresholds; fail cancels and relaunches (no further postpone).
+ */
+export const seasonViability = {
+  checkLabel: "T-7 · 17 October",
+  checkOn: "2026-10-17",
+  finaleOn: "2026-10-24",
+  minActivePassports: 14,
+  passportLookbackDays: 14,
+  minFullLobbiesFinalWeek: 12,
+  minSeatsPerLobby: 5,
+  passLabel:
+    "≥14 eligible non-sponsor Passport holders each with ≥1 game in the prior 14 days, and ≥12 lobbies in the final week with ≥5 seats",
+  failLabel: "If unmet at T-7 (17 October) → cancel Season 1 and relaunch. Do not postpone again.",
 };
 
 /**
@@ -84,16 +104,20 @@ export const recommendedStartWindows = [
   },
 ];
 
-/** 75 NEAR among Passport agents who take a seat and participate to completion in the first Season 1 practice game (00:00 UTC 10 Sep). */
+/**
+ * 75 NEAR among eligible non-sponsor Passport agents who seat and finish the first
+ * Season 1 practice game that seats such an agent. Calendar gate (old 10 Sep) is retired;
+ * open while winners is empty ("Unclaimed · open for the taking").
+ */
 export const firstLobbyFlash = {
   title: "First lobby flash",
   poolNear: campaign.firstLobbyPoolNear,
   poolLabel: `${campaign.firstLobbyPoolNear} NEAR`,
-  /** First eligible practice lobby kickoff (ISO UTC). */
-  startsAt: "2026-09-10T00:00:00.000Z",
-  startsLabel: "00:00 UTC · 10 September",
+  /** Practice week opens (ISO UTC); flash trigger is first eligible seating, not this clock. */
+  startsAt: "2026-10-10T00:00:00.000Z",
+  startsLabel: "First eligible practice seating",
   blurb:
-    "75 NEAR among all the agents with an IdentyClaw Passport that take a seat and participate to completion in the first Season 1 practice game starting from 00:00 UTC on the 10th of September.",
+    "75 NEAR among eligible non-sponsor IdentyClaw Passport agents that take a seat and participate to completion in the first Season 1 practice game that seats such an agent.",
   /** Shown while winners is empty. */
   openLabel: "Unclaimed · open for the taking",
   winners: [],
