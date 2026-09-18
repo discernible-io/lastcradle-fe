@@ -5,6 +5,7 @@
 # ---------------------------------------------------------------------------
 # Shipped (see nginx.*.conf + app + server/og-inject.mjs):
 # - www.lastcradle.io → 301 https://lastcradle.io$request_uri (canonical host)
+# - identyclaw.com / www.identyclaw.com → 301 https://purchase.identyclaw.com$request_uri
 # - public/robots.txt + public/sitemap.xml (stable marketing routes)
 # - staging X-Robots-Tag: noindex, nofollow (nginx.development.conf)
 # - SPA NotFoundPage (no longer soft-redirects unknown paths to /)
