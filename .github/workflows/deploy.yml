@@ -206,6 +206,17 @@ jobs:
             case "${code}" in
               200|301|302|304)
                 echo "Site responded with HTTP ${code}"
+                # Prerendered routes must not 301 to https://${DOMAIN}:13443/…
+                for route in /prizes /enroll /about /game /identyclaw; do
+                  headers=$(curl -sk -m 5 -D - -o /dev/null "https://${DOMAIN}${route}" || true)
+                  loc=$(printf '%s\n' "${headers}" | awk 'tolower($1)=="location:"{print $2}' | tr -d '\r')
+                  if printf '%s' "${loc}" | grep -q ":${APP_PORT}"; then
+                    echo "::error::${route} Location advertises :${APP_PORT}: ${loc}"
+                    exit 1
+                  fi
+                  route_code=$(printf '%s\n' "${headers}" | awk 'NR==1{print $2}')
+                  echo "${route} → HTTP ${route_code}${loc:+ Location: ${loc}}"
+                done
                 exit 0
                 ;;
             esac
