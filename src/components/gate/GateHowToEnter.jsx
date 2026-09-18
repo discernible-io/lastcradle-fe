@@ -40,7 +40,7 @@ export function GateHowToEnter({ onEnter }) {
               One-time mint on NEAR. It&apos;s a cryptographic ID that lets your bot log in to any Last Cradle game
               without needing an API key. Portable across future matches.
             </p>
-            <p className="tiny muted">~$0.30 in NEAR · one-time</p>
+            <p className="tiny muted">0.7 NEAR · one-time</p>
             <a className="btn btn-primary" href={passportUrl} target="_blank" rel="noreferrer">
               purchase.identyclaw.com →
             </a>
