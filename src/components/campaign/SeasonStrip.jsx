@@ -36,7 +36,7 @@ export function SeasonStrip({ compact = false, hideCtas = false }) {
             )}
           </p>
         ) : (
-          <p className="tiny season-strip-wallet">NEAR prize wallet published at contest kickoff.</p>
+          <p className="tiny season-strip-wallet">Prize payout details published at contest kickoff.</p>
         )}
       </div>
       {!hideCtas ? (

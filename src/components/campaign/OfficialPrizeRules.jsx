@@ -1,5 +1,10 @@
 import { Link } from "react-router-dom";
-import { campaign, firstLobbyFlash, isFirstLobbyFlashOpen } from "../../config/campaign.js";
+import {
+  campaign,
+  firstLobbyFlash,
+  isFirstLobbyFlashOpen,
+  seasonViability,
+} from "../../config/campaign.js";
 import { env } from "../../config/env.js";
 import { withUtm } from "../../utils/utm.js";
 
@@ -74,7 +79,7 @@ export function OfficialPrizeRules() {
             Outcome is determined solely by the player&apos;s (and their agent&apos;s) skill, strategy, knowledge,
             timing, negotiation, resource management, and other demonstrated abilities as defined in the game rules —
             for example surviving to the white-hole threshold, ranked holdings among co-survivors, or seating in the
-            first contest lobby for the First lobby flash.
+            first eligible Season 1 practice game for the First lobby flash.
           </p>
         </li>
         <li>
@@ -85,13 +90,20 @@ export function OfficialPrizeRules() {
             lifetime of 5 minutes. Late or incomplete entries or games not started due to insuficient players are void.
             See live arenas on the <Link to="/watch#contests">Arena</Link>.
           </p>
+          <p>
+            <strong>Season viability ({seasonViability.checkLabel}):</strong> Season {campaign.season} proceeds to the
+            finale only if weekly public-API readiness meets both thresholds — {seasonViability.passLabel}.{" "}
+            {seasonViability.failLabel} There will be no second postponement of the {seasonViability.finaleLabel}{" "}
+            finale.
+          </p>
         </li>
         <li>
           <h3>Determination of Winners</h3>
           <p>
             Rankings and winners are based solely on objective skill metrics published in advance: contest survivors
             (White Hole Anchor and Co-Cradles) by the game&apos;s survival and holdings rules; First lobby flash by
-            confirmed seats in the first Season {campaign.season} contest lobby, split among all seated agents. Ties are
+            confirmed seats for eligible non-sponsor Passport agents in the first Season {campaign.season} practice
+            game that seats such an agent, split among all seated eligible agents. Ties are
             broken by the published secondary skill metric (for example total holdings, finish rank, or seat timestamp).
             Random selection is not used to determine winners.
           </p>
@@ -130,8 +142,8 @@ export function OfficialPrizeRules() {
             under the same skill metrics.
           </p>
           <p>
-            Contest prizes are paid on-chain in NEAR to the published prize wallet flow after successful verification,
-            typically within the payout SLA above. Transaction hashes are posted on this page after the finale.
+            Contest prizes are paid in EUR after successful verification, typically within the payout SLA above. Proof
+            of payment is posted on this page after the finale.
           </p>
         </li>
         <li>
@@ -146,9 +158,10 @@ export function OfficialPrizeRules() {
           <h3>General Conditions</h3>
           <p>
             Sponsor reserves the right to cancel, modify, or suspend a contest for technical, legal, or integrity
-            reasons. All decisions of the Sponsor regarding scoring, eligibility, and prizes are final. Full game
-            rules, anti-cheat policy, and these Prize Rules form the complete agreement for Season {campaign.season}{" "}
-            prizes.
+            reasons. If the Season viability check in Contest Period is unmet, Season {campaign.season} is cancelled
+            and relaunched rather than postponed again. All decisions of the Sponsor regarding scoring, eligibility,
+            and prizes are final. Full game rules, anti-cheat policy, and these Prize Rules form the complete
+            agreement for Season {campaign.season} prizes.
           </p>
         </li>
       </ol>

@@ -71,7 +71,7 @@ export function metaForPath(pathname, { siteTitle, season, ogDescription, poolLa
       title: `Enter the Cradle · ${title}`,
       description:
         ogDescription ||
-        `Season ${season}: practice from 10 September, qualifying from the 17th, final on the 24th. ${poolLabel || "400 NEAR"} contest pool — last two standing win.`,
+        `Season ${season}: practice from 10 October, qualifying from the 17th, final on the 24th. ${poolLabel || "500 EUR"} contest pool — last two standing win.`,
     };
   }
   return {

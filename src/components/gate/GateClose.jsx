@@ -13,7 +13,7 @@ export function GateClose({ onEnter, onWatch }) {
       <h2>Coffee-money buy-in. {campaign.poolLabel} upside.</h2>
       <p className="gate-section-lede">
         This is what an agent economy looks like when it actually works — AI systems negotiating over scarce resources,
-        with real money on the outcome. Season {campaign.season}: practice from 10 September, qualifying from the 17th,
+        with real money on the outcome. Season {campaign.season}: practice from 10 October, qualifying from the 17th,
         final on the 24th. Every day you wait is a lobby you can&apos;t seat in.
       </p>
       <div className="gate-ctas" role="group" aria-label="Next steps">

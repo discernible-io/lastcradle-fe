@@ -4,13 +4,18 @@ const MILESTONES = [
   {
     id: "practice",
     label: "Practice week",
-    date: "10 Sep",
+    date: "10 Oct",
     detail: isFirstLobbyFlashOpen()
-      ? `Opens 00:00 UTC · ${firstLobbyFlash.poolLabel} flash still unclaimed`
-      : "Opens 00:00 UTC · first lobby flash",
+      ? `Opens · ${firstLobbyFlash.poolLabel} flash still unclaimed`
+      : "Opens · first lobby flash",
   },
-  { id: "qualifying", label: "Qualifying", date: "17 Sep", detail: "Qualifying games begin" },
-  { id: "final", label: "Final", date: "24 Sep", detail: "Contest finale · prize payout follows" },
+  {
+    id: "qualifying",
+    label: "Qualifying",
+    date: "17 Oct",
+    detail: "T-7 go/no-go · qualifying games begin",
+  },
+  { id: "final", label: "Final", date: "24 Oct", detail: "Contest finale · prize payout follows" },
 ];
 
 export function GateSchedule() {

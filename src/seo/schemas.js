@@ -9,8 +9,8 @@ export function buildSeasonJsonLd({
   seasonName = "Season 1",
   season = 1,
   equalSplit,
-  startDate = "2026-09-10",
-  endDate = "2026-09-24",
+  startDate = "2026-10-10",
+  endDate = "2026-10-24",
   sameAs,
 }) {
   const root = String(origin || "").replace(/\/$/, "");

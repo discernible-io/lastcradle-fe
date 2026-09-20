@@ -54,11 +54,11 @@ export function PrizeTrustPanel({ compact = false, gameId = null, liveSettlement
       </dl>
       <div className="prize-trust-settlements">
         <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>
-          On-chain payouts
+          Payouts
         </div>
         {rows.length === 0 ? (
           <p className="muted" style={{ margin: "0.35rem 0 0", fontSize: "0.85rem" }}>
-            No tx hashes yet. After the finale, hashes land here and on the arena banner.
+            No payout proofs yet. After the finale, they land here and on the arena banner.
           </p>
         ) : (
           <ul className="prize-tx-list">

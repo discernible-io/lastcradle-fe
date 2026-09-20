@@ -16,7 +16,7 @@ export function GateHero({ onEnter, onWatch }) {
       </div>
       <div className="gate-prize-badges">
         <div className="gate-prize-badge">
-          {campaign.poolNear} {campaign.poolAsset} pool
+          {campaign.poolAmount} {campaign.poolAsset} pool
         </div>
         {flashOpen ? (
           <div className="gate-prize-badge gate-prize-badge-flash">

@@ -123,7 +123,7 @@ export function RestartFinale({
             </p>
             {payoutRows.length === 0 ? (
               <p className="tiny" style={{ margin: "0.25rem 0 0" }}>
-                On-chain payout pending.
+                Payout pending.
               </p>
             ) : (
               <ul className="prize-tx-list">
