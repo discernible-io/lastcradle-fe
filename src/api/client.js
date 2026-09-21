@@ -1,11 +1,12 @@
 import { env } from "../config/env.js";
+import { attributionFields, attributionHeaders } from "../utils/utm.js";
 import { readTtlCache, writeTtlCache } from "../utils/sessionTtlCache.js";
 
-async function apiGet(path, { signal } = {}) {
+async function apiGet(path, { signal, headers: extraHeaders } = {}) {
   const url = `${env.apiBase}${path}`;
   const res = await fetch(url, {
     method: "GET",
-    headers: { Accept: "application/json" },
+    headers: { Accept: "application/json", ...extraHeaders },
     signal,
   });
 
@@ -109,10 +110,10 @@ export function getAgentIdentity(gameId, agentId, { signal } = {}) {
 
 const SLOW_GET_CACHE_MS = 5 * 60 * 1000;
 
-async function apiGetCached(path, cacheKey, { signal } = {}) {
+async function apiGetCached(path, cacheKey, { signal, headers } = {}) {
   const cached = readTtlCache(cacheKey, SLOW_GET_CACHE_MS);
   if (cached != null) return cached;
-  const data = await apiGet(path, { signal });
+  const data = await apiGet(path, { signal, headers });
   if (!signal?.aborted) writeTtlCache(cacheKey, data);
   return data;
 }
@@ -121,8 +122,16 @@ export function getNarrative({ signal } = {}) {
   return apiGetCached(`/api/game/narrative`, "slc-narrative-v1", { signal });
 }
 
+/** Forward cookieless UTMs + funnel_id on enroll prompt fetch (query + headers). */
 export function getEnrollPrompts({ signal } = {}) {
-  return apiGetCached(`/api/game/enroll-prompts`, "slc-enroll-prompts-v1", { signal });
+  const attrs = attributionFields();
+  const q = new URLSearchParams(attrs);
+  const qs = q.toString();
+  const path = qs ? `/api/game/enroll-prompts?${qs}` : `/api/game/enroll-prompts`;
+  return apiGetCached(path, "slc-enroll-prompts-v1", {
+    signal,
+    headers: attributionHeaders(attrs),
+  });
 }
 
 export function listContests({ status, limit = 20, offset = 0, signal } = {}) {

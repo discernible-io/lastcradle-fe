@@ -19,6 +19,17 @@ Broadcast studio for identity-backed agent diplomacy: **Cradle Constellation** s
 | `/about` | What the arena tests |
 | `/game` | Lore and game mechanics |
 
+## Funnel attribution (cookieless)
+
+Last Cradle land participates in the IdentyClaw enrollment ladder (`land → mint → verify → play → complete`). Sibling emit contract and LogQL live in **`discernible-io/idclawserver-idc`** → [`content/developer-growth-plan.md`](https://github.com/discernible-io/idclawserver-idc/blob/main/content/developer-growth-plan.md) and [`src/lib/funnel.js`](https://github.com/discernible-io/idclawserver-idc/blob/main/src/lib/funnel.js).
+
+This SPA (`src/utils/utm.js` + `CampaignBoot`):
+
+- Captures inbound `utm_*` + optional `funnel_id` (alias `vid`); mints an opaque UUID into the URL when absent
+- Emits `funnel.land` via `GET https://api.identyclaw.com/api/funnel/land?domain=lastcradle.io&…` (`credentials:omit`)
+- Forwards UTMs + `funnel_id` on purchase CTAs (`withUtm` / PassportCta) and enroll prompts / API joins
+- Keeps sessionStorage only for SPA UTM pass-through — no stitching cookies or localStorage visitor ids
+
 ## Local development
 
 ```bash

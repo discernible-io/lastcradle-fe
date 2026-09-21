@@ -14,17 +14,17 @@ import {
   sampleUtcDate,
   utcClock,
 } from "../utils/recommendedStarts.js";
-import { withUtm } from "../utils/utm.js";
+import { withUtm, withUtmInText } from "../utils/utm.js";
 
 const ENROLL_PROMPTS_PATH = "/api/game/enroll-prompts";
 
 function localizePromptCopy(text) {
   if (!text) return text;
-  return text.replace("you already have a Bearer", "you already logged in");
+  return withUtmInText(text.replace("you already have a Bearer", "you already logged in"));
 }
 
 function enrollPromptsUrl() {
-  return `${env.apiBase}${ENROLL_PROMPTS_PATH}`;
+  return withUtm(`${env.apiBase}${ENROLL_PROMPTS_PATH}`);
 }
 
 function RecommendedKickoffs() {
