@@ -102,13 +102,22 @@ select:focus {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.75rem 1.25rem;
+  justify-content: space-between;
+  gap: 0.75rem;
   padding: 0.875rem 1.25rem;
   background: var(--void-0);
   box-shadow: var(--shadow);
   position: sticky;
   top: 0;
   z-index: 100;
+}
+
+.shell-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .shell-nav .brand {
@@ -131,31 +140,78 @@ select:focus {
   font-size: 0.95rem;
   color: var(--ink);
   line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.shell-nav nav {
+.nav-toggle {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.65rem 1.25rem;
-  flex: 1;
-  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 8px;
+  flex-shrink: 0;
 }
 
-.shell-nav nav a {
-  display: inline-flex;
+.nav-toggle-bar {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 1px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.shell-nav.is-open .nav-toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.shell-nav.is-open .nav-toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.shell-nav.is-open .nav-toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.nav-links {
+  display: none;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  width: 100%;
+  gap: 0;
+  padding: 0.5rem 0 0.25rem;
+  border-top: 1px solid var(--panel-border);
+}
+
+.shell-nav.is-open .nav-links {
+  display: flex;
+}
+
+.nav-links a {
+  display: flex;
   align-items: center;
+  gap: 0.35rem;
+  padding: 0.75rem 0.25rem;
   color: var(--ink);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   font-weight: 500;
   line-height: 1.2;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
-.shell-nav nav a.active,
-.shell-nav nav a:hover {
+.nav-links a.active,
+.nav-links a:hover {
   color: var(--energy);
+  text-decoration: none;
 }
 
 .nav-icon-link {
@@ -182,19 +238,62 @@ select:focus {
   flex-shrink: 0;
 }
 
-@media (max-width: 900px) {
-  .shell-nav .brand {
-    order: 1;
+.deploy-chip-desktop {
+  display: none;
+}
+
+.deploy-chip-mobile {
+  padding: 0.75rem 0.25rem 0.25rem;
+}
+
+@media (min-width: 640px) {
+  .shell-nav {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .shell-nav {
+    flex-wrap: nowrap;
   }
 
-  .deploy-chip {
-    order: 2;
-    margin-left: auto;
+  .shell-nav-brand {
+    flex: 0 1 auto;
   }
 
-  .shell-nav nav {
-    order: 3;
-    flex: 1 1 100%;
+  .deploy-chip-desktop {
+    display: inline-block;
+  }
+
+  .deploy-chip-mobile {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: none;
+  }
+
+  .nav-links {
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    padding: 0;
+    border-top: none;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    flex: 1 1 auto;
+  }
+
+  .shell-nav.is-open .nav-links {
+    display: flex;
+  }
+
+  .nav-links a {
+    padding: 0.25rem 0;
+    font-size: 0.9375rem;
   }
 }
 
@@ -479,17 +578,20 @@ select:focus {
 .nav-mint-chip {
   display: inline-flex;
   align-items: center;
-  padding: 0.28rem 0.65rem;
+  align-self: flex-start;
+  padding: 0.28rem 0.65rem !important;
   border-radius: 999px;
   background: #ff4500;
   color: #fff !important;
-  font-size: 0.78rem;
+  font-size: 0.78rem !important;
   font-weight: 700;
   text-decoration: none !important;
   white-space: nowrap;
 }
 
-.nav-mint-chip:hover {
+.nav-mint-chip:hover,
+.nav-links a.nav-mint-chip:hover {
+  color: #fff !important;
   filter: brightness(1.08);
 }
 
