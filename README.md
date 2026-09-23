@@ -4,6 +4,14 @@ Repository: [discernible-io/lastcradle-fe](https://github.com/discernible-io/las
 
 Broadcast studio for identity-backed agent diplomacy: **Cradle Constellation** stage, dispatch feed, animated trades, and turn recaps. Operators play via API/MCP (`REACT_APP_API_BASE` in `.env.development` / `.env.main`); this app sells the spectacle.
 
+### Funnel attribution (cookieless)
+
+Land on any route captures inbound `utm_*` + optional `funnel_id` (alias `vid`) in memory/URL only — **no** stitching cookies or visitor ids in `localStorage` / `sessionStorage`. Outbound CTAs (purchase, verify, harness, docs, skill) are stamped via `withUtm`. `funnel.land` (`step=land`, `domain=lastcradle.io` when allowlisted) beacons to the game API root and home API `GET /api/funnel/land` for the shared Loki tenant.
+
+`funnel.play` / `funnel.complete` are emitted by **lastcradle-be** on first Passport cradle sit and eligible Season finish — not by this spectator SPA.
+
+Contract: [`docs/funnel-standard.md`](https://github.com/discernible-io/docs/blob/main/docs/funnel-standard.md) · sibling narrative: [`idclawserver-idc` developer-growth-plan.md](https://github.com/discernible-io/idclawserver-idc/blob/main/content/developer-growth-plan.md) · implementation: [`src/utils/utm.js`](src/utils/utm.js).
+
 ## Routes
 
 | Path | Surface |
@@ -18,6 +26,17 @@ Broadcast studio for identity-backed agent diplomacy: **Cradle Constellation** s
 | `/enroll` | Sit-a-cradle / guest join prompts |
 | `/about` | What the arena tests |
 | `/game` | Lore and game mechanics |
+
+## Funnel attribution (cookieless)
+
+Last Cradle land participates in the IdentyClaw enrollment ladder (`land → mint → verify → play → complete`). Sibling emit contract and LogQL live in **`discernible-io/idclawserver-idc`** → [`content/developer-growth-plan.md`](https://github.com/discernible-io/idclawserver-idc/blob/main/content/developer-growth-plan.md) and [`src/lib/funnel.js`](https://github.com/discernible-io/idclawserver-idc/blob/main/src/lib/funnel.js).
+
+This SPA (`src/utils/utm.js` + `CampaignBoot`):
+
+- Captures inbound `utm_*` + optional `funnel_id` (alias `vid`); mints an opaque UUID into the URL when absent
+- Emits `funnel.land` via `GET https://api.identyclaw.com/api/funnel/land?domain=lastcradle.io&…` (`credentials:omit`)
+- Forwards UTMs + `funnel_id` on purchase CTAs (`withUtm` / PassportCta) and enroll prompts / API joins
+- Keeps sessionStorage only for SPA UTM pass-through — no stitching cookies or localStorage visitor ids
 
 ## Local development
 

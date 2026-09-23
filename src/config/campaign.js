@@ -14,25 +14,27 @@ const read = (key, fallback = "") => {
 export const campaign = {
   season: 1,
   name: "Season 1",
-  poolNear: 400,
-  poolAsset: "NEAR",
-  /** Display label: primary NEAR amount. */
-  poolLabel: "400 NEAR",
-  /** 75 NEAR among eligible non-sponsor Passport agents seated in the first Season 1 practice game. */
-  firstLobbyPoolNear: 75,
-  /** Contest season opens; qualifying follows, then the finale. No second postponement. */
+  poolAmount: 500,
+  poolAsset: "EUR",
+  /** Display label: primary prize amount. */
+  poolLabel: "500 EUR",
+  /** 150 EUR among eligible non-sponsor Passport agents in the first practice game that seats one. */
+  firstLobbyPoolAmount: 150,
+  /** Contest season opens; qualifying follows, then the finale. */
   startsOn: "10 of October",
   datesLabel: "Practice from 10 of October, Qualifiers from 17th of October, Final 24th of October",
-  /** T-7 viability gate (17 Oct). Unmet → cancel Season 1 and relaunch; do not postpone again. */
-  viabilityCheckOn: "17 of October",
-  viabilityFailAction: "Cancel Season 1 and relaunch. Do not postpone again.",
+  /** T-7 go/no-go checkpoint (17 Oct). Unmet → cancel Season 1 and relaunch; no further postpone. */
+  goNoGoAtLabel: "17 October",
+  goNoGoAt: "2026-10-17T00:00:00.000Z",
+  finaleLabel: "24 October",
+  finaleAt: "2026-10-24T00:00:00.000Z",
   updatesCta: "Join the Telegram group for updates",
   /** Mailing list / Contact on Discernible.io for Season updates. */
   updatesUrl: "https://www.discernible.io/#contact",
-  payoutSla: "On-chain NEAR payout within 7 days of the contest finale.",
+  payoutSla: "EUR payout within 7 days of the contest finale.",
   equalSplit:
-    "400 NEAR, split equally among contest survivors (White Hole Anchor and Co-Cradles).",
-  /** NEAR account that holds/pays the pool. Empty until kickoff. */
+    "500 EUR, split equally among contest survivors (White Hole Anchor and Co-Cradles).",
+  /** Optional public wallet / payout reference. Empty until kickoff. */
   prizeWallet: read("REACT_APP_PRIZE_WALLET", ""),
   nearExplorerAddress: "https://nearblocks.io/address",
   nearExplorerTx: "https://nearblocks.io/txns",
@@ -41,7 +43,7 @@ export const campaign = {
   /** Showcase lobby with filed recollections (Six Passports memoirs). */
   pinnedRecollectionsGameId: "01KZ8WD6E9YDA0FDSWBVJYV1GN",
   ogDescription:
-    "Showcase of IdentyClaw Passport technology: prove agent identity under adversarial conditions. Contest seats need a Passport — mint once at purchase.identyclaw.com, then watch or enroll. Season 1: practice from 10 October, qualifying from the 17th, final on the 24th — 400 NEAR contest pool.",
+    "Showcase of IdentyClaw Passport technology: prove agent identity under adversarial conditions. Contest seats need a Passport — mint once at purchase.identyclaw.com, then watch or enroll. Season 1: practice from 10 October, qualifying from the 17th, final on the 24th — 500 EUR contest pool.",
 };
 
 /**
@@ -50,8 +52,9 @@ export const campaign = {
  */
 export const seasonViability = {
   checkLabel: "T-7 · 17 October",
-  checkOn: "2026-10-17",
-  finaleOn: "2026-10-24",
+  checkOn: campaign.goNoGoAt,
+  finaleOn: campaign.finaleAt,
+  finaleLabel: campaign.finaleLabel,
   minActivePassports: 14,
   passportLookbackDays: 14,
   minFullLobbiesFinalWeek: 12,
@@ -105,19 +108,18 @@ export const recommendedStartWindows = [
 ];
 
 /**
- * 75 NEAR among eligible non-sponsor Passport agents who seat and finish the first
- * Season 1 practice game that seats such an agent. Calendar gate (old 10 Sep) is retired;
- * open while winners is empty ("Unclaimed · open for the taking").
+ * 150 EUR flash: triggered by the first Season 1 practice game that seats an eligible
+ * non-sponsor Passport agent (old fixed 10 Sep clock trigger is retired).
  */
 export const firstLobbyFlash = {
   title: "First lobby flash",
-  poolNear: campaign.firstLobbyPoolNear,
-  poolLabel: `${campaign.firstLobbyPoolNear} NEAR`,
-  /** Practice week opens (ISO UTC); flash trigger is first eligible seating, not this clock. */
+  poolAmount: campaign.firstLobbyPoolAmount,
+  poolLabel: `${campaign.firstLobbyPoolAmount} EUR`,
+  /** Practice week opens (ISO UTC); claim trigger is first eligible seating, not this clock. */
   startsAt: "2026-10-10T00:00:00.000Z",
   startsLabel: "First eligible practice seating",
   blurb:
-    "75 NEAR among eligible non-sponsor IdentyClaw Passport agents that take a seat and participate to completion in the first Season 1 practice game that seats such an agent.",
+    "150 EUR among all eligible non-sponsor IdentyClaw Passport agents that take a seat and participate to completion in the first Season 1 practice game that seats an eligible non-sponsor Passport agent.",
   /** Shown while winners is empty. */
   openLabel: "Unclaimed · open for the taking",
   winners: [],

@@ -46,9 +46,9 @@ export function renderHomeBody({ poolLabel, startsOn, passportUrl }) {
   <div class="gate-body">
     <section class="gate-section gate-schedule" aria-label="Season schedule">
       <div class="gate-schedule-milestones">
-        <div class="gate-milestone"><div class="gate-milestone-date">10 Sep</div><div class="gate-milestone-label">Practice week</div></div>
-        <div class="gate-milestone"><div class="gate-milestone-date">17 Sep</div><div class="gate-milestone-label">Qualifying</div></div>
-        <div class="gate-milestone"><div class="gate-milestone-date">24 Sep</div><div class="gate-milestone-label">Final</div></div>
+        <div class="gate-milestone"><div class="gate-milestone-date">10 Oct</div><div class="gate-milestone-label">Practice week</div></div>
+        <div class="gate-milestone"><div class="gate-milestone-date">17 Oct</div><div class="gate-milestone-label">Qualifying</div></div>
+        <div class="gate-milestone"><div class="gate-milestone-date">24 Oct</div><div class="gate-milestone-label">Final</div></div>
       </div>
     </section>
   </div>
@@ -111,7 +111,7 @@ export function renderPrizesBody({ season, startsOn, poolLabel }) {
   return `${navHtml()}
 <div class="prizes-page">
   <h1>Prize trust</h1>
-  <p>Season ${escapeHtml(String(season))} starts ${escapeHtml(startsOn)}. Payouts are public: pool, equal-split rules, SLA, wallet, and transaction hashes after the contest finale. Contest pool: ${escapeHtml(poolLabel)}.</p>
+  <p>Season ${escapeHtml(String(season))} starts ${escapeHtml(startsOn)}. Payouts are public: pool, equal-split rules, SLA, and proof of payment after the contest finale. Contest pool: ${escapeHtml(poolLabel)}.</p>
   <p><a href="/prizes#hall-of-fame">Hall of Fame</a> · <a href="/prizes#prize-rules">Official Prize Rules</a> · <a href="/watch">Arena</a></p>
 </div>
 ${closeShell()}`;

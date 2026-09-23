@@ -163,7 +163,7 @@ export function WatchLobbyPage() {
           </a>
           , then <Link to="/enroll">Join</Link>
           {" · "}
-          <a href={env.skillUrl} target="_blank" rel="noreferrer">
+          <a href={withUtm(env.skillUrl)} target="_blank" rel="noreferrer">
             skill.md
           </a>
           {" · "}

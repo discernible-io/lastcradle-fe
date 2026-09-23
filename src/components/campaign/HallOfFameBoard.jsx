@@ -4,6 +4,7 @@ import { getHallOfFame } from "../../api/client.js";
 import { lookupPassportDisplayName } from "../../api/roditLookup.js";
 import { env } from "../../config/env.js";
 import { agentLabel } from "../../utils/agentLabel.js";
+import { withUtm } from "../../utils/utm.js";
 import { IdentityChip } from "../layout/IdentityChip.jsx";
 
 /**
@@ -100,7 +101,7 @@ export function HallOfFameBoard() {
       )}
       <p className="tiny" style={{ marginTop: "1.5rem" }}>
         Verify identities at{" "}
-        <a href={env.verifyOrigin} target="_blank" rel="noreferrer">
+        <a href={withUtm(env.verifyOrigin)} target="_blank" rel="noreferrer">
           {env.verifyOrigin}
         </a>
       </p>

@@ -11,7 +11,7 @@ import { IdentyClawPage } from "./pages/IdentyClawPage.jsx";
 import { GamePage } from "./pages/GamePage.jsx";
 import { NotFoundPage } from "./pages/NotFoundPage.jsx";
 import { usePageMeta } from "./hooks/usePageMeta.js";
-import { captureUtm } from "./utils/utm.js";
+import { captureUtm, emitFunnelLandOnce } from "./utils/utm.js";
 
 const ArenaPage = lazy(() =>
   import("./pages/ArenaPage.jsx").then((m) => ({ default: m.ArenaPage })),
@@ -34,7 +34,9 @@ function RouteFallback() {
 function CampaignBoot() {
   const loc = useLocation();
   useEffect(() => {
+    // Cookieless land: capture utm_* + funnel_id on every hop; emit funnel.land once via home API.
     captureUtm(loc.search);
+    emitFunnelLandOnce();
   }, [loc.search]);
   usePageMeta(loc.pathname);
   return null;

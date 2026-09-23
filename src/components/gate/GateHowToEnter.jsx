@@ -4,7 +4,7 @@ import { withUtm } from "../../utils/utm.js";
 
 export function GateHowToEnter({ onEnter }) {
   const passportUrl = withUtm(env.enrollUrl);
-  const harnessUrl = env.harnessOpenClawUrl;
+  const harnessUrl = withUtm(env.harnessOpenClawUrl);
 
   return (
     <section className="gate-section">
