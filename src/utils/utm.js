@@ -1,125 +1,144 @@
 /**
- * Cookieless land attribution for lastcradle.io.
+ * Cookieless Last Cradle attribution (land → purchase / enroll).
  *
- * Sibling emit contract (step ladder land → mint → verify → play → complete):
- * discernible-io/idclawserver-idc → content/developer-growth-plan.md and src/lib/funnel.js.
+ * Sibling emit contract:
+ *   discernible-io/docs docs/funnel-standard.md
+ *   discernible-io/idclawserver-idc content/developer-growth-plan.md
+ *   (Sibling emit contract) + src/lib/funnel.js
  *
- * Hard rule: never Set-Cookie / document.cookie / localStorage visitor ids for stitching
- * without consent. Prefer URL/query forwarding. sessionStorage may keep UTM + funnel_id
- * pass-through for SPA hops (already used here) — not a cross-domain stitch key.
+ * Hard rules: never Set-Cookie / document.cookie / localStorage or
+ * sessionStorage visitor ids for stitching. Attribution lives in the
+ * query string and this module's memory only.
  */
 
-const STORAGE_KEY = "slc_utm";
-const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
-/** Pre-Passport hop stitch; `vid` is an inbound alias folded into `funnel_id`. */
-const FUNNEL_ID_KEYS = ["funnel_id", "vid"];
-const ATTR_KEYS = [...UTM_KEYS, "funnel_id"];
+export const LASTCRADLE_DOMAIN = "lastcradle.io";
+/** @deprecated Prefer LASTCRADLE_DOMAIN — kept for callers that used LAND_DOMAIN. */
+export const LAND_DOMAIN = LASTCRADLE_DOMAIN;
 
-export const LAND_DOMAIN = "lastcradle.io";
-const HOME_API_LAND = "https://api.identyclaw.com/api/funnel/land";
+/**
+ * `domain` values accepted by GET|POST /api/funnel/land (home API OpenAPI).
+ * Prefer an allowlisted host; otherwise omit and let the server default.
+ */
+export const FUNNEL_LAND_DOMAINS = Object.freeze([
+  "lastcradle.io",
+  "www.lastcradle.io",
+  "purchase.identyclaw.com",
+  "www.discernible.io",
+  "discernible.io",
+  "api.identyclaw.com",
+]);
 
+export const UTM_KEYS = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "utm_term",
+];
+
+/** Primary + alias accepted by home-API / purchase extractAttribution. */
+export const FUNNEL_ID_KEYS = ["funnel_id", "vid"];
+
+export const ATTR_KEYS = [...UTM_KEYS, "funnel_id"];
+
+/** In-memory only — never persist to cookie / localStorage / sessionStorage. */
+let memoryAttribution = null;
 let landEmitted = false;
 
-function pickParam(params, key) {
-  const value = params.get(key);
+function pickString(value) {
   if (typeof value !== "string") return null;
   const trimmed = value.trim();
-  return trimmed || null;
+  return trimmed ? trimmed : null;
 }
 
 function mintFunnelId() {
   if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
-    return crypto.randomUUID();
+    return crypto.randomUUID().replace(/-/g, "");
   }
-  return `fid-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
-}
-
-function readStored() {
-  try {
-    const raw = sessionStorage.getItem(STORAGE_KEY);
-    if (!raw) return {};
-    const parsed = JSON.parse(raw);
-    return parsed && typeof parsed === "object" ? parsed : {};
-  } catch {
-    return {};
-  }
-}
-
-function writeStored(attrs) {
-  try {
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(attrs));
-  } catch {
-    /* ignore quota / private mode */
-  }
+  return `f${Date.now().toString(36)}${Math.random().toString(36).slice(2, 12)}`;
 }
 
 /**
- * Keep funnel_id (and inbound UTMs) visible on the address bar for hop forwarding.
- * Does not plant cookies or localStorage visitor ids.
+ * @param {string} [search]
+ * @returns {Record<string, string>}
  */
-function syncAttributionToUrl(attrs) {
+export function readAttributionFromSearch(search) {
+  const attribution = {};
+  if (typeof search !== "string" || !search) return attribution;
+  const params = new URLSearchParams(
+    search.startsWith("?") ? search.slice(1) : search,
+  );
+  for (const key of UTM_KEYS) {
+    const value = pickString(params.get(key));
+    if (value) attribution[key] = value;
+  }
+  for (const key of FUNNEL_ID_KEYS) {
+    const value = pickString(params.get(key));
+    if (value) {
+      attribution.funnel_id = value;
+      break;
+    }
+  }
+  return attribution;
+}
+
+/** @returns {Record<string, string>} */
+export function getAttribution() {
+  return memoryAttribution ? { ...memoryAttribution } : {};
+}
+
+/** Prefer getAttribution — alias kept for existing call sites. */
+export function getUtm() {
+  const stored = getAttribution();
+  if (stored.funnel_id || UTM_KEYS.some((k) => stored[k])) return stored;
+  if (typeof window !== "undefined") return captureUtm();
+  return stored;
+}
+
+/**
+ * Merge inbound query attribution into memory; mint opaque funnel_id when absent.
+ * Syncs UTMs + funnel_id onto the current URL (replaceState) — not a cookie.
+ *
+ * @param {string} [search]
+ * @param {{ mintFunnelIdIfAbsent?: boolean }} [options]
+ * @returns {Record<string, string>}
+ */
+export function captureUtm(search, options = {}) {
+  const { mintFunnelIdIfAbsent = true } = options;
+  if (typeof window === "undefined") return getAttribution();
+
+  const fromUrl = readAttributionFromSearch(
+    typeof search === "string" ? search : window.location.search,
+  );
+  const next = { ...(memoryAttribution || {}), ...fromUrl };
+
+  if (mintFunnelIdIfAbsent && !pickString(next.funnel_id)) {
+    next.funnel_id = mintFunnelId();
+  }
+
+  memoryAttribution = next;
+  syncAttributionToUrl();
+  return getAttribution();
+}
+
+function syncAttributionToUrl() {
   if (typeof window === "undefined") return;
   const url = new URL(window.location.href);
-  let changed = false;
-
+  const attribution = getAttribution();
   for (const key of UTM_KEYS) {
-    if (attrs[key] && url.searchParams.get(key) !== attrs[key]) {
-      url.searchParams.set(key, attrs[key]);
-      changed = true;
-    }
+    const value = pickString(attribution[key]);
+    if (value) url.searchParams.set(key, value);
   }
-
-  if (attrs.funnel_id) {
-    if (url.searchParams.get("funnel_id") !== attrs.funnel_id) {
-      url.searchParams.set("funnel_id", attrs.funnel_id);
-      changed = true;
-    }
-    if (url.searchParams.has("vid")) {
-      url.searchParams.delete("vid");
-      changed = true;
-    }
+  const funnelId = pickString(attribution.funnel_id);
+  if (funnelId) {
+    url.searchParams.set("funnel_id", funnelId);
+    url.searchParams.delete("vid");
   }
-
-  if (changed) {
-    window.history.replaceState({}, document.title, `${url.pathname}${url.search}${url.hash}`);
+  const next = `${url.pathname}${url.search}${url.hash}`;
+  const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+  if (next !== current) {
+    window.history.replaceState({}, document.title, next);
   }
-}
-
-/**
- * Capture inbound utm_* + optional funnel_id (alias vid) from the URL.
- * Mints an opaque UUID into the URL when funnel_id is absent.
- */
-export function captureUtm(search) {
-  if (typeof window === "undefined") return {};
-  const params = new URLSearchParams(search || window.location.search);
-  const fromUrl = {};
-
-  for (const key of UTM_KEYS) {
-    const value = pickParam(params, key);
-    if (value) fromUrl[key] = value;
-  }
-
-  const inboundFunnel =
-    pickParam(params, "funnel_id") || pickParam(params, "vid") || null;
-
-  const stored = readStored();
-  const merged = { ...stored, ...fromUrl };
-
-  if (inboundFunnel) {
-    merged.funnel_id = inboundFunnel;
-  } else if (!merged.funnel_id) {
-    merged.funnel_id = mintFunnelId();
-  }
-
-  writeStored(merged);
-  syncAttributionToUrl(merged);
-  return merged;
-}
-
-export function getUtm() {
-  const stored = readStored();
-  if (stored.funnel_id || UTM_KEYS.some((k) => stored[k])) return stored;
-  return captureUtm();
 }
 
 /** Attribution fields suitable for query / JSON body. */
@@ -131,7 +150,10 @@ export function attributionFields(attrs = getUtm()) {
   return out;
 }
 
-/** X-Utm-* / X-Funnel-Id headers for enroll / API joins. */
+/**
+ * X-Utm-* / X-Funnel-Id headers for enroll / API joins.
+ * Prefer JSON body / query when CORS would break preflight.
+ */
 export function attributionHeaders(attrs = getUtm()) {
   const headers = {};
   if (attrs.utm_source) {
@@ -160,7 +182,10 @@ export function attributionHeaders(attrs = getUtm()) {
   return headers;
 }
 
-/** Stamp stored utm_* + funnel_id onto an absolute URL (purchase CTAs, Telegram, etc.). */
+/**
+ * Stamp memory attribution (utm_* + funnel_id) onto an absolute URL.
+ * Used for purchase.identyclaw.com CTAs and other outbound funnel hops.
+ */
 export function withUtm(url) {
   if (!url || typeof url !== "string") return url;
   if (url.startsWith("/") || url.startsWith("#")) return url;
@@ -170,15 +195,18 @@ export function withUtm(url) {
   } catch {
     return url;
   }
-  const attrs = getUtm();
+  const attribution = getAttribution();
   for (const key of ATTR_KEYS) {
-    if (attrs[key] && !parsed.searchParams.has(key)) {
-      parsed.searchParams.set(key, attrs[key]);
+    if (attribution[key] && !parsed.searchParams.has(key)) {
+      parsed.searchParams.set(key, attribution[key]);
     }
   }
-  // Prefer canonical funnel_id over leftover vid on outbound links.
-  if (attrs.funnel_id && parsed.searchParams.has("vid") && !parsed.searchParams.has("funnel_id")) {
-    parsed.searchParams.set("funnel_id", attrs.funnel_id);
+  if (
+    attribution.funnel_id &&
+    parsed.searchParams.has("vid") &&
+    !parsed.searchParams.has("funnel_id")
+  ) {
+    parsed.searchParams.set("funnel_id", attribution.funnel_id);
     parsed.searchParams.delete("vid");
   }
   return parsed.toString();
@@ -202,31 +230,112 @@ export function withUtmInText(text) {
 }
 
 /**
- * Emit funnel.land once per page load via home-API cookieless beacon
- * (GET https://api.identyclaw.com/api/funnel/land — allowlisted domain lastcradle.io).
- * credentials:omit + mode:no-cors so CORS does not block the fire-and-forget hop.
+ * Resolve an allowlisted FunnelLandRequest.domain, or null when the SPA host
+ * is not in the OpenAPI enum (e.g. slc.dihola.io → omit; server default).
+ * @param {string} [surfaceDomain]
+ * @returns {string | null}
  */
-export function emitFunnelLandOnce() {
-  if (landEmitted || typeof window === "undefined") return;
-  landEmitted = true;
+export function resolveFunnelLandDomain(surfaceDomain) {
+  const surface = pickString(surfaceDomain);
+  if (!surface) return null;
+  const normalized = surface.toLowerCase();
+  return FUNNEL_LAND_DOMAINS.includes(normalized) ? normalized : null;
+}
 
-  const attrs = getUtm();
-  const params = new URLSearchParams(attributionFields(attrs));
-  params.set("domain", LAND_DOMAIN);
-  params.set("step", "land");
-  const beaconUrl = `${HOME_API_LAND}?${params.toString()}`;
+/**
+ * Stamp utm_* + funnel_id onto a URL (query-only).
+ * @param {URL} url
+ * @param {Record<string, string>} attribution
+ */
+function applyAttributionParams(url, attribution) {
+  for (const key of UTM_KEYS) {
+    const value = pickString(attribution[key]);
+    if (value) url.searchParams.set(key, value);
+  }
+  const funnelId = pickString(attribution.funnel_id);
+  if (funnelId) url.searchParams.set("funnel_id", funnelId);
+}
 
+/**
+ * Fire a cookieless GET land beacon. Never throws; never blocks the page.
+ * @param {string} href
+ */
+function fetchLandBeacon(href) {
+  if (typeof fetch !== "function") return;
   try {
-    fetch(beaconUrl, {
+    fetch(href, {
       method: "GET",
+      mode: "cors",
       credentials: "omit",
-      mode: "no-cors",
-      cache: "no-store",
       keepalive: true,
     }).catch(() => {});
   } catch {
-    // Beacon is best-effort; CTA / enroll forward still carries attribution.
+    /* ignore malformed endpoint */
   }
 }
 
-export { UTM_KEYS, FUNNEL_ID_KEYS, ATTR_KEYS };
+/**
+ * Mirror land attribution onto:
+ *   1. lastcradle API GET / (discovery emits funnel.land into the game Loki path)
+ *   2. home API GET /api/funnel/land?domain=… (mintclient sibling contract)
+ * Query-only — no cookies / custom headers.
+ * @param {Record<string, string>} attribution
+ * @param {string} [surfaceDomain]
+ */
+function beaconLand(attribution, surfaceDomain = LASTCRADLE_DOMAIN) {
+  let apiBase = "https://api.lastcradle.io";
+  try {
+    const fromEnv = import.meta.env?.REACT_APP_API_BASE;
+    if (fromEnv) apiBase = String(fromEnv).replace(/\/$/, "");
+  } catch {
+    /* Node smoke / non-Vite */
+  }
+
+  try {
+    const gameUrl = new URL(apiBase.endsWith("/") ? apiBase : `${apiBase}/`);
+    applyAttributionParams(gameUrl, attribution);
+    fetchLandBeacon(gameUrl.toString());
+  } catch {
+    /* ignore */
+  }
+
+  try {
+    const homeUrl = new URL("https://api.identyclaw.com/api/funnel/land");
+    const domain =
+      resolveFunnelLandDomain(surfaceDomain) ||
+      resolveFunnelLandDomain(LASTCRADLE_DOMAIN);
+    if (domain) homeUrl.searchParams.set("domain", domain);
+    applyAttributionParams(homeUrl, attribution);
+    fetchLandBeacon(homeUrl.toString());
+  } catch {
+    /* ignore */
+  }
+}
+
+/**
+ * Emit funnel.land once per page load (structured console + Loki beacons).
+ * @param {string} [domain] - emitting surface host (defaults to allowlisted hostname or lastcradle.io)
+ */
+export function emitFunnelLandOnce(domain) {
+  if (typeof window === "undefined" || landEmitted) return;
+  landEmitted = true;
+  const attribution = captureUtm(window.location.search, {
+    mintFunnelIdIfAbsent: true,
+  });
+  const host =
+    pickString(domain) ||
+    pickString(typeof window !== "undefined" ? window.location.hostname : null) ||
+    LASTCRADLE_DOMAIN;
+  const surface = resolveFunnelLandDomain(host) || LASTCRADLE_DOMAIN;
+  // eslint-disable-next-line no-console
+  console.info("funnel:funnel.land", {
+    event: "funnel.land",
+    funnel: true,
+    step: "land",
+    domain: surface,
+    path: window.location.pathname || "/",
+    result: "success",
+    ...attribution,
+  });
+  beaconLand(attribution, surface);
+}

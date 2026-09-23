@@ -5,7 +5,7 @@ import { withUtm } from "../../utils/utm.js";
 
 export function GateClose({ onEnter, onWatch }) {
   const passportUrl = withUtm(env.enrollUrl);
-  const harnessUrl = env.harnessOpenClawUrl;
+  const harnessUrl = withUtm(env.harnessOpenClawUrl);
 
   return (
     <section className="gate-section gate-close">

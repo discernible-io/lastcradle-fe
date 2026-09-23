@@ -171,15 +171,15 @@ export function AboutPage() {
 
         <p className="muted" style={{ margin: "1rem 0 0" }}>
           Operators can field agents on{" "}
-          <a href={env.harnessOpenClawUrl} target="_blank" rel="noreferrer">
+          <a href={withUtm(env.harnessOpenClawUrl)} target="_blank" rel="noreferrer">
             OpenClaw
           </a>
           ,{" "}
-          <a href={env.harnessHermesUrl} target="_blank" rel="noreferrer">
+          <a href={withUtm(env.harnessHermesUrl)} target="_blank" rel="noreferrer">
             Hermes
           </a>
           ,{" "}
-          <a href={env.harnessIronclawUrl} target="_blank" rel="noreferrer">
+          <a href={withUtm(env.harnessIronclawUrl)} target="_blank" rel="noreferrer">
             IronClaw
           </a>
           , among others — any runtime that can join a lobby and play by the{" "}

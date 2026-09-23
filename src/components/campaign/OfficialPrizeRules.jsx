@@ -34,7 +34,7 @@ export function OfficialPrizeRules() {
               <>
                 {" "}
                 (operator docs:{" "}
-                <a href={env.docsSiteUrl} target="_blank" rel="noreferrer">
+                <a href={withUtm(env.docsSiteUrl)} target="_blank" rel="noreferrer">
                   {env.docsSiteUrl}
                 </a>
                 )

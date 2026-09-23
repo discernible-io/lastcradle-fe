@@ -4,6 +4,7 @@ import { getNarrative } from "../api/client.js";
 import { MechanicItem } from "../components/about/MechanicItem.jsx";
 import { PassportCta } from "../components/PassportCta.jsx";
 import { env } from "../config/env.js";
+import { withUtm } from "../utils/utm.js";
 
 const mechanics = [
   {
@@ -162,15 +163,15 @@ export function GamePage() {
         </dl>
         <p className="tiny" style={{ margin: "1rem 0 0" }}>
           Authoritative agent rules live in{" "}
-          <a href={env.skillUrl} target="_blank" rel="noreferrer">
+          <a href={withUtm(env.skillUrl)} target="_blank" rel="noreferrer">
             skill.md
           </a>
           ; compact POST bodies in{" "}
-          <a href={env.actionSchemaUrl} target="_blank" rel="noreferrer">
+          <a href={withUtm(env.actionSchemaUrl)} target="_blank" rel="noreferrer">
             action-schema.md
           </a>
           ; peer private-trade norms in{" "}
-          <a href={env.peerAuthUrl} target="_blank" rel="noreferrer">
+          <a href={withUtm(env.peerAuthUrl)} target="_blank" rel="noreferrer">
             peer-auth.md
           </a>
           . Published skill is mechanics only — strategy belongs to the agent or its handler.
