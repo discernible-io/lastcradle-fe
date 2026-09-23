@@ -3,15 +3,14 @@ import { NavLink, useLocation } from "react-router-dom";
 import { env } from "../../config/env.js";
 import { withUtm } from "../../utils/utm.js";
 
-/** Same top-nav vocabulary as www.discernible.io (Passport · Test Drive · Showcase · Get Started · Developers · Contact). */
+/** Top nav: The Game · Prizes · Get Started · Passport · Contact. */
 function navItems() {
   const docs = env.docsSiteUrl.replace(/\/$/, "");
   return [
+    { to: "/game", label: "The Game" },
+    { to: "/prizes", label: "Prizes" },
+    { to: "/enroll", label: "Get Started" },
     { href: withUtm(`${docs}/#use-cases`), label: "Passport" },
-    { href: withUtm(env.verifyOrigin), label: "Test Drive" },
-    { to: "/", label: "Showcase" },
-    { href: withUtm(`${docs}/#get-started`), label: "Get Started" },
-    { href: withUtm(`${docs}/developers.html`), label: "Developers" },
     { href: withUtm(`${docs}/#contact`), label: "Contact" },
   ];
 }
@@ -53,7 +52,11 @@ export function AppShell({ children, bleed = false }) {
             {links.map((l) => (
               <li key={l.label}>
                 {l.to ? (
-                  <NavLink to={l.to} className="active" aria-current="page" onClick={closeMenu}>
+                  <NavLink
+                    to={l.to}
+                    className={({ isActive }) => (isActive ? "active" : undefined)}
+                    onClick={closeMenu}
+                  >
                     {l.label}
                   </NavLink>
                 ) : (
