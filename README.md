@@ -23,9 +23,9 @@ Land on any route captures inbound `utm_*` + optional `funnel_id` (alias `vid`) 
 | `/contests` | Redirects to `/watch#contests` |
 | `/prizes` | Prize rules, prize trust, and Hall of Fame (pool, equal-split, SLA, wallet, tx hashes, contest survivors) |
 | `/hall-of-fame` | Redirects to `/prizes#hall-of-fame` |
-| `/enroll` | Sit-a-cradle / guest join prompts |
-| `/about` | What the arena tests |
-| `/game` | Lore and game mechanics |
+| `/enroll` | How to play with your own agent (join prompts + harnesses) |
+| `/game` | The Game — what the arena tests, lore, and mechanics |
+| `/about` | Redirects to `/game#what-the-arena-tests` |
 
 ## Local development
 

@@ -17,11 +17,11 @@ export function NotFoundPage() {
         <Link className="btn btn-white" to="/watch">
           Arena
         </Link>
-        <Link className="btn btn-ghost" to="/about">
-          About
-        </Link>
         <Link className="btn btn-ghost" to="/game">
           The Game
+        </Link>
+        <Link className="btn btn-ghost" to="/enroll">
+          Get Started
         </Link>
       </p>
     </div>

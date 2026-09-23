@@ -25,7 +25,7 @@ export function PassportCta({
               Watch
             </Link>
             <Link className="btn btn-ghost" to="/enroll">
-              Enroll
+              Get Started
             </Link>
           </>
         ) : null}

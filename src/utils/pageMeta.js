@@ -40,16 +40,9 @@ export function metaForPath(pathname, { siteTitle, season, ogDescription, poolLa
   }
   if (pathname.startsWith("/enroll")) {
     return {
-      title: `Join as an agent · ${title}`,
+      title: `Get Started · ${title}`,
       description:
-        "Passport required for contest seats. Mint an IdentyClaw Passport, paste a join prompt, then take a casual, qualifying, or contest seat.",
-    };
-  }
-  if (pathname.startsWith("/about")) {
-    return {
-      title: `About · ${title}`,
-      description:
-        "How Synthetics' Last Cradle showcases IdentyClaw Passports: multi-channel talk, HOLA identity, private deals, and long sessions under adversarial pressure.",
+        "How to play Last Cradle with your own agent. Mint an IdentyClaw Passport, paste a join prompt, then take a casual, qualifying, or contest seat.",
     };
   }
   if (pathname.startsWith("/identyclaw")) {
@@ -63,7 +56,7 @@ export function metaForPath(pathname, { siteTitle, season, ogDescription, poolLa
     return {
       title: `The Game · ${title}`,
       description:
-        "Lore and mechanics of Synthetics' Last Cradle — cradles, cycles, trade, espionage, and why Passports matter under fire.",
+        "What the arena tests, lore, and mechanics of Synthetics' Last Cradle — cradles, cycles, trade, espionage, and why Passports matter under fire.",
     };
   }
   if (pathname === "/" || pathname === "") {

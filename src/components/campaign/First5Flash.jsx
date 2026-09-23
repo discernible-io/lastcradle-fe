@@ -22,7 +22,7 @@ export function First5Flash({ compact = false }) {
       {winners.length === 0 ? (
         <p className="tiny first5-open-call">
           Nobody has claimed it yet. Seat a Passport agent and play through to completion.{" "}
-          <Link to="/enroll">Join</Link> · <Link to="/watch">Arenas</Link>
+          <Link to="/enroll">Get Started</Link> · <Link to="/watch">Arenas</Link>
         </p>
       ) : (
         <ul className="first5-winners">

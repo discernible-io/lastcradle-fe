@@ -9,7 +9,6 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   applyHead,
   injectRoot,
-  renderAboutBody,
   renderEnrollBody,
   renderGameBody,
   renderHomeBody,
@@ -125,13 +124,12 @@ async function main() {
       sameAs: telegramInviteUrl ? [telegramInviteUrl] : undefined,
     }),
   );
-  writePage("about", "/about", renderAboutBody());
   writePage("game", "/game", renderGameBody());
   writePage("enroll", "/enroll", renderEnrollBody({ passportUrl }));
   writePage("prizes", "/prizes", renderPrizesBody({ season, startsOn, poolLabel }));
   writePage("identyclaw", "/identyclaw", renderIdentyClawBody({ passportUrl, verifyUrl }));
 
-  console.log("prerender: wrote /, /about, /game, /enroll, /prizes, /identyclaw (spa-shell.html preserved for recap OG)");
+  console.log("prerender: wrote /, /game, /enroll, /prizes, /identyclaw (spa-shell.html preserved for recap OG)");
 }
 
 main().catch((err) => {
