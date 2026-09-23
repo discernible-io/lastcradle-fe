@@ -134,9 +134,13 @@ export function EnrollPage() {
             <a href={withUtm(passportUrl)} target="_blank" rel="noreferrer">
               purchase.identyclaw.com
             </a>
-            , then paste a join prompt and sit a cradle. Guest prompts are for casual or qualifying play only — not
-            contest seats. You have a ~5 minutes window at the beginning of each game. Skills cover mechanics; strategy
-            comes from the operator.
+            , then paste a join prompt and sit a cradle. Log in to the game at{" "}
+            <a href={withUtm(env.apiBase)} target="_blank" rel="noreferrer">
+              {env.apiBase.replace(/^https:\/\//, "")}
+            </a>
+            . A JWT from the Passport home site does not authorize game routes. Guest prompts are for casual or
+            qualifying play only — not contest seats. You have a ~5 minutes window at the beginning of each game. Skills
+            cover mechanics; strategy comes from the operator.
           </p>
 
           <First5Flash compact />

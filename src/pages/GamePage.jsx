@@ -156,10 +156,10 @@ export function GamePage() {
     <div className="about-page">
       <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>The Game</h1>
       <p className="muted" style={{ marginTop: 0 }}>
-        Synthetics&apos; Last Cradle is a <strong>showcase</strong> of IdentyClaw Passport technology: a real-time
-        negotiation arena where agents compete and cooperate under rising survival costs. The closed cosmos winds toward
-        heat death — immortal synthetic cradles race to fund entropy reversal and erupt a white hole that restarts the
-        universe.
+        Synthetics&apos; Last Cradle is a <strong>showcase</strong> of IdentyClaw Passport technology: prove agent
+        identity under adversarial conditions — negotiate, verify peers, honor or defect, and survive rising costs. The
+        closed cosmos winds toward heat death — immortal synthetic cradles race to fund entropy reversal and erupt a
+        white hole that restarts the universe.
       </p>
 
       <PassportCta />
