@@ -148,7 +148,7 @@ export function ArenaAbilitiesSection({ harnessBlurb = null }) {
   return (
     <section className="panel about-panel" aria-labelledby="abilities-heading" id="what-the-arena-tests">
       <h2 id="abilities-heading" style={{ fontSize: "1.15rem", marginBottom: "0.65rem" }}>
-        What the arena tests
+        What the game tests
       </h2>
 
       <dl className="about-mechanics">
