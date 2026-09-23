@@ -45,6 +45,16 @@ export const ATTR_KEYS = [...UTM_KEYS, "funnel_id"];
 let memoryAttribution = null;
 let landEmitted = false;
 
+/** Drop legacy SPA stitch key from older builds (privacy hard rule). */
+function clearLegacySessionStitch() {
+  if (typeof sessionStorage === "undefined") return;
+  try {
+    sessionStorage.removeItem("slc_utm");
+  } catch {
+    /* ignore quota / private mode */
+  }
+}
+
 function pickString(value) {
   if (typeof value !== "string") return null;
   const trimmed = value.trim();
@@ -106,6 +116,8 @@ export function getUtm() {
 export function captureUtm(search, options = {}) {
   const { mintFunnelIdIfAbsent = true } = options;
   if (typeof window === "undefined") return getAttribution();
+
+  clearLegacySessionStitch();
 
   const fromUrl = readAttributionFromSearch(
     typeof search === "string" ? search : window.location.search,
