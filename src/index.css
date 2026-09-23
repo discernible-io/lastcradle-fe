@@ -2289,6 +2289,25 @@ select:focus {
   margin: 0 0 0.65rem;
 }
 
+.about-how-played-phases {
+  margin: 0 0 0.25rem;
+}
+
+.about-how-played-phases .gate-phases {
+  margin-top: 0.85rem;
+}
+
+.about-how-played-phases .gate-phase h3 {
+  margin: 0.15rem 0 0.35rem;
+  font-size: 1.05rem;
+}
+
+.about-how-played-phases .gate-phase p {
+  margin: 0;
+  color: var(--ink-dim);
+  line-height: 1.55;
+}
+
 .about-mechanic dd p:last-child {
   margin-bottom: 0;
 }

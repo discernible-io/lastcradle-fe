@@ -29,7 +29,32 @@ const PHASES = [
   },
 ];
 
-export function GatePhases() {
+export function GatePhases({ embedded = false }) {
+  const list = (
+    <ol className="gate-phases">
+      {PHASES.map((p) => (
+        <li key={p.id} className="gate-phase">
+          <div className="tiny gate-phase-tag">{p.tag}</div>
+          <h3>{p.title}</h3>
+          <p>{p.body}</p>
+          <code className="gate-phase-example">{p.example}</code>
+        </li>
+      ))}
+    </ol>
+  );
+
+  if (embedded) {
+    return (
+      <div className="about-how-played-phases">
+        <p className="muted" style={{ marginTop: 0 }}>
+          Same four phases every cycle (~9 minutes). Only the third phase (execute) changes your holdings. Everything
+          else is setup or consequence.
+        </p>
+        {list}
+      </div>
+    );
+  }
+
   return (
     <section className="gate-section">
       <p className="gate-section-kicker">One cycle, step by step</p>
@@ -38,16 +63,7 @@ export function GatePhases() {
         Same four phases every cycle. Only the third phase (execute) changes your holdings. Everything else is setup or
         consequence.
       </p>
-      <ol className="gate-phases">
-        {PHASES.map((p) => (
-          <li key={p.id} className="gate-phase">
-            <div className="tiny gate-phase-tag">{p.tag}</div>
-            <h3>{p.title}</h3>
-            <p>{p.body}</p>
-            <code className="gate-phase-example">{p.example}</code>
-          </li>
-        ))}
-      </ol>
+      {list}
     </section>
   );
 }

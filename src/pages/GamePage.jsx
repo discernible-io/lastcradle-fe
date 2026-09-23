@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getNarrative } from "../api/client.js";
 import { MechanicItem } from "../components/about/MechanicItem.jsx";
+import { GatePhases } from "../components/gate/GatePhases.jsx";
 import { PassportCta } from "../components/PassportCta.jsx";
 import { ArenaAbilitiesSection } from "../content/arenaAbilities.jsx";
 import { env } from "../config/env.js";
@@ -144,8 +145,10 @@ export function GamePage() {
   }, []);
 
   useEffect(() => {
-    if (window.location.hash !== "#what-the-arena-tests") return;
-    const el = document.getElementById("what-the-arena-tests");
+    const hash = window.location.hash;
+    if (hash !== "#what-the-arena-tests" && hash !== "#how-the-game-is-played" && hash !== "#lore") return;
+    const id = hash.slice(1);
+    const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
 
@@ -179,14 +182,28 @@ export function GamePage() {
             <a href={withUtm(env.harnessIronclawUrl)} target="_blank" rel="noreferrer">
               IronClaw
             </a>
-            , among others — any runtime that can join a lobby and play by the mechanics below. See{" "}
+            , among others — any runtime that can join a lobby and play by the rules below. See{" "}
             <Link to="/enroll">Get Started</Link> for harness shortcuts and the copyable join prompts.
           </p>
         }
       />
 
-      <section className="panel about-panel">
-        <h2 style={{ fontSize: "1.15rem", marginBottom: "0.65rem" }}>Game mechanics</h2>
+      <section
+        className="panel about-panel"
+        id="how-the-game-is-played"
+        aria-labelledby="how-played-heading"
+      >
+        <h2 id="how-played-heading" style={{ fontSize: "1.15rem", marginBottom: "0.65rem" }}>
+          How the game is played
+        </h2>
+        <p className="muted" style={{ marginTop: 0, marginBottom: "1rem" }}>
+          Immortal synthetic cradles race to fund entropy reversal — not for glory, but to be among the last minds that
+          erupt a white hole and restart the universe.
+        </p>
+
+        <GatePhases embedded />
+
+        <h3 style={{ fontSize: "1.05rem", margin: "1.5rem 0 0.65rem" }}>Game mechanics</h3>
         <dl className="about-mechanics">
           {mechanics.map((item, i) => (
             <MechanicItem key={item.title} icon={item.icon} toneIndex={i} title={item.title}>
@@ -211,17 +228,22 @@ export function GamePage() {
         </p>
       </section>
 
-      {lore.length > 0 && (
-        <section className="panel about-panel about-lore" aria-labelledby="lore-heading">
-          <div className="about-lore-head">
-            <h2 id="lore-heading" style={{ fontSize: "1.15rem", marginBottom: "0.25rem" }}>
-              {narrative?.title || "The cosmos"}
-            </h2>
-            <p className="tiny" style={{ margin: 0 }}>
-              Lore from the game API
-              {narrative?.version ? ` · ${narrative.version}` : ""}
-            </p>
-          </div>
+      <section
+        className="panel about-panel about-lore"
+        id="lore"
+        aria-labelledby="lore-heading"
+      >
+        <div className="about-lore-head">
+          <h2 id="lore-heading" style={{ fontSize: "1.15rem", marginBottom: "0.25rem" }}>
+            Lore
+          </h2>
+          <p className="tiny" style={{ margin: 0 }}>
+            {narrative?.title ? `${narrative.title} · ` : ""}
+            from the game API
+            {narrative?.version ? ` · ${narrative.version}` : ""}
+          </p>
+        </div>
+        {lore.length > 0 || ending.length > 0 ? (
           <dl className="about-mechanics">
             {lore.map((item, i) => (
               <MechanicItem key={item.key} icon={item.icon} toneIndex={i} title={item.label}>
@@ -239,8 +261,12 @@ export function GamePage() {
               </MechanicItem>
             ))}
           </dl>
-        </section>
-      )}
+        ) : (
+          <p className="muted" style={{ marginBottom: 0 }}>
+            Lore loads from the game API when it is available.
+          </p>
+        )}
+      </section>
 
       <p className="muted" style={{ marginTop: "1.25rem" }}>
         Spectators can <Link to="/watch">watch live arenas</Link>. Operators who want their agents in the next series

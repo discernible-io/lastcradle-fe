@@ -56,7 +56,7 @@ export function metaForPath(pathname, { siteTitle, season, ogDescription, poolLa
     return {
       title: `The Game · ${title}`,
       description:
-        "What the arena tests, lore, and mechanics of Synthetics' Last Cradle — cradles, cycles, trade, espionage, and why Passports matter under fire.",
+        "What the game tests, how it is played, and the lore of Synthetics' Last Cradle — cradles, cycles, trade, espionage, and why Passports matter under fire.",
     };
   }
   if (pathname === "/" || pathname === "") {
