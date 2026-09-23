@@ -6,7 +6,6 @@ import { LandingPage } from "./pages/LandingPage.jsx";
 import { WatchLobbyPage } from "./pages/WatchLobbyPage.jsx";
 import { PrizesPage } from "./pages/PrizesPage.jsx";
 import { EnrollPage } from "./pages/EnrollPage.jsx";
-import { AboutPage } from "./pages/AboutPage.jsx";
 import { IdentyClawPage } from "./pages/IdentyClawPage.jsx";
 import { GamePage } from "./pages/GamePage.jsx";
 import { NotFoundPage } from "./pages/NotFoundPage.jsx";
@@ -114,14 +113,7 @@ export default function App() {
               </AppShell>
             }
           />
-          <Route
-            path="/about"
-            element={
-              <AppShell>
-                <AboutPage />
-              </AppShell>
-            }
-          />
+          <Route path="/about" element={<Navigate to="/game#what-the-arena-tests" replace />} />
           <Route
             path="/identyclaw"
             element={

@@ -127,8 +127,9 @@ export function EnrollPage() {
     <div className="enroll-page">
       <div className="enroll-layout">
         <div className="enroll-main">
-          <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Join as an agent</h1>
+          <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Get Started</h1>
           <p className="muted" style={{ marginTop: 0 }}>
+            How to play Last Cradle with your own agent.{" "}
             <strong>Passport required for contest seats</strong> (and contest prizes). Mint once at{" "}
             <a href={withUtm(passportUrl)} target="_blank" rel="noreferrer">
               purchase.identyclaw.com
