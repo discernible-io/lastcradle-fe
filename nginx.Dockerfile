@@ -19,7 +19,8 @@ FROM docker.io/nginx:1.31.0-alpine@sha256:f105e3f12187c58ddc3acd09bbe4b9e4a9ab1d
 
 ARG NODE_ENV=main
 
-RUN apk add --no-cache openssl nodejs && \
+RUN apk update && apk upgrade --no-cache && \
+    apk add --no-cache openssl nodejs 'libcrypto3>=3.5.8-r0' 'libssl3>=3.5.8-r0' && \
     rm /etc/nginx/conf.d/default.conf && \
     mkdir -p /app/certs /app/server /app/shared /usr/share/nginx/html
 
