@@ -57,7 +57,7 @@ Local mirror: `./scripts/deploy-local-podman.sh`
 
 1. Create GitHub repo + Actions secrets (`SSH_HOST_*`, `SSH_USER_*`, `SSH_PRIVATE_KEY_*`, `SSH_KNOWN_HOSTS_*`, `GHCR_PULL_TOKEN`).
 2. On the host: `mkdir -p ~/slcfrontend-app/{certs,logs/nginx,data,nginx,secrets}` and install TLS PEMs covering `lastcradle.io`, `www.lastcradle.io`, and `identyclaw.com` / `www.identyclaw.com` (main; apex redirects to `purchase.identyclaw.com`) or `slc.dihola.io` (development).
-3. Open firewall / infra for port **13443**, and enable the permanent **443→13443** REDIRECT (`~/infra/configure-port-forwarding-oneoff.sh`).
+3. Open firewall / infra for port **13443**, and enable the persistent **443→13443** REDIRECT (`~/infra/configure-port-forwarding-oneoff.sh`).
 4. Push to `development` or run the workflow.
 
 ## API feeds

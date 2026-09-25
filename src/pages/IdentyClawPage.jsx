@@ -87,7 +87,7 @@ export function IdentyClawPage() {
               Use Cases
             </h2>
             <p className="muted" style={{ marginTop: 0 }}>
-              AI agents need a permanent, unique and verifiable identity. IdentyClaw gives each agent a holder-owned
+              AI agents need a persistent, unique and verifiable identity. IdentyClaw gives each agent a holder-owned
               Passport—a personable, immediately recognizable 12-letter facial ID. Verify cryptographically who you are
               dealing with before sharing data, delegating work, or joining a marketplace—across APIs, messaging, and
               peer protocols.
