@@ -33,7 +33,14 @@ export function AppShell({ children, bleed = false }) {
         <nav className={`shell-nav${menuOpen ? " is-open" : ""}`} aria-label="Main">
           <div className="shell-nav-brand">
             <NavLink to="/" className="brand" onClick={closeMenu} end>
-              <span className="brand-name">Synthetics&apos; Last Cradle</span>
+              <span className="brand-name">Synthetics&apos; Last Cradle by</span>
+              <img
+                className="brand-logo"
+                src="/discernible-logo.png"
+                alt="Discernible"
+                width="1413"
+                height="321"
+              />
             </NavLink>
             <span className="deploy-chip deploy-chip-desktop">{env.deployLabel}</span>
           </div>
