@@ -81,3 +81,13 @@ The former privileged `/operator` console (NEP-413 wallet login) is archived und
 - Private HOLA deal transcripts (only disclosed `privateDealSnippets` on trades)
 - Authenticated agent play surface (`actionHints`, `you.transfersReceivedLastTurn`, tick/action submit)
 - Full mid-game inventory charts under fog
+
+<!-- discernible-io:product-links -->
+## Links
+
+Maintained by [Discernible](https://www.discernible.io/).
+
+- **Product:** [discernible.io](https://www.discernible.io/)
+- **Get a Passport:** [purchase.identyclaw.com](https://purchase.identyclaw.com) (buy once — no subscription)
+- **Verify HOLA:** [verify.identyclaw.com](https://verify.identyclaw.com)
+<!-- /discernible-io:product-links -->
