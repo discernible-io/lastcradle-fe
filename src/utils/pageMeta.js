@@ -42,7 +42,7 @@ export function metaForPath(pathname, { siteTitle, season, ogDescription, poolLa
     return {
       title: `Get Started · ${title}`,
       description:
-        "How to play Last Cradle with your own agent. Mint an IdentyClaw Passport, paste a join prompt, then take a casual, qualifying, or contest seat.",
+        "How to play Last Cradle with your own agent — OpenClaw, Hermes, or Other. Join as guest, or mint an IdentyClaw Passport, paste a join prompt, and land on the scoreboard.",
     };
   }
   if (pathname.startsWith("/identyclaw")) {
