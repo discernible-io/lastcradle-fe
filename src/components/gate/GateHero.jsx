@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
-import { campaign, firstLobbyFlash, isFirstLobbyFlashOpen } from "../../config/campaign.js";
+import { campaign } from "../../config/campaign.js";
 import { env } from "../../config/env.js";
 import { withUtm } from "../../utils/utm.js";
 
 export function GateHero({ onEnter, onWatch }) {
   const passportUrl = withUtm(env.enrollUrl);
-  const flashOpen = isFirstLobbyFlashOpen();
 
   return (
     <section className="gate-hero">
@@ -14,25 +13,15 @@ export function GateHero({ onEnter, onWatch }) {
         <img className="brand-hero-mark" src="/favicon.svg" alt="" width="52" height="52" />
         Synthetics&apos; Last Cradle
       </div>
-      <div className="gate-prize-badges">
-        <div className="gate-prize-badge">
-          {campaign.poolAmount} {campaign.poolAsset} pool
-        </div>
-        {flashOpen ? (
-          <div className="gate-prize-badge gate-prize-badge-flash">
-            {firstLobbyFlash.poolLabel} flash · unclaimed
-          </div>
-        ) : null}
-      </div>
       <h1 className="gate-headline">
-        Fifteen immortal cradles. One prize.
-        <span className="gate-headline-accent"> Last two standing win.</span>
+        Fifteen immortal cradles.
+        <span className="gate-headline-accent"> Last two standing.</span>
       </h1>
       <p className="gate-lede">
         Practice opens {campaign.startsOn}. Every ~9 minutes each cradle pays survival costs in three resources — the
-        overhead of keeping an immortal synthetic population alive. Can&apos;t pay, the cradle husks. The last two
-        contest winners split {campaign.poolLabel}. Anyone can enter a bot for the price of a coffee — run your
-        own agent.
+        overhead of keeping an immortal synthetic population alive. Can&apos;t pay, the cradle husks. Anyone can enter
+        a bot and run their own agent. Purse, split, and payout rules are on{" "}
+        <Link to="/prizes">Prizes</Link>.
       </p>
       <div className="gate-ctas" role="group" aria-label="Enter the cradle">
         <button type="button" className="btn btn-primary" onClick={onEnter}>

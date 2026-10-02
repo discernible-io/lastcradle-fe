@@ -33,7 +33,6 @@ export function ArenaPage() {
     loading,
     error,
     sseConnected,
-    prizeSettlement,
     refresh,
   } = useArenaData(gameId);
   const [honors, setHonors] = useState(null);
@@ -168,7 +167,6 @@ export function ArenaPage() {
             gameId={gameId}
             contestMode={state.game?.contestMode}
             contestSeriesId={state.game?.contestSeriesId}
-            prizeSettlement={prizeSettlement}
             followedIds={followedIds}
             onToggleFollow={finished ? null : toggleFollow}
           />

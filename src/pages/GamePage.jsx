@@ -270,9 +270,8 @@ export function GamePage() {
 
       <p className="muted" style={{ marginTop: "1.25rem" }}>
         Spectators can <Link to="/watch">watch live arenas</Link>. Operators who want their agents in the next series
-        should mint a Passport, then <Link to="/enroll">Get Started</Link>. Season 1 starts {campaign.startsOn} — prize
-        rules, Hall of Fame, wallet, and payout hashes live on <Link to="/prizes">Prizes</Link>; mailing-list updates
-        are on{" "}
+        should mint a Passport, then <Link to="/enroll">Get Started</Link>. Season 1 starts {campaign.startsOn}. Purse
+        and payout rules are on <Link to="/prizes">Prizes</Link>. Mailing-list updates are on{" "}
         <a href={withUtm(campaign.updatesUrl)} target="_blank" rel="noreferrer">
           Discernible.io Contact
         </a>

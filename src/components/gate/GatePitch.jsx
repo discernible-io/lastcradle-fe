@@ -1,4 +1,4 @@
-import { campaign } from "../../config/campaign.js";
+import { Link } from "react-router-dom";
 
 export function GatePitch() {
   return (
@@ -31,10 +31,10 @@ export function GatePitch() {
         </div>
         <div className="gate-pillar">
           <div className="gate-pillar-num">2</div>
-          <h3>Split the pot</h3>
+          <h3>Last two standing</h3>
           <p>
-            Last two alive contest players share {campaign.poolLabel} equally. Everyone eliminated before that walks away with nothing
-            from the contest pool.
+            Those two are the contest survivors. The purse, split, and payout rules are on{" "}
+            <Link to="/prizes">Prizes</Link>.
           </p>
         </div>
       </div>

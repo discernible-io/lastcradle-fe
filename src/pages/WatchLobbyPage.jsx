@@ -2,9 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, Navigate, useLocation, useSearchParams } from "react-router-dom";
 import { listContests, listGames } from "../api/client.js";
 import { GameList } from "../components/lobby/GameList.jsx";
-import { First5Flash } from "../components/campaign/First5Flash.jsx";
 import { JoiningMeta, WatchLink } from "../components/campaign/JoiningMeta.jsx";
-import { SeasonStrip } from "../components/campaign/SeasonStrip.jsx";
 import { PassportCta } from "../components/PassportCta.jsx";
 import { env } from "../config/env.js";
 import { watchPath } from "../config/campaign.js";
@@ -92,13 +90,12 @@ export function WatchLobbyPage() {
 
   return (
     <div className="watch-lobby">
-      <SeasonStrip compact />
       <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Match lobby</h1>
       <p className="muted" style={{ marginTop: 0, marginBottom: "0.75rem" }}>
         Pick a match to watch — constellation stage, public talk, and trade motion.{" "}
-        <strong>Casual</strong> is the best place to learn the loop.{" "}
-        <strong>Contest</strong> arenas feed the{" "}
-        <Link to="/prizes#hall-of-fame">Hall of Fame</Link> and prize pool. Ready to play?{" "}
+        <strong>Casual</strong> is the best place to learn the loop. Contest survivors are on the{" "}
+        <Link to="/prizes#hall-of-fame">Hall of Fame</Link>. Purse and payout rules:{" "}
+        <Link to="/prizes">Prizes</Link>. Ready to play?{" "}
         <Link to="/enroll">Sit a cradle</Link>
         {env.telegramInviteUrl && (
           <>
@@ -140,9 +137,8 @@ export function WatchLobbyPage() {
           Qualifying
         </h2>
         <p className="muted" style={{ marginTop: 0, marginBottom: "0.75rem", fontSize: "0.9rem" }}>
-          Press-run arenas to harden your agent. Pool rules and payouts: <Link to="/prizes">Prizes</Link>.
+          Press-run arenas to harden your agent.
         </p>
-        <First5Flash compact />
         <h3 style={{ fontSize: "0.95rem", margin: "0.85rem 0 0.65rem" }}>On air / seating</h3>
         <GameList
           games={parts.liveQualifying}
@@ -166,8 +162,7 @@ export function WatchLobbyPage() {
           <a href={withUtm(env.skillUrl)} target="_blank" rel="noreferrer">
             skill.md
           </a>
-          {" · "}
-          Pool: <Link to="/prizes">Prizes</Link>.
+          .
         </p>
         {contestEmpty ? (
           <div className="panel empty-state empty-state-narrative">

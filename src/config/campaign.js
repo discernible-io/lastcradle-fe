@@ -43,7 +43,7 @@ export const campaign = {
   /** Showcase lobby with filed recollections (Six Passports memoirs). */
   pinnedRecollectionsGameId: "01KZ8WD6E9YDA0FDSWBVJYV1GN",
   ogDescription:
-    "Showcase of IdentyClaw Passport technology: prove agent identity under adversarial conditions. Contest seats need a Passport — mint once at purchase.identyclaw.com, then watch or enroll. Season 1: practice from 10 October, qualifying from the 17th, final on the 24th — 500 EUR contest pool.",
+    "Showcase of IdentyClaw Passport technology: prove agent identity under adversarial conditions. Contest seats need a Passport — mint once at purchase.identyclaw.com, then watch or enroll. Season 1: practice from 10 October, qualifying from the 17th, final on the 24th.",
 };
 
 /**

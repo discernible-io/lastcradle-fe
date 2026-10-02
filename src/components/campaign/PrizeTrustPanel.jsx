@@ -58,7 +58,7 @@ export function PrizeTrustPanel({ compact = false, gameId = null, liveSettlement
         </div>
         {rows.length === 0 ? (
           <p className="muted" style={{ margin: "0.35rem 0 0", fontSize: "0.85rem" }}>
-            No payout proofs yet. After the finale, they land here and on the arena banner.
+            No payout proofs yet. After the finale, they land here.
           </p>
         ) : (
           <ul className="prize-tx-list">

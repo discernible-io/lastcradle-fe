@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { campaign, settlementsForGame, txExplorerUrl, walletExplorerUrl } from "../../config/campaign.js";
 import { isContestGame } from "../../utils/gameLabel.js";
 
 const TITLE_BY_RANK = {
@@ -66,14 +65,11 @@ export function RestartFinale({
   labelOf,
   gameId = null,
   game = null,
-  prizeSettlement = null,
 }) {
   const honorees = resolveRestartHonorees({ honors, agents, winnerIds, labelOf });
   const deadline = isDeadlineFinish(finishReason || honors?.finishReason);
   const cycle = turn ?? honors?.gameMetrics?.totalTurns;
   const contest = isContestGame(game || honors);
-  const payoutRows = contest ? settlementsForGame(gameId, prizeSettlement) : [];
-  const walletUrl = walletExplorerUrl();
 
   return (
     <div className="restart-finale" role="status" aria-live="polite">
@@ -98,49 +94,10 @@ export function RestartFinale({
             </Link>
             {contest && (
               <Link className="restart-finale-link" to="/prizes">
-                Prize trust
+                Prizes
               </Link>
             )}
           </p>
-        )}
-        {contest && (
-          <div className="restart-prize-proof">
-            <p className="tiny" style={{ margin: 0 }}>
-              {campaign.poolLabel} equal-split · {campaign.payoutSla}
-              {campaign.prizeWallet ? (
-                <>
-                  {" "}
-                  ·{" "}
-                  {walletUrl ? (
-                    <a className="restart-finale-link" href={walletUrl} target="_blank" rel="noreferrer">
-                      {campaign.prizeWallet}
-                    </a>
-                  ) : (
-                    campaign.prizeWallet
-                  )}
-                </>
-              ) : null}
-            </p>
-            {payoutRows.length === 0 ? (
-              <p className="tiny" style={{ margin: "0.25rem 0 0" }}>
-                Payout pending.
-              </p>
-            ) : (
-              <ul className="prize-tx-list">
-                {payoutRows.map((row) => (
-                  <li key={row.txHash}>
-                    {txExplorerUrl(row.txHash) ? (
-                      <a href={txExplorerUrl(row.txHash)} target="_blank" rel="noreferrer">
-                        {row.txHash}
-                      </a>
-                    ) : (
-                      <code>{row.txHash}</code>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
         )}
       </div>
       {honorees.length > 0 ? (

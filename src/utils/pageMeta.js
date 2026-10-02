@@ -28,7 +28,7 @@ export function metaForPath(pathname, { siteTitle, season, ogDescription, poolLa
   if (pathname.startsWith("/prizes")) {
     return {
       title: `Season ${season} prizes · ${title}`,
-      description: ogDescription,
+      description: `Season ${season} prize rules, Hall of Fame, and payout proof. ${poolLabel || "500 EUR"} contest pool, split equally among contest survivors.`,
     };
   }
   if (pathname === "/watch") {
@@ -64,7 +64,7 @@ export function metaForPath(pathname, { siteTitle, season, ogDescription, poolLa
       title: `Enter the Cradle · ${title}`,
       description:
         ogDescription ||
-        `Season ${season}: practice from 10 October, qualifying from the 17th, final on the 24th. ${poolLabel || "500 EUR"} contest pool — last two standing win.`,
+        `Season ${season}: practice from 10 October, qualifying from the 17th, final on the 24th. Last two standing.`,
     };
   }
   return {

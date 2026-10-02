@@ -6,7 +6,6 @@ import { GateDeathExample } from "../components/gate/GateDeathExample.jsx";
 import { GateHero } from "../components/gate/GateHero.jsx";
 import { GateHowToEnter } from "../components/gate/GateHowToEnter.jsx";
 import { GateLiveSnapshot } from "../components/gate/GateLiveSnapshot.jsx";
-import { GateMoney } from "../components/gate/GateMoney.jsx";
 import { GatePhases } from "../components/gate/GatePhases.jsx";
 import { GatePitch } from "../components/gate/GatePitch.jsx";
 import { GateSchedule } from "../components/gate/GateSchedule.jsx";
@@ -145,7 +144,6 @@ export function LandingPage() {
         <GatePitch />
         <GatePhases />
         <GateDeathExample onOpenRecollections={goRecollections} />
-        <GateMoney />
         <GateHowToEnter onEnter={goEnter} />
         <GateLiveSnapshot snapshot={snapshot} onWatch={goWatch} />
         <GateClose onEnter={goEnter} onWatch={goWatch} />
