@@ -2991,31 +2991,6 @@ select:focus {
   flex-shrink: 0;
 }
 
-.gate-prize-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
-  margin: 0 0 1rem;
-  animation: rise-in 0.9s ease-out 0.08s both;
-}
-
-.gate-prize-badge {
-  display: inline-block;
-  margin: 0;
-  padding: 0.35rem 0.7rem;
-  border: 1px solid rgba(255, 69, 0, 0.45);
-  border-radius: 4px;
-  color: var(--energy);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
-.gate-prize-badge-flash {
-  background: rgba(255, 69, 0, 0.08);
-}
-
 .gate-headline {
   font-size: clamp(1.65rem, 4.8vw, 2.5rem);
   font-weight: 700;
@@ -3122,7 +3097,6 @@ select:focus {
 }
 
 .gate-stats-row,
-.gate-money-grid,
 .gate-pillars,
 .gate-live-grid {
   display: grid;
@@ -3134,7 +3108,6 @@ select:focus {
 }
 
 .gate-stat,
-.gate-money-card,
 .gate-pillar {
   padding: 0.85rem 0.75rem;
   border: 1px solid var(--panel-border);
@@ -3244,41 +3217,6 @@ select:focus {
   color: var(--ink) !important;
 }
 
-.gate-money-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin-bottom: 0.85rem;
-}
-
-.gate-money-card.is-open {
-  border-color: rgba(255, 69, 0, 0.45);
-  border-left: 3px solid var(--energy);
-  background: linear-gradient(180deg, rgba(255, 69, 0, 0.07), var(--panel) 55%);
-}
-
-.gate-money-card.is-open .tiny.muted {
-  color: var(--ink-dim);
-}
-
-.gate-flash-open {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.45rem 0.65rem;
-  margin: 0 0 0.85rem;
-  padding: 0.75rem 0.9rem;
-  border: 1px solid rgba(255, 69, 0, 0.45);
-  border-left: 3px solid var(--energy);
-  border-radius: var(--radius);
-  background: rgba(255, 69, 0, 0.06);
-  color: var(--ink);
-  font-size: 0.88rem;
-}
-
-.enroll-main .first5-flash,
-.lobby-section .first5-flash {
-  margin: 0.35rem 0 1.1rem;
-}
-
 .gate-eligibility {
   color: var(--ink-mute);
 }
@@ -3343,8 +3281,7 @@ select:focus {
 @media (max-width: 720px) {
   .gate-schedule-milestones,
   .gate-stats-row,
-  .gate-pillars,
-  .gate-money-grid {
+  .gate-pillars {
     grid-template-columns: 1fr;
   }
 

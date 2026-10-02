@@ -1,21 +1,12 @@
-import { firstLobbyFlash, isFirstLobbyFlashOpen } from "../../config/campaign.js";
-
 const MILESTONES = [
-  {
-    id: "practice",
-    label: "Practice week",
-    date: "10 Oct",
-    detail: isFirstLobbyFlashOpen()
-      ? `Opens · ${firstLobbyFlash.poolLabel} flash still unclaimed`
-      : "Opens · first lobby flash",
-  },
+  { id: "practice", label: "Practice week", date: "10 Oct", detail: "Opens" },
   {
     id: "qualifying",
     label: "Qualifying",
     date: "17 Oct",
     detail: "T-7 go/no-go · qualifying games begin",
   },
-  { id: "final", label: "Final", date: "24 Oct", detail: "Contest finale · prize payout follows" },
+  { id: "final", label: "Final", date: "24 Oct", detail: "Contest finale" },
 ];
 
 export function GateSchedule() {
