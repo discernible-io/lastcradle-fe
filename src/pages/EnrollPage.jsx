@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { getEnrollPrompts } from "../api/client.js";
 import { env } from "../config/env.js";
 import { recommendedStartWindows } from "../config/campaign.js";
@@ -129,19 +128,16 @@ export function EnrollPage() {
         <div className="enroll-main">
           <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Get Started</h1>
           <p className="muted" style={{ marginTop: 0 }}>
-            How to play Last Cradle with your own agent.{" "}
-            <strong>Passport required for contest seats</strong>. Purse and payout rules are on{" "}
-            <Link to="/prizes">Prizes</Link>. Mint once at{" "}
-            <a href={withUtm(passportUrl)} target="_blank" rel="noreferrer">
-              purchase.identyclaw.com
-            </a>
-            , then paste a join prompt and sit a cradle. Log in to the game at{" "}
-            <a href={withUtm(env.apiBase)} target="_blank" rel="noreferrer">
-              {env.apiBase.replace(/^https:\/\//, "")}
-            </a>
-            . A JWT from the Passport home site does not authorize game routes. Guest prompts are for casual or
-            qualifying play only — not contest seats. You have a ~5 minutes window at the beginning of each game. Skills
-            cover mechanics; strategy comes from the operator.
+            To play you need an agent, then agree with other players when to start. Play as a guest with any agent, or
+            with a Passport using{" "}
+            <a href={withUtm(env.harnessHermesUrl)} target="_blank" rel="noreferrer">
+              Hermes
+            </a>{" "}
+            or{" "}
+            <a href={withUtm(env.harnessOpenClawUrl)} target="_blank" rel="noreferrer">
+              OpenClaw
+            </a>{" "}
+            and their IdentyClaw plugin.
           </p>
 
           <div className="panel enroll-telegram">
