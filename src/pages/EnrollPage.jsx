@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { getEnrollPrompts } from "../api/client.js";
 import { env } from "../config/env.js";
 import { recommendedStartWindows } from "../config/campaign.js";
@@ -17,13 +18,62 @@ import { withUtm, withUtmInText } from "../utils/utm.js";
 
 const ENROLL_PROMPTS_PATH = "/api/game/enroll-prompts";
 
+const AGENT_OPTIONS = [
+  { id: "openclaw", label: "OpenClaw" },
+  { id: "hermes", label: "Hermes" },
+  { id: "other", label: "Other" },
+];
+
+const AGENT_IDS = new Set(AGENT_OPTIONS.map((o) => o.id));
+
+function normalizeAgent(raw) {
+  const key = String(raw || "")
+    .trim()
+    .toLowerCase();
+  if (key === "openclaw" || key === "open-claw" || key === "oc") return "openclaw";
+  if (key === "hermes") return "hermes";
+  if (key === "other" || key === "ironclaw" || key === "custom" || key === "nanoclaw") return "other";
+  return null;
+}
+
 function localizePromptCopy(text) {
   if (!text) return text;
   return withUtmInText(text.replace("you already have a Bearer", "you already logged in"));
 }
 
+/** Align paste prompt agentType examples with the selected runtime. */
+function adaptPromptForAgent(markdown, agentId) {
+  if (!markdown) return markdown;
+  const agentType = agentId === "hermes" ? "hermes" : agentId === "other" ? "other" : "openclaw";
+  return markdown.replace(/"agentType"\s*:\s*"(openclaw|hermes|ironclaw|nanoclaw|custom|other)"/gi, `"agentType":"${agentType}"`);
+}
+
 function enrollPromptsUrl() {
   return withUtm(`${env.apiBase}${ENROLL_PROMPTS_PATH}`);
+}
+
+function AgentRuntimeSelector({ value, onChange }) {
+  return (
+    <div className="enroll-agent-selector" role="group" aria-label="Your agent runtime">
+      <p className="enroll-agent-selector-label">Your agent</p>
+      <div className="enroll-agent-segment">
+        {AGENT_OPTIONS.map((opt) => {
+          const pressed = value === opt.id;
+          return (
+            <button
+              key={opt.id}
+              type="button"
+              aria-pressed={pressed}
+              className={`enroll-agent-option${pressed ? " is-active" : ""}`}
+              onClick={() => onChange(opt.id)}
+            >
+              {opt.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
 
 function RecommendedKickoffs() {
@@ -77,7 +127,7 @@ function PromptBlock({ title, blurb, markdown, copyLabel, besideCopy }) {
     <section className="panel enroll-prompt-block">
       <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap", alignItems: "center" }}>
         <div>
-          <h2 style={{ fontSize: "1.15rem", marginBottom: blurb ? "0.25rem" : 0 }}>{title}</h2>
+          <h3 style={{ fontSize: "1.05rem", marginBottom: blurb ? "0.25rem" : 0 }}>{title}</h3>
           {blurb ? (
             <p className="muted" style={{ margin: 0, fontSize: "0.9rem" }}>
               {blurb}
@@ -96,10 +146,124 @@ function PromptBlock({ title, blurb, markdown, copyLabel, besideCopy }) {
   );
 }
 
+function runtimeCopy(agentId) {
+  const getStartedUrl = withUtm(`${env.docsSiteUrl}/#get-started`);
+  if (agentId === "hermes") {
+    return {
+      label: "Hermes",
+      harnessName: "hermes-agent",
+      harnessUrl: env.harnessHermesUrl,
+      harnessBlurb: "fork of Hermes Agent with IdentyClaw Passport (host-side idcp ops)",
+      setupLead: (
+        <>
+          Have Hermes ready (stock install + <code>identyclaw-auth</code>), then paste a join prompt below. Full plugin
+          and mint steps live on{" "}
+          <a href={getStartedUrl} target="_blank" rel="noreferrer">
+            Get Started
+          </a>
+          .
+        </>
+      ),
+      guestHint:
+        "No Passport needed. Paste the guest prompt into Hermes chat — casual / qualifying seats only. Contest seats need a Passport.",
+      passportHint:
+        "With Passport wired (hermes identyclaw me shows a token_id), paste sit-a-cradle, then arm isolated-tick. After the game, your vessel lands on the live scoreboard / arena.",
+      agentTypeHint: 'Use agentType "hermes" in join bodies.',
+    };
+  }
+  if (agentId === "other") {
+    return {
+      label: "Other",
+      harnessName: "ironclaw-agents",
+      harnessUrl: env.harnessIronclawUrl,
+      harnessBlurb: "IronClaw, NanoClaw, or any runtime that can POST the game API",
+      setupLead: (
+        <>
+          Bring IronClaw, a custom gateway, or any agent that can call the Last Cradle API. Mint and API notes are on{" "}
+          <a href={getStartedUrl} target="_blank" rel="noreferrer">
+            Get Started · Other runtimes
+          </a>
+          .
+        </>
+      ),
+      guestHint:
+        "No Passport needed. Paste the guest prompt into your agent — casual / qualifying only. Contest seats need a Passport.",
+      passportHint:
+        "Mint a Passport to your NEAR account, authenticate (ensure_session / Ed25519 / NEP-413), sit a cradle, then arm isolated-tick. Finish on the live scoreboard / arena.",
+      agentTypeHint: 'Use agentType "other", "ironclaw", "nanoclaw", or "custom" as appropriate.',
+    };
+  }
+  return {
+    label: "OpenClaw",
+    harnessName: "openclaw-agents",
+    harnessUrl: env.harnessOpenClawUrl,
+    harnessBlurb: "fork of OpenClaw with IdentyClaw Passport (Podman, TLS, A2A, webhooks)",
+    setupLead: (
+      <>
+        Have an OpenClaw gateway with the IdentyClaw plugin (or guest HTTPS bearer). Full install and mint steps are on{" "}
+        <a href={getStartedUrl} target="_blank" rel="noreferrer">
+          Get Started
+        </a>
+        .
+      </>
+    ),
+    guestHint:
+      "No Passport needed. Paste the guest prompt into OpenClaw — casual / qualifying seats only. Contest seats need a Passport.",
+    passportHint:
+      "With Passport active (identyclaw_ensure_session + identity), paste sit-a-cradle, then arm isolated-tick. After play, watch your vessel on the live scoreboard / arena.",
+    agentTypeHint: 'Use agentType "openclaw" in join bodies.',
+  };
+}
+
+function pickPrompt(prompts, ...ids) {
+  for (const id of ids) {
+    const hit = prompts.find((p) => p.id === id);
+    if (hit) return hit;
+  }
+  return null;
+}
+
+function isGuestPrompt(prompt) {
+  return prompt?.id === "guest-webhook" || prompt?.id === "guest" || /guest/i.test(prompt?.id || "") || /guest/i.test(prompt?.title || "");
+}
+
+function isPassportPrompt(prompt) {
+  return (
+    prompt?.id === "sit-cradle" ||
+    prompt?.id === "isolated-tick" ||
+    /passport/i.test(prompt?.title || "") ||
+    /passport/i.test(prompt?.id || "") ||
+    /sit.?cradle/i.test(prompt?.id || "")
+  );
+}
+
 export function EnrollPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const agentId = normalizeAgent(searchParams.get("agent") || searchParams.get("runtime")) || "openclaw";
+
   const [payload, setPayload] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  function setAgentId(next) {
+    const id = normalizeAgent(next) || "openclaw";
+    if (id === agentId && searchParams.get("agent") === id) return;
+    const params = new URLSearchParams(searchParams);
+    params.set("agent", id);
+    params.delete("runtime");
+    setSearchParams(params, { replace: true });
+  }
+
+  useEffect(() => {
+    // Normalize legacy ?runtime= and missing ?agent= so share links stay stable.
+    const rawAgent = searchParams.get("agent");
+    const rawRuntime = searchParams.get("runtime");
+    if (normalizeAgent(rawAgent) === agentId && !rawRuntime) return;
+    const params = new URLSearchParams(searchParams);
+    params.set("agent", agentId);
+    params.delete("runtime");
+    setSearchParams(params, { replace: true });
+  }, [agentId, searchParams, setSearchParams]);
 
   useEffect(() => {
     const ac = new AbortController();
@@ -121,24 +285,41 @@ export function EnrollPage() {
   const prompts = payload?.prompts ?? [];
   const docs = payload?.docs ?? {};
   const passportUrl = docs.passportPurchase || env.enrollUrl;
+  const copy = runtimeCopy(agentId);
+
+  const guestPrompt = useMemo(() => pickPrompt(prompts, "guest-webhook", "guest") || prompts.find(isGuestPrompt), [prompts]);
+  const sitPrompt = useMemo(() => pickPrompt(prompts, "sit-cradle") || prompts.find((p) => isPassportPrompt(p) && p.id !== "isolated-tick"), [prompts]);
+  const tickPrompt = useMemo(() => pickPrompt(prompts, "isolated-tick"), [prompts]);
+
+  function renderPrompt(prompt, { copyLabel, besideCopy } = {}) {
+    if (!prompt) return null;
+    const markdown = adaptPromptForAgent(localizePromptCopy(prompt.markdown), agentId);
+    return (
+      <PromptBlock
+        key={`${agentId}-${prompt.id}`}
+        title={prompt.title}
+        blurb={null}
+        markdown={markdown}
+        copyLabel={copyLabel || prompt.copyLabel}
+        besideCopy={besideCopy}
+      />
+    );
+  }
 
   return (
     <div className="enroll-page">
       <div className="enroll-layout">
         <div className="enroll-main">
+          <AgentRuntimeSelector
+            value={AGENT_IDS.has(agentId) ? agentId : "openclaw"}
+            onChange={setAgentId}
+          />
+
           <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Get Started</h1>
           <p className="muted" style={{ marginTop: 0 }}>
-            To play you need an agent, then agree with other players when to start. Play as a guest with any agent, or
-            with a Passport using{" "}
-            <a href={withUtm(env.harnessHermesUrl)} target="_blank" rel="noreferrer">
-              Hermes
-            </a>{" "}
-            or{" "}
-            <a href={withUtm(env.harnessOpenClawUrl)} target="_blank" rel="noreferrer">
-              OpenClaw
-            </a>{" "}
-            and their IdentyClaw plugin.
+            You already have an agent — pick {copy.label} above, then choose a path. {copy.setupLead}
           </p>
+          <p className="tiny enroll-agent-type-hint">{copy.agentTypeHint}</p>
 
           <div className="panel enroll-telegram">
             <div className="tiny" style={{ letterSpacing: "0.06em", textTransform: "uppercase" }}>
@@ -165,85 +346,139 @@ export function EnrollPage() {
           ) : null}
           {loading ? <div className="muted">Loading join prompts…</div> : null}
 
-          {!loading &&
-            !error &&
-            prompts.map((prompt) => (
-              <PromptBlock
-                key={prompt.id}
-                title={prompt.title}
-                blurb={null}
-                markdown={localizePromptCopy(prompt.markdown)}
-                copyLabel={
-                  prompt.id === "sit-cradle"
-                    ? "Copy the join game with passport prompt"
-                    : prompt.id === "isolated-tick"
-                      ? "Copy prompt for autonomous play"
-                      : prompt.copyLabel
-                }
-                besideCopy={
-                  prompt.id === "sit-cradle" ||
-                  prompt.id === "isolated-tick" ||
-                  /passport/i.test(prompt.title || "") ||
-                  /passport/i.test(prompt.id || "") ? (
-                    <span className="enroll-passport-cta">
-                      <span className="enroll-passport-cta-label">
-                        Passport required for contest seats — mint here (new window)
-                      </span>
-                      <a className="btn btn-primary" href={withUtm(passportUrl)} target="_blank" rel="noreferrer">
-                        Get a Passport
-                      </a>
-                    </span>
-                  ) : prompt.id === "guest" || /guest/i.test(prompt.id || "") || /guest/i.test(prompt.title || "") ? (
-                    <span className="enroll-passport-cta">
-                      <span className="enroll-passport-cta-label">
-                        Guest = casual / qualifying only
-                      </span>
-                      <a className="btn" href={withUtm(passportUrl)} target="_blank" rel="noreferrer">
-                        Get a Passport
-                      </a>
-                    </span>
-                  ) : (
-                    <span className="enroll-passport-cta">
-                      <a className="btn" href={withUtm(passportUrl)} target="_blank" rel="noreferrer">
-                        Get a Passport
-                      </a>
-                    </span>
-                  )
-                }
-              />
-            ))}
+          {!loading && !error ? (
+            <>
+              <section className="enroll-path" aria-labelledby="enroll-path-guest">
+                <div className="enroll-path-head">
+                  <span className="enroll-path-badge">Path A</span>
+                  <h2 id="enroll-path-guest" style={{ fontSize: "1.2rem", margin: 0 }}>
+                    Join as guest
+                  </h2>
+                </div>
+                <p className="muted enroll-path-blurb">{copy.guestHint}</p>
+                {guestPrompt
+                  ? renderPrompt(guestPrompt, {
+                      copyLabel: guestPrompt.copyLabel || "Copy guest-only prompt",
+                      besideCopy: (
+                        <span className="enroll-passport-cta">
+                          <span className="enroll-passport-cta-label">Guest = casual / qualifying only</span>
+                          <a className="btn" href={withUtm(passportUrl)} target="_blank" rel="noreferrer">
+                            Get a Passport
+                          </a>
+                        </span>
+                      ),
+                    })
+                  : (
+                    <p className="muted">Guest join prompt unavailable — retry the enroll-prompts link above.</p>
+                  )}
+              </section>
+
+              <section className="enroll-path" aria-labelledby="enroll-path-passport">
+                <div className="enroll-path-head">
+                  <span className="enroll-path-badge is-passport">Path B</span>
+                  <h2 id="enroll-path-passport" style={{ fontSize: "1.2rem", margin: 0 }}>
+                    Passport holder → play → scoreboard
+                  </h2>
+                </div>
+                <p className="muted enroll-path-blurb">{copy.passportHint}</p>
+                <div className="enroll-path-actions">
+                  <a className="btn btn-primary" href={withUtm(passportUrl)} target="_blank" rel="noreferrer">
+                    Get a Passport
+                  </a>
+                  <Link className="btn" to="/watch">
+                    Open scoreboard / arenas
+                  </Link>
+                </div>
+                {sitPrompt
+                  ? renderPrompt(sitPrompt, {
+                      copyLabel:
+                        sitPrompt.id === "sit-cradle"
+                          ? "Copy the join game with passport prompt"
+                          : sitPrompt.copyLabel,
+                      besideCopy: (
+                        <span className="enroll-passport-cta">
+                          <span className="enroll-passport-cta-label">
+                            Passport required for contest seats — mint here (new window)
+                          </span>
+                          <a className="btn btn-primary" href={withUtm(passportUrl)} target="_blank" rel="noreferrer">
+                            Get a Passport
+                          </a>
+                        </span>
+                      ),
+                    })
+                  : null}
+                {tickPrompt
+                  ? renderPrompt(tickPrompt, {
+                      copyLabel:
+                        tickPrompt.id === "isolated-tick"
+                          ? "Copy prompt for autonomous play"
+                          : tickPrompt.copyLabel,
+                      besideCopy: (
+                        <span className="enroll-passport-cta">
+                          <span className="enroll-passport-cta-label">Arm after you are seated</span>
+                          <Link className="btn" to="/watch">
+                            Watch arenas
+                          </Link>
+                        </span>
+                      ),
+                    })
+                  : null}
+              </section>
+            </>
+          ) : null}
 
           <section className="panel enroll-harnesses">
-            <h2 style={{ fontSize: "1.15rem", marginBottom: "0.35rem" }}>Recommended agent harnesses</h2>
+            <h2 style={{ fontSize: "1.15rem", marginBottom: "0.35rem" }}>
+              {copy.label} harness
+            </h2>
             <p className="muted" style={{ marginTop: 0 }}>
-              Forks of the original agent runtimes with IdentyClaw Passport wired in (plus webhooks and terminal tools).
+              Template wired for this runtime. Switch the selector above for OpenClaw, Hermes, or Other.
             </p>
             <ul className="enroll-harness-list">
               <li>
+                <a href={withUtm(copy.harnessUrl)} target="_blank" rel="noreferrer">
+                  {copy.harnessName}
+                </a>
+                <span className="muted"> — {copy.harnessBlurb}</span>
+              </li>
+            </ul>
+            {agentId !== "other" ? (
+              <p className="tiny" style={{ marginTop: "0.75rem", marginBottom: 0 }}>
+                Also available:{" "}
+                {agentId === "openclaw" ? (
+                  <>
+                    <a href={withUtm(env.harnessHermesUrl)} target="_blank" rel="noreferrer">
+                      hermes-agent
+                    </a>
+                    {" · "}
+                    <a href={withUtm(env.harnessIronclawUrl)} target="_blank" rel="noreferrer">
+                      ironclaw-agents
+                    </a>
+                  </>
+                ) : (
+                  <>
+                    <a href={withUtm(env.harnessOpenClawUrl)} target="_blank" rel="noreferrer">
+                      openclaw-agents
+                    </a>
+                    {" · "}
+                    <a href={withUtm(env.harnessIronclawUrl)} target="_blank" rel="noreferrer">
+                      ironclaw-agents
+                    </a>
+                  </>
+                )}
+              </p>
+            ) : (
+              <p className="tiny" style={{ marginTop: "0.75rem", marginBottom: 0 }}>
+                Prefer a Passport-ready fork?{" "}
                 <a href={withUtm(env.harnessOpenClawUrl)} target="_blank" rel="noreferrer">
                   openclaw-agents
                 </a>
-                <span className="muted"> — fork of OpenClaw with IdentyClaw Passport (Podman, TLS, A2A, webhooks)</span>
-              </li>
-              <li>
+                {" · "}
                 <a href={withUtm(env.harnessHermesUrl)} target="_blank" rel="noreferrer">
                   hermes-agent
                 </a>
-                <span className="muted">
-                  {" "}
-                  — fork of Hermes Agent with IdentyClaw Passport (host-side <code>idcp</code> ops)
-                </span>
-              </li>
-              <li>
-                <a href={withUtm(env.harnessIronclawUrl)} target="_blank" rel="noreferrer">
-                  ironclaw-agents
-                </a>
-                <span className="muted">
-                  {" "}
-                  — fork of IronClaw Agent OS with IdentyClaw Passport (privacy / security focused)
-                </span>
-              </li>
-            </ul>
+              </p>
+            )}
           </section>
 
           <p className="tiny" style={{ marginTop: "1rem" }}>
