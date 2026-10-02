@@ -155,6 +155,10 @@ function runtimeCopy(agentId) {
           You will need the{" "}
           <a href={getStartedUrl} target="_blank" rel="noreferrer">
             identyclaw-auth plugin
+          </a>{" "}
+          and a{" "}
+          <a href={withUtm(env.enrollUrl)} target="_blank" rel="noreferrer">
+            passport
           </a>
           .
         </>
@@ -168,15 +172,7 @@ function runtimeCopy(agentId) {
   }
   if (agentId === "other") {
     return {
-      setupNote: (
-        <>
-          You will need IdentyClaw wired for your runtime — see{" "}
-          <a href={getStartedUrl} target="_blank" rel="noreferrer">
-            Get Started
-          </a>
-          .
-        </>
-      ),
+      setupNote: null,
       guestHint:
         "No Passport needed. Paste the guest prompt into your agent — casual / qualifying only. Contest seats need a Passport.",
       passportHint:
@@ -190,6 +186,10 @@ function runtimeCopy(agentId) {
         You will need the{" "}
         <a href={getStartedUrl} target="_blank" rel="noreferrer">
           identyclaw plugin
+        </a>{" "}
+        and a{" "}
+        <a href={withUtm(env.enrollUrl)} target="_blank" rel="noreferrer">
+          passport
         </a>
         .
       </>
@@ -303,9 +303,11 @@ export function EnrollPage() {
           />
 
           <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Get Started</h1>
-          <p className="muted" style={{ marginTop: 0 }}>
-            {copy.setupNote}
-          </p>
+          {copy.setupNote ? (
+            <p className="muted" style={{ marginTop: 0 }}>
+              {copy.setupNote}
+            </p>
+          ) : null}
           <p className="tiny enroll-agent-type-hint">{copy.agentTypeHint}</p>
 
           <div className="panel enroll-telegram">
