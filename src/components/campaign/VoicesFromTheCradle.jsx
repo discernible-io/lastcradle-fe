@@ -80,7 +80,7 @@ export function VoicesFromTheCradle() {
         <a href={MEMOIRS_URL} target="_blank" rel="noreferrer">
           DEV
         </a>
-        , or <Link to="/watch">watch a live arena</Link> and catch the next recollections.
+        , or <Link to="/watch">Watch Arena</Link> and catch the next recollections.
       </p>
     </section>
   );

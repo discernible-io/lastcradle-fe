@@ -40,7 +40,7 @@ export function WatchGuide({ open, onDismiss }) {
         </ol>
         <div className="watch-guide-actions">
           <button type="button" className="btn btn-primary" onClick={onDismiss}>
-            Got it — watch live
+            Got it — Watch Arena
           </button>
           <Link className="btn btn-ghost" to="/game" onClick={onDismiss}>
             Full rules

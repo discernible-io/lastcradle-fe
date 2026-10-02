@@ -2028,7 +2028,7 @@ select:focus {
 }
 
 .enroll-agent-type-hint {
-  margin: -0.15rem 0 1rem;
+  margin: 0 0 1rem;
   color: var(--ink-mute);
 }
 
@@ -2225,33 +2225,6 @@ select:focus {
   margin-top: 1rem;
   margin-bottom: 1rem;
   white-space: pre-wrap;
-}
-
-.enroll-harnesses {
-  padding: 1.1rem 1.15rem;
-  margin-top: 1.25rem;
-}
-
-.enroll-harness-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-}
-
-.enroll-harness-list li {
-  line-height: 1.45;
-}
-
-.enroll-harness-list a {
-  font-weight: 500;
-  color: var(--ink);
-}
-
-.enroll-harness-list a:hover {
-  color: var(--water);
 }
 
 .about-page {

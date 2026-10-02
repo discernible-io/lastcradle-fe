@@ -88,7 +88,7 @@ export function OfficialPrizeRules() {
             {campaign.datesLabel}. Each lobby&apos;s join window and match clock are controlled by the Sponsor&apos;s
             server, but practice games can started at any time by players if the quorum of 5 is reached within a lobby
             lifetime of 5 minutes. Late or incomplete entries or games not started due to insuficient players are void.
-            See live arenas on the <Link to="/watch#contests">Arena</Link>.
+            See live matches via <Link to="/watch#contests">Watch Arena</Link>.
           </p>
           <p>
             <strong>Season viability ({seasonViability.checkLabel}):</strong> Season {campaign.season} proceeds to the

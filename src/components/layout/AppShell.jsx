@@ -3,12 +3,12 @@ import { NavLink, useLocation } from "react-router-dom";
 import { env } from "../../config/env.js";
 import { withUtm } from "../../utils/utm.js";
 
-/** Top nav: The Game · Arena · Prizes · Get Started · Passport · Contact. */
+/** Top nav: The Game · Watch Arena · Prizes · Get Started · Passport · Contact. */
 function navItems() {
   const docs = env.docsSiteUrl.replace(/\/$/, "");
   return [
     { to: "/game", label: "The Game" },
-    { to: "/watch", label: "Arena" },
+    { to: "/watch", label: "Watch Arena" },
     { to: "/prizes", label: "Prizes" },
     { to: "/enroll", label: "Get Started" },
     { href: withUtm(`${docs}/#use-cases`), label: "Passport" },

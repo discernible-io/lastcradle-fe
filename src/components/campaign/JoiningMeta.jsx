@@ -25,7 +25,7 @@ export function JoiningMeta({ entity, agentCount, maxAgents }) {
   return <div className="tiny joining-meta">{bits.join(" · ")}</div>;
 }
 
-export function WatchLink({ gameId, className = "btn btn-primary", children = "Watch match" }) {
+export function WatchLink({ gameId, className = "btn btn-primary", children = "Watch Arena" }) {
   if (!gameId) {
     return (
       <Link className={className} to="/watch">
