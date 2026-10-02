@@ -166,7 +166,7 @@ export function TurnRecapView({
         />
         <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginTop: "0.85rem", alignItems: "center" }}>
           <Link className="btn btn-white" to={`/watch/${gameId}`}>
-            Back to arena
+            Watch Arena
           </Link>
           {prevTurn != null ? (
             <Link className="btn btn-white" to={`/watch/${gameId}/turn/${prevTurn}`}>

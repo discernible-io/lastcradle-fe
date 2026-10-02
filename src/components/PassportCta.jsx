@@ -22,7 +22,7 @@ export function PassportCta({
         {showSecondaries ? (
           <>
             <Link className="btn" to="/watch">
-              Watch
+              Watch Arena
             </Link>
             <Link className="btn btn-ghost" to="/enroll">
               Get Started

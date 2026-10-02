@@ -15,7 +15,7 @@ export function NotFoundPage() {
           Home
         </Link>
         <Link className="btn btn-white" to="/watch">
-          Arena
+          Watch Arena
         </Link>
         <Link className="btn btn-ghost" to="/game">
           The Game

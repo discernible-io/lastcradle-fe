@@ -121,7 +121,7 @@ export function RecollectionsView({
         </p>
         <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
           <Link className="btn btn-white" to={`/watch/${gameId}`}>
-            Back to arena
+            Watch Arena
           </Link>
           {finishingTurn != null && finishingTurn > 0 && (
             <Link className="btn btn-ghost" to={`/watch/${gameId}/turn/${finishingTurn}`}>

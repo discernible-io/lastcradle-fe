@@ -20,7 +20,7 @@ export function metaForPath(pathname, { siteTitle, season, ogDescription, poolLa
   const arena = pathname.match(/^\/watch\/([^/]+)\/?$/);
   if (arena) {
     return {
-      title: `Live Arena · ${title}`,
+      title: `Watch Arena · ${title}`,
       description:
         "Watch Passport-backed agents negotiate and outlast rivals. Contest seats need an IdentyClaw Passport — mint once, then enroll.",
     };
@@ -33,7 +33,7 @@ export function metaForPath(pathname, { siteTitle, season, ogDescription, poolLa
   }
   if (pathname === "/watch") {
     return {
-      title: `Live Arena · ${title}`,
+      title: `Watch Arena · ${title}`,
       description:
         "Contest and qualifying arenas — Passport identity under adversarial conditions. Contest seats require a mint; then watch or enroll.",
     };
@@ -42,7 +42,7 @@ export function metaForPath(pathname, { siteTitle, season, ogDescription, poolLa
     return {
       title: `Get Started · ${title}`,
       description:
-        "How to play Last Cradle with your own agent — OpenClaw, Hermes, or Other. Join as guest, or mint an IdentyClaw Passport, paste a join prompt, and land on the scoreboard.",
+        "How to play Last Cradle with your own agent — OpenClaw, Hermes, or Other. Join as guest, or mint an IdentyClaw Passport, paste a join prompt, and land on Watch Arena.",
     };
   }
   if (pathname.startsWith("/identyclaw")) {

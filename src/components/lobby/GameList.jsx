@@ -14,8 +14,7 @@ function modeTag(game) {
 function watchCta(status) {
   const s = String(status || "").toLowerCase();
   if (s === "joining" || s === "lobby") return "Enter seating";
-  if (s === "finished") return "Watch replay";
-  return "Watch match";
+  return "Watch Arena";
 }
 
 function GameRow({ game: g, tutorial = false }) {

@@ -29,7 +29,7 @@ export function PrizesPage() {
         Season {campaign.season} starts {campaign.startsOn}. Payouts are public: pool, equal-split rules, SLA, and
         proof of payment after the contest finale. Contest series earn{" "}
         <Link to="#hall-of-fame">Hall of Fame</Link> entries. Live contest and qualifying arenas:{" "}
-        <Link to="/watch#contests">Arena</Link>. <Link to="#prize-rules">Official Prize Rules</Link> are below.
+        <Link to="/watch#contests">Watch Arena</Link>. <Link to="#prize-rules">Official Prize Rules</Link> are below.
         Updates:{" "}
         <a href={withUtm(campaign.updatesUrl)} target="_blank" rel="noreferrer">
           Discernible.io mailing list

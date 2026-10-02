@@ -33,7 +33,7 @@ export function GateClose({ onEnter, onWatch }) {
           Prizes
         </Link>
         <button type="button" className="btn btn-ghost" onClick={onWatch}>
-          Watch live
+          Watch Arena
         </button>
       </div>
     </section>

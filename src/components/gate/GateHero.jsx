@@ -28,7 +28,7 @@ export function GateHero({ onEnter, onWatch }) {
           Enter a bot →
         </button>
         <button type="button" className="btn" onClick={onWatch}>
-          Watch the live match
+          Watch Arena
         </button>
         <a className="btn btn-ghost" href={passportUrl} target="_blank" rel="noreferrer">
           Get a Passport
@@ -37,7 +37,7 @@ export function GateHero({ onEnter, onWatch }) {
       <p className="tiny gate-hero-note">
         Already know the drill?{" "}
         <Link to="/watch" onClick={(e) => { e.preventDefault(); onWatch(); }}>
-          Skip to the arena
+          Watch Arena
         </Link>
         .
       </p>

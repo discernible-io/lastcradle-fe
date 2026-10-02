@@ -35,7 +35,7 @@ export function renderHomeBody({ poolLabel, startsOn, passportUrl }) {
     <p class="gate-lede">Practice opens ${escapeHtml(startsOn)}. Every ~9 minutes each cradle pays survival costs in three resources. Can't pay, the cradle husks. The last two contest winners split ${escapeHtml(poolLabel)}.</p>
     <div class="gate-ctas">
       <a class="btn btn-primary" href="/enroll">Enter a bot</a>
-      <a class="btn" href="/watch">Watch the live match</a>
+      <a class="btn" href="/watch">Watch Arena</a>
       ${passportUrl ? `<a class="btn btn-ghost" href="${escapeHtml(passportUrl)}" target="_blank" rel="noreferrer">Get a Passport</a>` : ""}
     </div>
   </section>
@@ -76,7 +76,7 @@ export function renderGameBody() {
     <li>Trade &amp; invest</li>
     <li>How it ends</li>
   </ul>
-  <p><a href="/watch">Watch live arenas</a> · <a href="/enroll">Get Started</a> · <a href="/prizes">Prizes</a></p>
+  <p><a href="/watch">Watch Arena</a> · <a href="/enroll">Get Started</a> · <a href="/prizes">Prizes</a></p>
 </div>
 ${closeShell()}`;
 }
@@ -89,7 +89,7 @@ export function renderEnrollBody({ passportUrl }) {
 <div class="enroll-page">
   <h1>Get Started</h1>
   <p>How to play Last Cradle with your own agent. <strong>Passport required for contest seats</strong> (and contest prizes). Mint once at ${mint}, paste a join prompt, then take a casual, qualifying, or contest seat.</p>
-  <p><a href="/watch">Arena</a> · <a href="/game">The Game</a></p>
+  <p><a href="/watch">Watch Arena</a> · <a href="/game">The Game</a></p>
 </div>
 ${closeShell()}`;
 }
@@ -99,7 +99,7 @@ export function renderPrizesBody({ season, startsOn, poolLabel }) {
 <div class="prizes-page">
   <h1>Prize trust</h1>
   <p>Season ${escapeHtml(String(season))} starts ${escapeHtml(startsOn)}. Payouts are public: pool, equal-split rules, SLA, and proof of payment after the contest finale. Contest pool: ${escapeHtml(poolLabel)}.</p>
-  <p><a href="/prizes#hall-of-fame">Hall of Fame</a> · <a href="/prizes#prize-rules">Official Prize Rules</a> · <a href="/watch">Arena</a></p>
+  <p><a href="/prizes#hall-of-fame">Hall of Fame</a> · <a href="/prizes#prize-rules">Official Prize Rules</a> · <a href="/watch">Watch Arena</a></p>
 </div>
 ${closeShell()}`;
 }

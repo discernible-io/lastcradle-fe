@@ -47,7 +47,7 @@ export function GateLiveSnapshot({ snapshot, onWatch }) {
           </div>
         </div>
         <button type="button" className="btn btn-primary" onClick={onWatch}>
-          Open live board ↗
+          Watch Arena
         </button>
       </div>
     </section>

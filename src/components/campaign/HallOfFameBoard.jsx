@@ -91,7 +91,7 @@ export function HallOfFameBoard() {
                 {e.roditId && <IdentityChip roditId={e.roditId} displayName={name} />}
                 {e.gameId && (
                   <div style={{ marginTop: "0.65rem" }}>
-                    <Link to={`/watch/${e.gameId}`}>Open arena</Link>
+                    <Link to={`/watch/${e.gameId}`}>Watch Arena</Link>
                   </div>
                 )}
               </article>
