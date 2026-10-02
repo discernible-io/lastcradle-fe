@@ -12,7 +12,6 @@ import { GatePitch } from "../components/gate/GatePitch.jsx";
 import { GateSchedule } from "../components/gate/GateSchedule.jsx";
 import { campaign, canonicalUrl, watchPath } from "../config/campaign.js";
 import { env } from "../config/env.js";
-import { useContestGate } from "../hooks/useContestGate.js";
 import { useFeaturedWatchPath } from "../hooks/useFeaturedWatchPath.js";
 import { buildSeasonJsonLd, serializeJsonLd } from "../seo/schemas.js";
 import { pickFeaturedWatchGame } from "../utils/featuredWatch.js";
@@ -58,7 +57,6 @@ function buildSnapshot(game, state) {
 export function LandingPage() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
-  const { acknowledge } = useContestGate();
   const featuredWatchPath = useFeaturedWatchPath();
   const [snapshot, setSnapshot] = useState(null);
 
@@ -115,7 +113,6 @@ export function LandingPage() {
   }, []);
 
   const goWatch = useCallback(() => {
-    acknowledge();
     const target =
       nextPath && nextPath.startsWith("/watch")
         ? nextPath
@@ -123,23 +120,21 @@ export function LandingPage() {
           ? watchPath(snapshot.gameId)
           : featuredWatchPath;
     navigate(target || "/watch");
-  }, [acknowledge, featuredWatchPath, navigate, nextPath, snapshot?.gameId]);
+  }, [featuredWatchPath, navigate, nextPath, snapshot?.gameId]);
 
   const goEnter = useCallback(() => {
-    acknowledge();
     if (nextPath && nextPath.startsWith("/enroll")) {
       navigate(nextPath);
       return;
     }
     navigate("/enroll");
-  }, [acknowledge, navigate, nextPath]);
+  }, [navigate, nextPath]);
 
   const goRecollections = useCallback(
     (path) => {
-      acknowledge();
       navigate(path || "/watch");
     },
-    [acknowledge, navigate],
+    [navigate],
   );
 
   return (
