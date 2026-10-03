@@ -15,8 +15,8 @@ function navHtml() {
     <li><a href="https://www.discernible.io/#use-cases" target="_blank" rel="noreferrer">Passport</a></li>
     <li><a href="https://verify.identyclaw.com" target="_blank" rel="noreferrer">Test Drive</a></li>
     <li><a href="/" aria-current="page">Showcase</a></li>
-    <li><a href="https://www.discernible.io/#get-started" target="_blank" rel="noreferrer">Get Started</a></li>
-    <li><a href="https://www.discernible.io/developers.html" target="_blank" rel="noreferrer">Developers</a></li>
+    <li><a href="https://www.discernible.io/get-started/" target="_blank" rel="noreferrer">Get Started</a></li>
+    <li><a href="https://www.discernible.io/developers/" target="_blank" rel="noreferrer">Developers</a></li>
     <li><a href="https://www.discernible.io/#contact" target="_blank" rel="noreferrer">Contact</a></li>
   </ul>
 </nav></header><main class="shell-main">`;

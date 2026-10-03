@@ -147,7 +147,8 @@ function PromptBlock({ title, blurb, markdown, copyLabel, besideCopy }) {
 }
 
 function runtimeCopy(agentId) {
-  const getStartedUrl = withUtm(`${env.docsSiteUrl}/#get-started`);
+  const agent = agentId === "hermes" ? "hermes" : "openclaw";
+  const getStartedUrl = withUtm(`${env.docsSiteUrl}/get-started/?agent=${agent}`);
   if (agentId === "hermes") {
     return {
       setupNote: (
