@@ -5,7 +5,8 @@ import { withUtm } from "../../utils/utm.js";
 
 export function GateClose({ onEnter, onWatch }) {
   const passportUrl = withUtm(env.enrollUrl);
-  const harnessUrl = withUtm(env.harnessOpenClawUrl);
+  const docs = env.docsSiteUrl.replace(/\/$/, "");
+  const deployUrl = docs ? withUtm(`${docs}/get-started/`) : "";
 
   return (
     <section className="gate-section gate-close">
@@ -20,8 +21,8 @@ export function GateClose({ onEnter, onWatch }) {
         <a className="btn btn-primary" href={passportUrl} target="_blank" rel="noreferrer">
           Mint a Passport
         </a>
-        {harnessUrl ? (
-          <a className="btn" href={harnessUrl} target="_blank" rel="noreferrer">
+        {deployUrl ? (
+          <a className="btn" href={deployUrl} target="_blank" rel="noreferrer">
             Deploy the bot
           </a>
         ) : (

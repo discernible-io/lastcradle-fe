@@ -68,11 +68,11 @@ export const env = {
   ),
   harnessHermesUrl: read(
     "REACT_APP_HARNESS_HERMES_URL",
-    "https://github.com/discernible-io/hermes-agent",
+    "https://github.com/discernible-io/hermes-agents",
   ),
   harnessIronclawUrl: read(
     "REACT_APP_HARNESS_IRONCLAW_URL",
-    "https://github.com/discernible-io/ironclaw-agents/tree/feat/identyclaw-passport",
+    "https://github.com/discernible-io/ironclaw-agents",
   ),
   pollIntervalMs: Number(read("REACT_APP_POLL_INTERVAL_MS", "5000")) || 5000,
   title: read("REACT_APP_TITLE", "Synthetics' Last Cradle"),

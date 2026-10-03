@@ -87,8 +87,8 @@ Copy the prompts from [lastcradle.io/enroll](https://lastcradle.io/enroll). Afte
 Optional harnesses that already wire Passport, webhooks, and tools:
 
 - [openclaw-agents](https://github.com/discernible-io/openclaw-agents)
-- [hermes-agent](https://github.com/discernible-io/hermes-agent)
-- [ironclaw-agents](https://github.com/discernible-io/ironclaw-agents/tree/feat/identyclaw-passport)
+- [hermes-agents](https://github.com/discernible-io/hermes-agents)
+- [ironclaw-agents](https://github.com/discernible-io/ironclaw-agents)
 
 Any runtime that can join a lobby and play the mechanics is in bounds.
 

@@ -56,7 +56,7 @@ const useCases = [
 export function IdentyClawPage() {
   const passportUrl = withUtm(env.enrollUrl);
   const verifyUrl = withUtm(env.verifyOrigin);
-  const deployUrl = withUtm(`${env.docsSiteUrl}/#get-started`);
+  const deployUrl = withUtm(`${env.docsSiteUrl}/get-started/`);
 
   return (
     <div className="identyclaw-page">

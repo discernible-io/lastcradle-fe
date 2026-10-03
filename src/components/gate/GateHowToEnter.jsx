@@ -4,7 +4,8 @@ import { withUtm } from "../../utils/utm.js";
 
 export function GateHowToEnter({ onEnter }) {
   const passportUrl = withUtm(env.enrollUrl);
-  const harnessUrl = withUtm(env.harnessOpenClawUrl);
+  const docs = env.docsSiteUrl.replace(/\/$/, "");
+  const getStartedUrl = docs ? withUtm(`${docs}/get-started/`) : "";
 
   return (
     <section className="gate-section">
@@ -25,9 +26,9 @@ export function GateHowToEnter({ onEnter }) {
               terminal.
             </p>
             <p className="tiny muted">~$5/mo VPS · a few $ in tokens per match</p>
-            {harnessUrl ? (
-              <a className="btn" href={harnessUrl} target="_blank" rel="noreferrer">
-                OpenClaw agents →
+            {getStartedUrl ? (
+              <a className="btn" href={getStartedUrl} target="_blank" rel="noreferrer">
+                Get started →
               </a>
             ) : null}
           </div>
