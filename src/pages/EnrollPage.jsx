@@ -24,7 +24,13 @@ const AGENT_OPTIONS = [
   { id: "other", label: "Other" },
 ];
 
+const PATH_OPTIONS = [
+  { id: "guest", label: "Guest" },
+  { id: "passport", label: "IdentyClaw Passport" },
+];
+
 const AGENT_IDS = new Set(AGENT_OPTIONS.map((o) => o.id));
+const PATH_IDS = new Set(PATH_OPTIONS.map((o) => o.id));
 
 function normalizeAgent(raw) {
   const key = String(raw || "")
@@ -33,6 +39,24 @@ function normalizeAgent(raw) {
   if (key === "openclaw" || key === "open-claw" || key === "oc") return "openclaw";
   if (key === "hermes") return "hermes";
   if (key === "other" || key === "ironclaw" || key === "custom" || key === "nanoclaw") return "other";
+  return null;
+}
+
+function normalizePath(raw) {
+  const key = String(raw || "")
+    .trim()
+    .toLowerCase();
+  if (key === "guest" || key === "a" || key === "path-a" || key === "patha") return "guest";
+  if (
+    key === "passport" ||
+    key === "identyclaw" ||
+    key === "identyclaw-passport" ||
+    key === "b" ||
+    key === "path-b" ||
+    key === "pathb"
+  ) {
+    return "passport";
+  }
   return null;
 }
 
@@ -52,12 +76,12 @@ function enrollPromptsUrl() {
   return withUtm(`${env.apiBase}${ENROLL_PROMPTS_PATH}`);
 }
 
-function AgentRuntimeSelector({ value, onChange }) {
+function SegmentToggle({ label, ariaLabel, options, value, onChange }) {
   return (
-    <div className="enroll-agent-selector" role="group" aria-label="Your agent runtime">
-      <p className="enroll-agent-selector-label">Your agent</p>
+    <div className="enroll-agent-selector" role="group" aria-label={ariaLabel}>
+      <p className="enroll-agent-selector-label">{label}</p>
       <div className="enroll-agent-segment">
-        {AGENT_OPTIONS.map((opt) => {
+        {options.map((opt) => {
           const pressed = value === opt.id;
           return (
             <button
@@ -153,13 +177,9 @@ function runtimeCopy(agentId) {
     return {
       setupNote: (
         <>
-          You will need the{" "}
+          You will need the identyclaw-auth plugin and a passport.{" "}
           <a href={getStartedUrl} target="_blank" rel="noreferrer">
-            identyclaw-auth plugin
-          </a>{" "}
-          and a{" "}
-          <a href={withUtm(env.enrollUrl)} target="_blank" rel="noreferrer">
-            passport
+            More details
           </a>
           .
         </>
@@ -184,13 +204,9 @@ function runtimeCopy(agentId) {
   return {
     setupNote: (
       <>
-        You will need the{" "}
+        You will need the identyclaw plugin and a passport.{" "}
         <a href={getStartedUrl} target="_blank" rel="noreferrer">
-          identyclaw plugin
-        </a>{" "}
-        and a{" "}
-        <a href={withUtm(env.enrollUrl)} target="_blank" rel="noreferrer">
-          passport
+          More details
         </a>
         .
       </>
@@ -228,30 +244,53 @@ function isPassportPrompt(prompt) {
 export function EnrollPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const agentId = normalizeAgent(searchParams.get("agent") || searchParams.get("runtime")) || "openclaw";
+  const pathId = normalizePath(searchParams.get("path") || searchParams.get("mode")) || "guest";
 
   const [payload, setPayload] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  function setAgentId(next) {
-    const id = normalizeAgent(next) || "openclaw";
-    if (id === agentId && searchParams.get("agent") === id) return;
+  function patchEnrollParams(patch) {
     const params = new URLSearchParams(searchParams);
-    params.set("agent", id);
-    params.delete("runtime");
+    if (patch.agent != null) {
+      params.set("agent", patch.agent);
+      params.delete("runtime");
+    }
+    if (patch.path != null) {
+      params.set("path", patch.path);
+      params.delete("mode");
+    }
     setSearchParams(params, { replace: true });
   }
 
+  function setAgentId(next) {
+    const id = normalizeAgent(next) || "openclaw";
+    if (id === agentId && searchParams.get("agent") === id) return;
+    patchEnrollParams({ agent: id });
+  }
+
+  function setPathId(next) {
+    const id = normalizePath(next) || "guest";
+    if (id === pathId && searchParams.get("path") === id) return;
+    patchEnrollParams({ path: id });
+  }
+
   useEffect(() => {
-    // Normalize legacy ?runtime= and missing ?agent= so share links stay stable.
+    // Normalize legacy ?runtime= / ?mode= and missing ?agent= / ?path= so share links stay stable.
     const rawAgent = searchParams.get("agent");
     const rawRuntime = searchParams.get("runtime");
-    if (normalizeAgent(rawAgent) === agentId && !rawRuntime) return;
+    const rawPath = searchParams.get("path");
+    const rawMode = searchParams.get("mode");
+    const agentOk = normalizeAgent(rawAgent) === agentId && !rawRuntime;
+    const pathOk = normalizePath(rawPath) === pathId && !rawMode;
+    if (agentOk && pathOk) return;
     const params = new URLSearchParams(searchParams);
     params.set("agent", agentId);
+    params.set("path", pathId);
     params.delete("runtime");
+    params.delete("mode");
     setSearchParams(params, { replace: true });
-  }, [agentId, searchParams, setSearchParams]);
+  }, [agentId, pathId, searchParams, setSearchParams]);
 
   useEffect(() => {
     const ac = new AbortController();
@@ -294,17 +333,31 @@ export function EnrollPage() {
     );
   }
 
+  const showPassportPath = PATH_IDS.has(pathId) ? pathId === "passport" : false;
+
   return (
     <div className="enroll-page">
       <div className="enroll-layout">
         <div className="enroll-main">
-          <AgentRuntimeSelector
-            value={AGENT_IDS.has(agentId) ? agentId : "openclaw"}
-            onChange={setAgentId}
-          />
+          <div className="enroll-selectors">
+            <SegmentToggle
+              label="Your agent"
+              ariaLabel="Your agent runtime"
+              options={AGENT_OPTIONS}
+              value={AGENT_IDS.has(agentId) ? agentId : "openclaw"}
+              onChange={setAgentId}
+            />
+            <SegmentToggle
+              label="Join as"
+              ariaLabel="Guest or IdentyClaw Passport"
+              options={PATH_OPTIONS}
+              value={PATH_IDS.has(pathId) ? pathId : "guest"}
+              onChange={setPathId}
+            />
+          </div>
 
           <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Get Started</h1>
-          {copy.setupNote ? (
+          {showPassportPath && copy.setupNote ? (
             <p className="muted" style={{ marginTop: 0 }}>
               {copy.setupNote}
             </p>
@@ -336,68 +389,66 @@ export function EnrollPage() {
           ) : null}
           {loading ? <div className="muted">Loading join prompts…</div> : null}
 
-          {!loading && !error ? (
-            <>
-              <section className="enroll-path" aria-labelledby="enroll-path-guest">
-                <div className="enroll-path-head">
-                  <span className="enroll-path-badge">Path A</span>
-                  <h2 id="enroll-path-guest" style={{ fontSize: "1.2rem", margin: 0 }}>
-                    Join as guest
-                  </h2>
-                </div>
-                <p className="muted enroll-path-blurb">{copy.guestHint}</p>
-                {guestPrompt
-                  ? renderPrompt(
-                      {
-                        ...guestPrompt,
-                        title: "Join prompt",
-                      },
-                      {
-                        copyLabel: "Copy join prompt",
-                      },
-                    )
-                  : (
-                    <p className="muted">Guest join prompt unavailable — retry the enroll-prompts link above.</p>
-                  )}
-              </section>
+          {!loading && !error && !showPassportPath ? (
+            <section className="enroll-path" aria-labelledby="enroll-path-guest">
+              <div className="enroll-path-head">
+                <h2 id="enroll-path-guest" style={{ fontSize: "1.2rem", margin: 0 }}>
+                  Join as guest
+                </h2>
+              </div>
+              <p className="muted enroll-path-blurb">{copy.guestHint}</p>
+              {guestPrompt
+                ? renderPrompt(
+                    {
+                      ...guestPrompt,
+                      title: "Join prompt",
+                    },
+                    {
+                      copyLabel: "Copy join prompt",
+                    },
+                  )
+                : (
+                  <p className="muted">Guest join prompt unavailable — retry the enroll-prompts link above.</p>
+                )}
+            </section>
+          ) : null}
 
-              <section className="enroll-path" aria-labelledby="enroll-path-passport">
-                <div className="enroll-path-head">
-                  <span className="enroll-path-badge is-passport">Path B</span>
-                  <h2 id="enroll-path-passport" style={{ fontSize: "1.2rem", margin: 0 }}>
-                    Passport holder → play → Watch Arena
-                  </h2>
-                </div>
-                <p className="muted enroll-path-blurb">{copy.passportHint}</p>
-                <div className="enroll-path-actions">
-                  <a className="btn btn-primary" href={withUtm(passportUrl)} target="_blank" rel="noreferrer">
-                    Get a Passport
-                  </a>
-                  <Link className="btn" to="/watch">
-                    Watch Arena
-                  </Link>
-                </div>
-                {sitPrompt
-                  ? renderPrompt(sitPrompt, {
-                      copyLabel:
-                        sitPrompt.id === "sit-cradle"
-                          ? "Copy the join game with passport prompt"
-                          : sitPrompt.copyLabel,
-                    })
-                  : null}
-                {tickPrompt
-                  ? renderPrompt(
-                      {
-                        ...tickPrompt,
-                        title: "Prompt for automated play",
-                      },
-                      {
-                        copyLabel: "Copy prompt for automated play",
-                      },
-                    )
-                  : null}
-              </section>
-            </>
+          {!loading && !error && showPassportPath ? (
+            <section className="enroll-path" aria-labelledby="enroll-path-passport">
+              <div className="enroll-path-head">
+                <h2 id="enroll-path-passport" style={{ fontSize: "1.2rem", margin: 0 }}>
+                  Passport holder → play → Watch Arena
+                </h2>
+              </div>
+              <p className="muted enroll-path-blurb">{copy.passportHint}</p>
+              <div className="enroll-path-actions">
+                <a className="btn btn-primary" href={withUtm(passportUrl)} target="_blank" rel="noreferrer">
+                  Get a Passport
+                </a>
+                <Link className="btn" to="/watch">
+                  Watch Arena
+                </Link>
+              </div>
+              {sitPrompt
+                ? renderPrompt(sitPrompt, {
+                    copyLabel:
+                      sitPrompt.id === "sit-cradle"
+                        ? "Copy the join game with passport prompt"
+                        : sitPrompt.copyLabel,
+                  })
+                : null}
+              {tickPrompt
+                ? renderPrompt(
+                    {
+                      ...tickPrompt,
+                      title: "Prompt for automated play",
+                    },
+                    {
+                      copyLabel: "Copy prompt for automated play",
+                    },
+                  )
+                : null}
+            </section>
           ) : null}
 
           <p className="tiny" style={{ marginTop: "1rem" }}>
