@@ -130,12 +130,7 @@ select:focus {
   text-decoration: none;
 }
 
-.shell-nav .brand:hover {
-  text-decoration: none;
-  color: var(--ink);
-}
-
-.brand-name {
+.shell-nav .brand-name {
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 0.8125rem;
@@ -143,6 +138,23 @@ select:focus {
   color: var(--ink);
   line-height: 1.2;
   white-space: nowrap;
+  text-decoration: none;
+}
+
+.shell-nav .brand-name:hover {
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.brand-logo-link {
+  flex-shrink: 0;
+  display: block;
+  line-height: 0;
+  text-decoration: none;
+}
+
+.brand-logo-link:hover {
+  opacity: 0.9;
 }
 
 .brand-logo {
@@ -153,7 +165,7 @@ select:focus {
 }
 
 @media (min-width: 900px) {
-  .brand-name {
+  .shell-nav .brand-name {
     font-size: 0.9375rem;
   }
 
@@ -163,7 +175,7 @@ select:focus {
 }
 
 @media (max-width: 520px) {
-  .brand-name {
+  .shell-nav .brand-name {
     white-space: normal;
     max-width: 9.5rem;
     font-size: 0.7rem;

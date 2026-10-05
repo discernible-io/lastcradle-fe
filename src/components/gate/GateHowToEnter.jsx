@@ -28,7 +28,7 @@ export function GateHowToEnter({ onEnter }) {
             <p className="tiny muted">~$5/mo VPS · a few $ in tokens per match</p>
             {getStartedUrl ? (
               <a className="btn" href={getStartedUrl} target="_blank" rel="noreferrer">
-                Get started →
+                Passport setup →
               </a>
             ) : null}
           </div>

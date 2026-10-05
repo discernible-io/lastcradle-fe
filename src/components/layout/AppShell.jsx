@@ -3,14 +3,19 @@ import { NavLink, useLocation } from "react-router-dom";
 import { env } from "../../config/env.js";
 import { withUtm } from "../../utils/utm.js";
 
-/** Top nav: The Game · Watch Arena · Prizes · Get Started · Passport · Contact. */
+/** Top nav: The Game · Watch Arena · Prizes · Join · Test Drive · Passport · Contact. */
 function navItems() {
   const docs = env.docsSiteUrl.replace(/\/$/, "");
+  const verify = env.verifyOrigin.replace(/\/$/, "") || "https://verify.identyclaw.com";
   return [
     { to: "/game", label: "The Game" },
     { to: "/watch", label: "Watch Arena" },
     { to: "/prizes", label: "Prizes" },
-    { to: "/enroll", label: "Get Started" },
+    { to: "/enroll", label: "Join" },
+    {
+      href: withUtm(`${verify}/?view=expert`),
+      label: "Test Drive",
+    },
     { href: withUtm(`${docs}/#use-cases`), label: "Passport" },
     { href: withUtm(`${docs}/#contact`), label: "Contact" },
   ];
@@ -20,6 +25,7 @@ export function AppShell({ children, bleed = false }) {
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const links = navItems();
+  const docsHomeHref = withUtm(env.docsSiteUrl);
 
   useEffect(() => {
     setMenuOpen(false);
@@ -32,16 +38,27 @@ export function AppShell({ children, bleed = false }) {
       <header>
         <nav className={`shell-nav${menuOpen ? " is-open" : ""}`} aria-label="Main">
           <div className="shell-nav-brand">
-            <NavLink to="/" className="brand" onClick={closeMenu} end>
-              <span className="brand-name">Synthetics&apos; Last Cradle by</span>
-              <img
-                className="brand-logo"
-                src="/discernible-logo.png"
-                alt="Discernible"
-                width="1413"
-                height="321"
-              />
-            </NavLink>
+            <div className="brand">
+              <NavLink to="/" className="brand-name" onClick={closeMenu} end>
+                Synthetics&apos; Last Cradle by
+              </NavLink>
+              <a
+                className="brand-logo-link"
+                href={docsHomeHref}
+                target="_blank"
+                rel="noreferrer"
+                onClick={closeMenu}
+                aria-label="Discernible"
+              >
+                <img
+                  className="brand-logo"
+                  src="/discernible-logo.png"
+                  alt="Discernible"
+                  width="1413"
+                  height="321"
+                />
+              </a>
+            </div>
             <span className="deploy-chip deploy-chip-desktop">{env.deployLabel}</span>
           </div>
           <button

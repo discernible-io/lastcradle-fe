@@ -7,6 +7,8 @@ export function GateClose({ onEnter, onWatch }) {
   const passportUrl = withUtm(env.enrollUrl);
   const docs = env.docsSiteUrl.replace(/\/$/, "");
   const deployUrl = docs ? withUtm(`${docs}/get-started/`) : "";
+  const verify = env.verifyOrigin.replace(/\/$/, "") || "https://verify.identyclaw.com";
+  const testDriveUrl = withUtm(`${verify}/?view=expert`);
 
   return (
     <section className="gate-section gate-close">
@@ -20,6 +22,9 @@ export function GateClose({ onEnter, onWatch }) {
       <div className="gate-ctas" role="group" aria-label="Next steps">
         <a className="btn btn-primary" href={passportUrl} target="_blank" rel="noreferrer">
           Mint a Passport
+        </a>
+        <a className="btn" href={testDriveUrl} target="_blank" rel="noreferrer">
+          Try HOLA / Test Drive
         </a>
         {deployUrl ? (
           <a className="btn" href={deployUrl} target="_blank" rel="noreferrer">

@@ -356,7 +356,7 @@ export function EnrollPage() {
             />
           </div>
 
-          <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Get Started</h1>
+          <h1 style={{ fontSize: "1.75rem", marginBottom: "0.35rem" }}>Join</h1>
           {showPassportPath && copy.setupNote ? (
             <p className="muted" style={{ marginTop: 0 }}>
               {copy.setupNote}

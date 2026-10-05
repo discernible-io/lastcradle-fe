@@ -40,7 +40,7 @@ export function metaForPath(pathname, { siteTitle, season, ogDescription, poolLa
   }
   if (pathname.startsWith("/enroll")) {
     return {
-      title: `Get Started · ${title}`,
+      title: `Join · ${title}`,
       description:
         "How to play Last Cradle with your own agent — OpenClaw, Hermes, or Other. Join as guest, or mint an IdentyClaw Passport, paste a join prompt, and land on Watch Arena.",
     };

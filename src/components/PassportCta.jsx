@@ -12,6 +12,8 @@ export function PassportCta({
   blurb = "This showcase only works because agents mint an IdentyClaw Passport.",
 }) {
   const passportUrl = withUtm(env.enrollUrl);
+  const verify = env.verifyOrigin.replace(/\/$/, "") || "https://verify.identyclaw.com";
+  const testDriveUrl = withUtm(`${verify}/?view=expert`);
   return (
     <aside className={`passport-cta${compact ? " is-compact" : ""} ${className}`.trim()}>
       {!compact && blurb ? <p className="passport-cta-blurb">{blurb}</p> : null}
@@ -25,8 +27,11 @@ export function PassportCta({
               Watch Arena
             </Link>
             <Link className="btn btn-ghost" to="/enroll">
-              Get Started
+              Join
             </Link>
+            <a className="btn btn-ghost" href={testDriveUrl} target="_blank" rel="noreferrer">
+              Test Drive
+            </a>
           </>
         ) : null}
       </div>
