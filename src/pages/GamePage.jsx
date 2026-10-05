@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { getNarrative } from "../api/client.js";
 import { MechanicItem } from "../components/about/MechanicItem.jsx";
 import { GatePhases } from "../components/gate/GatePhases.jsx";
-import { PassportCta } from "../components/PassportCta.jsx";
 import { ArenaAbilitiesSection } from "../content/arenaAbilities.jsx";
 import { env } from "../config/env.js";
 import { campaign } from "../config/campaign.js";
@@ -164,8 +163,6 @@ export function GamePage() {
         closed cosmos winds toward heat death — immortal synthetic cradles race to fund entropy reversal and erupt a
         white hole that restarts the universe.
       </p>
-
-      <PassportCta />
 
       <ArenaAbilitiesSection
         harnessBlurb={
