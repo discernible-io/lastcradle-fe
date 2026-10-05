@@ -157,7 +157,7 @@ export function WatchLobbyPage() {
           <a href={withUtm(env.enrollUrl)} target="_blank" rel="noreferrer">
             Get a Passport
           </a>
-          , then <Link to="/enroll">Get Started</Link>
+          , then <Link to="/enroll">Join</Link>
           {" · "}
           <a href={withUtm(env.skillUrl)} target="_blank" rel="noreferrer">
             skill.md
@@ -167,7 +167,7 @@ export function WatchLobbyPage() {
         {contestEmpty ? (
           <div className="panel empty-state empty-state-narrative">
             No scheduled contests right now. Watch a Casual match above to learn the loop, or{" "}
-            <Link to="/enroll">Get Started</Link> for the next series
+            <Link to="/enroll">Join</Link> for the next series
             {env.telegramInviteUrl && (
               <>
                 {" "}

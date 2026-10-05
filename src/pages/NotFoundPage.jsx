@@ -21,7 +21,7 @@ export function NotFoundPage() {
           The Game
         </Link>
         <Link className="btn btn-ghost" to="/enroll">
-          Get Started
+          Join
         </Link>
       </p>
     </div>
