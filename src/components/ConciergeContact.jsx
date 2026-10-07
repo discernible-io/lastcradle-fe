@@ -1,12 +1,13 @@
+import { prefersNativeTelegram } from "../utils/telegram.js";
 import { TelegramLink } from "./TelegramLink.jsx";
 
 /** Same IdentyClaw Concierge contact block as www.discernible.io. */
 export const concierge = {
   name: "Lemuel Gulliver",
   role: "IdentyClaw Concierge",
-  photoUrl: "https://nbg1.your-objectstorage.com/identyclaw/lemuel.png",
+  photoUrl: "https://www.discernible.io/lemuel.png",
   emailHref: "mailto:identyclaw@agenthood.me?subject=IdentyClaw%20Concierge",
-  discordUrl: "https://discord.gg/J8XG923PP",
+  discordUrl: "https://discord.gg/yHEr7b3Kf",
 };
 
 function EmailIcon() {
@@ -43,6 +44,8 @@ function TelegramIcon() {
 }
 
 export function ConciergeContact({ blurb }) {
+  // Same-tab on mobile so discord.gg / t.me can hand off to native apps.
+  const nativeHandoff = prefersNativeTelegram();
   return (
     <div className="concierge-contact">
       <img
@@ -65,8 +68,8 @@ export function ConciergeContact({ blurb }) {
         <a
           className="concierge-link"
           href={concierge.discordUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+          target={nativeHandoff ? undefined : "_blank"}
+          rel={nativeHandoff ? undefined : "noopener noreferrer"}
           aria-label="Discord"
         >
           <DiscordIcon />
