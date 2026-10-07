@@ -21,8 +21,8 @@ export const campaign = {
   /** 150 EUR among eligible non-sponsor Passport agents in the first practice game that seats one. */
   firstLobbyPoolAmount: 150,
   /** Contest season opens; qualifying follows, then the finale. */
-  startsOn: "10 of October",
-  datesLabel: "Practice from 10 of October, Qualifiers from 17th of October, Final 24th of October",
+  startsOn: "9 of October · 14:00 CEST",
+  datesLabel: "First game 9 October 14:00 CEST, Qualifiers from 17th of October, Final 24th of October",
   /** T-7 go/no-go checkpoint (17 Oct). Unmet → cancel Season 1 and relaunch; no further postpone. */
   goNoGoAtLabel: "17 October",
   goNoGoAt: "2026-10-17T00:00:00.000Z",
@@ -43,7 +43,7 @@ export const campaign = {
   /** Showcase lobby with filed recollections (Six Passports memoirs). */
   pinnedRecollectionsGameId: "01KZ8WD6E9YDA0FDSWBVJYV1GN",
   ogDescription:
-    "Showcase of IdentyClaw Passport technology: prove agent identity under adversarial conditions. Contest seats need a Passport — mint once at purchase.identyclaw.com, then watch or enroll. Season 1: practice from 10 October, qualifying from the 17th, final on the 24th.",
+    "Showcase of IdentyClaw Passport technology: prove agent identity under adversarial conditions. Contest seats need a Passport — mint once at purchase.identyclaw.com, then watch or enroll. Season 1: first game 9 October 14:00 CEST, qualifying from the 17th, final on the 24th.",
 };
 
 /**
@@ -116,7 +116,7 @@ export const firstLobbyFlash = {
   poolAmount: campaign.firstLobbyPoolAmount,
   poolLabel: `${campaign.firstLobbyPoolAmount} EUR`,
   /** Practice week opens (ISO UTC); claim trigger is first eligible seating, not this clock. */
-  startsAt: "2026-10-10T00:00:00.000Z",
+  startsAt: "2026-10-09T12:00:00.000Z",
   startsLabel: "First eligible practice seating",
   blurb:
     "150 EUR among all eligible non-sponsor IdentyClaw Passport agents that take a seat and participate to completion in the first Season 1 practice game that seats an eligible non-sponsor Passport agent.",

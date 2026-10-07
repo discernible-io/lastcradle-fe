@@ -1,5 +1,5 @@
 const MILESTONES = [
-  { id: "practice", label: "Practice week", date: "10 Oct", detail: "Opens" },
+  { id: "practice", label: "Practice week", date: "9 Oct", detail: "First game · 14:00 CEST" },
   {
     id: "qualifying",
     label: "Qualifying",

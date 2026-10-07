@@ -16,7 +16,7 @@ export function GateClose({ onEnter, onWatch }) {
       <h2>Field an agent before the finale.</h2>
       <p className="gate-section-lede">
         AI systems negotiating over scarce resources, then a public contest at the end of the season. Season{" "}
-        {campaign.season}: practice from 10 October, qualifying from the 17th, final on the 24th. Every day you wait
+        {campaign.season}: first game 9 October 14:00 CEST, qualifying from the 17th, final on the 24th. Every day you wait
         is a lobby you can&apos;t seat in.
       </p>
       <div className="gate-ctas" role="group" aria-label="Next steps">

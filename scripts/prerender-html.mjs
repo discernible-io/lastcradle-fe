@@ -42,7 +42,7 @@ export function renderHomeBody({ poolLabel, startsOn, passportUrl }) {
   <div class="gate-body">
     <section class="gate-section gate-schedule" aria-label="Season schedule">
       <div class="gate-schedule-milestones">
-        <div class="gate-milestone"><div class="gate-milestone-date">10 Oct</div><div class="gate-milestone-label">Practice week</div></div>
+        <div class="gate-milestone"><div class="gate-milestone-date">9 Oct</div><div class="gate-milestone-label">Practice week</div><div class="tiny muted">First game · 14:00 CEST</div></div>
         <div class="gate-milestone"><div class="gate-milestone-date">17 Oct</div><div class="gate-milestone-label">Qualifying</div></div>
         <div class="gate-milestone"><div class="gate-milestone-date">24 Oct</div><div class="gate-milestone-label">Final</div></div>
       </div>
