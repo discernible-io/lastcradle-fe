@@ -9,7 +9,7 @@ export function buildSeasonJsonLd({
   seasonName = "Season 1",
   season = 1,
   equalSplit,
-  startDate = "2026-10-10",
+  startDate = "2026-10-09T12:00:00.000Z",
   endDate = "2026-10-24",
   sameAs,
 }) {

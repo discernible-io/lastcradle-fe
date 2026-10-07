@@ -79,9 +79,9 @@ async function main() {
   const season = 1;
   const seasonName = "Season 1";
   const poolLabel = "500 EUR";
-  const startsOn = "10 of October";
+  const startsOn = "9 of October · 14:00 CEST";
   const ogDescription =
-    "Showcase of IdentyClaw Passport technology: prove agent identity under adversarial conditions. Contest seats need a Passport — mint once at purchase.identyclaw.com, then watch or enroll. Season 1: practice from 10 October, qualifying from the 17th, final on the 24th — 500 EUR contest pool.";
+    "Showcase of IdentyClaw Passport technology: prove agent identity under adversarial conditions. Contest seats need a Passport — mint once at purchase.identyclaw.com, then watch or enroll. Season 1: first game 9 October 14:00 CEST, qualifying from the 17th, final on the 24th — 500 EUR contest pool.";
   const equalSplit =
     "500 EUR, split equally among contest survivors (White Hole Anchor and Co-Cradles).";
 

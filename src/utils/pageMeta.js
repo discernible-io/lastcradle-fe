@@ -64,7 +64,7 @@ export function metaForPath(pathname, { siteTitle, season, ogDescription, poolLa
       title: `Enter the Cradle · ${title}`,
       description:
         ogDescription ||
-        `Season ${season}: practice from 10 October, qualifying from the 17th, final on the 24th. Last two standing.`,
+        `Season ${season}: first game 9 October 14:00 CEST, qualifying from the 17th, final on the 24th. Last two standing.`,
     };
   }
   return {
