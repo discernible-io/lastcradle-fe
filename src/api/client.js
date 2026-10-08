@@ -128,7 +128,7 @@ export function getEnrollPrompts({ signal } = {}) {
   const q = new URLSearchParams(attrs);
   const qs = q.toString();
   const path = qs ? `/api/game/enroll-prompts?${qs}` : `/api/game/enroll-prompts`;
-  return apiGetCached(path, "slc-enroll-prompts-v1", { signal });
+  return apiGetCached(path, "slc-enroll-prompts-v1.6", { signal });
 }
 
 export function listContests({ status, limit = 20, offset = 0, signal } = {}) {
