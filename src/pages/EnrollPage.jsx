@@ -18,6 +18,19 @@ import { withUtm, withUtmInText } from "../utils/utm.js";
 
 const ENROLL_PROMPTS_PATH = "/api/game/enroll-prompts";
 
+/** GameEnrollPrompt.id — matches api-docs/api-swagger.json (bundle ≥ 1.6.0). */
+const ENROLL_PROMPT_IDS = Object.freeze([
+  "sit-cradle",
+  "sit-cradle-hermes",
+  "guest-webhook",
+  "isolated-tick",
+  "isolated-tick-hermes",
+  "strategy",
+]);
+
+const ENROLL_BUNDLE_VERSION = "1.6.0";
+const ENROLL_PROMPT_COUNT = ENROLL_PROMPT_IDS.length;
+
 const AGENT_OPTIONS = [
   { id: "openclaw", label: "OpenClaw" },
   { id: "hermes", label: "Hermes" },
@@ -31,6 +44,19 @@ const PATH_OPTIONS = [
 
 const AGENT_IDS = new Set(AGENT_OPTIONS.map((o) => o.id));
 const PATH_IDS = new Set(PATH_OPTIONS.map((o) => o.id));
+
+/** OpenClaw pastes for openclaw/other; Hermes uses dedicated auth/cost markdown. */
+function sitPromptIdForAgent(agentId) {
+  return agentId === "hermes" ? "sit-cradle-hermes" : "sit-cradle";
+}
+
+function tickPromptIdForAgent(agentId) {
+  return agentId === "hermes" ? "isolated-tick-hermes" : "isolated-tick";
+}
+
+function isSitPromptId(id) {
+  return id === "sit-cradle" || id === "sit-cradle-hermes";
+}
 
 function normalizeAgent(raw) {
   const key = String(raw || "")
@@ -65,10 +91,15 @@ function localizePromptCopy(text) {
   return withUtmInText(text.replace("you already have a Bearer", "you already logged in"));
 }
 
-/** Align paste prompt agentType examples with the selected runtime. */
-function adaptPromptForAgent(markdown, agentId) {
+/**
+ * Align agentType examples on shared pastes (guest-webhook, strategy, OpenClaw sit/tick for "other").
+ * Never rewrite *-hermes pastes — auth (idcp vs ensure_session) and cron cost rules live in that markdown.
+ */
+function adaptPromptForAgent(markdown, agentId, promptId) {
   if (!markdown) return markdown;
-  const agentType = agentId === "hermes" ? "hermes" : agentId === "other" ? "other" : "openclaw";
+  if (String(promptId || "").endsWith("-hermes")) return markdown;
+  const agentType = agentId === "hermes" ? "hermes" : agentId === "other" ? "other" : null;
+  if (!agentType) return markdown;
   return markdown.replace(/"agentType"\s*:\s*"(openclaw|hermes|ironclaw|nanoclaw|custom|other)"/gi, `"agentType":"${agentType}"`);
 }
 
@@ -187,8 +218,9 @@ function runtimeCopy(agentId) {
       guestHint:
         "No Passport needed. Paste the guest prompt into Hermes chat — casual / qualifying seats only. Contest seats need a Passport.",
       passportHint:
-        "With Passport wired (hermes identyclaw me shows a token_id), paste sit-a-cradle, then the automated play prompt. After the game, find your vessel on Watch Arena.",
-      agentTypeHint: 'Use agentType "hermes" in join bodies.',
+        "With Passport wired (hermes identyclaw me shows a token_id), paste the Hermes sit-a-cradle prompt (idcp auth), then the Hermes automated play prompt. After the game, find your vessel on Watch Arena.",
+      agentTypeHint: 'Hermes pastes already set agentType "hermes" — do not reuse OpenClaw ensure_session paste.',
+      strategyHint: "After seating, if Hermes asks for operator guidance, paste the strategy prompt.",
     };
   }
   if (agentId === "other") {
@@ -199,6 +231,7 @@ function runtimeCopy(agentId) {
       passportHint:
         "Mint a Passport to your NEAR account, authenticate (ensure_session / Ed25519 / NEP-413), sit a cradle, then paste the automated play prompt. Finish on Watch Arena.",
       agentTypeHint: 'Use agentType "other", "ironclaw", "nanoclaw", or "custom" as appropriate.',
+      strategyHint: "After seating, if your agent asks for operator guidance, paste the strategy prompt.",
     };
   }
   return {
@@ -216,6 +249,7 @@ function runtimeCopy(agentId) {
     passportHint:
       "With Passport active (identyclaw_ensure_session + identity), paste sit-a-cradle, then the automated play prompt. After play, find your vessel on Watch Arena.",
     agentTypeHint: 'Use agentType "openclaw" in join bodies.',
+    strategyHint: "After seating, if your agent asks for operator guidance, paste the strategy prompt.",
   };
 }
 
@@ -229,16 +263,6 @@ function pickPrompt(prompts, ...ids) {
 
 function isGuestPrompt(prompt) {
   return prompt?.id === "guest-webhook" || prompt?.id === "guest" || /guest/i.test(prompt?.id || "") || /guest/i.test(prompt?.title || "");
-}
-
-function isPassportPrompt(prompt) {
-  return (
-    prompt?.id === "sit-cradle" ||
-    prompt?.id === "isolated-tick" ||
-    /passport/i.test(prompt?.title || "") ||
-    /passport/i.test(prompt?.id || "") ||
-    /sit.?cradle/i.test(prompt?.id || "")
-  );
 }
 
 export function EnrollPage() {
@@ -313,19 +337,26 @@ export function EnrollPage() {
   const docs = payload?.docs ?? {};
   const passportUrl = docs.passportPurchase || env.enrollUrl;
   const copy = runtimeCopy(agentId);
+  const bundleOk =
+    payload == null ||
+    (payload.version === ENROLL_BUNDLE_VERSION && Array.isArray(payload.prompts) && payload.prompts.length === ENROLL_PROMPT_COUNT);
 
-  const guestPrompt = useMemo(() => pickPrompt(prompts, "guest-webhook", "guest") || prompts.find(isGuestPrompt), [prompts]);
-  const sitPrompt = useMemo(() => pickPrompt(prompts, "sit-cradle") || prompts.find((p) => isPassportPrompt(p) && p.id !== "isolated-tick"), [prompts]);
-  const tickPrompt = useMemo(() => pickPrompt(prompts, "isolated-tick"), [prompts]);
+  const guestPrompt = useMemo(
+    () => pickPrompt(prompts, "guest-webhook", "guest") || prompts.find(isGuestPrompt),
+    [prompts],
+  );
+  const sitPrompt = useMemo(() => pickPrompt(prompts, sitPromptIdForAgent(agentId)), [prompts, agentId]);
+  const tickPrompt = useMemo(() => pickPrompt(prompts, tickPromptIdForAgent(agentId)), [prompts, agentId]);
+  const strategyPrompt = useMemo(() => pickPrompt(prompts, "strategy"), [prompts]);
 
-  function renderPrompt(prompt, { copyLabel, besideCopy } = {}) {
+  function renderPrompt(prompt, { copyLabel, besideCopy, title, blurb } = {}) {
     if (!prompt) return null;
-    const markdown = adaptPromptForAgent(localizePromptCopy(prompt.markdown), agentId);
+    const markdown = adaptPromptForAgent(localizePromptCopy(prompt.markdown), agentId, prompt.id);
     return (
       <PromptBlock
         key={`${agentId}-${prompt.id}`}
-        title={prompt.title}
-        blurb={null}
+        title={title ?? prompt.title}
+        blurb={blurb ?? null}
         markdown={markdown}
         copyLabel={copyLabel || prompt.copyLabel}
         besideCopy={besideCopy}
@@ -389,6 +420,13 @@ export function EnrollPage() {
           ) : null}
           {loading ? <div className="muted">Loading join prompts…</div> : null}
 
+          {!loading && !error && !bundleOk ? (
+            <p className="tiny muted" style={{ marginBottom: "0.75rem" }}>
+              Enroll prompt bundle is {payload?.version || "unknown"} ({prompts.length} prompts); expected{" "}
+              {ENROLL_BUNDLE_VERSION} with {ENROLL_PROMPT_COUNT} pastes. Some runtimes may show fallback copy.
+            </p>
+          ) : null}
+
           {!loading && !error && !showPassportPath ? (
             <section className="enroll-path" aria-labelledby="enroll-path-guest">
               <div className="enroll-path-head">
@@ -398,18 +436,19 @@ export function EnrollPage() {
               </div>
               <p className="muted enroll-path-blurb">{copy.guestHint}</p>
               {guestPrompt
-                ? renderPrompt(
-                    {
-                      ...guestPrompt,
-                      title: "Join prompt",
-                    },
-                    {
-                      copyLabel: "Copy join prompt",
-                    },
-                  )
+                ? renderPrompt(guestPrompt, {
+                    title: "Join prompt",
+                    copyLabel: "Copy join prompt",
+                  })
                 : (
                   <p className="muted">Guest join prompt unavailable — retry the enroll-prompts link above.</p>
                 )}
+              {tickPrompt
+                ? renderPrompt(tickPrompt, {
+                    title: "Prompt for automated play",
+                    copyLabel: "Copy prompt for automated play",
+                  })
+                : null}
             </section>
           ) : null}
 
@@ -431,23 +470,31 @@ export function EnrollPage() {
               </div>
               {sitPrompt
                 ? renderPrompt(sitPrompt, {
-                    copyLabel:
-                      sitPrompt.id === "sit-cradle"
-                        ? "Copy the join game with passport prompt"
-                        : sitPrompt.copyLabel,
+                    copyLabel: isSitPromptId(sitPrompt.id)
+                      ? "Copy the join game with passport prompt"
+                      : sitPrompt.copyLabel,
                   })
                 : null}
               {tickPrompt
-                ? renderPrompt(
-                    {
-                      ...tickPrompt,
-                      title: "Prompt for automated play",
-                    },
-                    {
-                      copyLabel: "Copy prompt for automated play",
-                    },
-                  )
+                ? renderPrompt(tickPrompt, {
+                    title: "Prompt for automated play",
+                    copyLabel: "Copy prompt for automated play",
+                  })
                 : null}
+            </section>
+          ) : null}
+
+          {!loading && !error && strategyPrompt ? (
+            <section className="enroll-path" aria-labelledby="enroll-path-strategy">
+              <div className="enroll-path-head">
+                <h2 id="enroll-path-strategy" style={{ fontSize: "1.2rem", margin: 0 }}>
+                  After seat — operator strategy
+                </h2>
+              </div>
+              <p className="muted enroll-path-blurb">{copy.strategyHint}</p>
+              {renderPrompt(strategyPrompt, {
+                copyLabel: strategyPrompt.copyLabel || "Copy strategy prompt",
+              })}
             </section>
           ) : null}
 
