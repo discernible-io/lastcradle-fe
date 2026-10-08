@@ -195,8 +195,33 @@ export function attributionHeaders(attrs = getUtm()) {
 }
 
 /**
+ * Bare API origins used as ensure_session / --base / apiEndpoint.
+ * Query params here break path-append login (e.g. idcp → /api/login → ENDPOINT_NOT_FOUND).
+ * funnel_id is purchase-attribution only — keep it off these bases.
+ * @param {URL} parsed
+ */
+function isApiSessionBase(parsed) {
+  const path = parsed.pathname;
+  if (path && path !== "/") return false;
+  const host = parsed.hostname.toLowerCase();
+  if (host === "api.lastcradle.io") return true;
+  if (host.startsWith("slcapi.")) return true;
+  try {
+    const fromEnv = import.meta.env?.REACT_APP_API_BASE;
+    if (fromEnv) {
+      const apiHost = new URL(String(fromEnv)).hostname.toLowerCase();
+      if (apiHost === host) return true;
+    }
+  } catch {
+    /* Node smoke / non-Vite */
+  }
+  return false;
+}
+
+/**
  * Stamp memory attribution (utm_* + funnel_id) onto an absolute URL.
  * Used for purchase.identyclaw.com CTAs and other outbound funnel hops.
+ * Never stamps (and strips) attribution on API session bases.
  */
 export function withUtm(url) {
   if (!url || typeof url !== "string") return url;
@@ -207,6 +232,8 @@ export function withUtm(url) {
   } catch {
     return url;
   }
+  // Pin API / ensure_session / --base must stay clean (no ?funnel_id=…).
+  if (isApiSessionBase(parsed)) return parsed.origin;
   const attribution = getAttribution();
   for (const key of ATTR_KEYS) {
     if (attribution[key] && !parsed.searchParams.has(key)) {
@@ -226,7 +253,9 @@ export function withUtm(url) {
 
 /**
  * Stamp attribution onto absolute http(s) URLs inside enroll / join prompt copy
- * so agents forwarding paste prompts keep the hop params.
+ * so agents forwarding paste prompts keep the hop params on purchase links.
+ * API session bases (Pin API line) stay clean — funnel_id belongs only on
+ * purchase.identyclaw.com, not ensure_session / --base / apiEndpoint.
  */
 export function withUtmInText(text) {
   if (!text || typeof text !== "string") return text;
