@@ -53,6 +53,20 @@ assert.ok(verifyStamped.includes("tokenId=abc123"));
 assert.ok(verifyStamped.includes("utm_source=test"));
 assert.ok(verifyStamped.includes("funnel_id=legacy-vid"));
 
+// Pin API / ensure_session / --base must stay clean (no purchase funnel_id).
+assert.equal(mod.withUtm("https://api.lastcradle.io"), "https://api.lastcradle.io");
+assert.equal(
+  mod.withUtm("https://api.lastcradle.io/?funnel_id=legacy-vid"),
+  "https://api.lastcradle.io",
+);
+const joinPrompt = mod.withUtmInText(
+  "Pin API: https://api.lastcradle.io\nBuy: https://purchase.identyclaw.com/",
+);
+assert.ok(joinPrompt.includes("https://api.lastcradle.io\n"));
+assert.ok(!joinPrompt.includes("api.lastcradle.io?"));
+assert.ok(joinPrompt.includes("purchase.identyclaw.com/"));
+assert.ok(joinPrompt.includes("funnel_id=legacy-vid"));
+
 assert.equal(mod.resolveFunnelLandDomain("lastcradle.io"), "lastcradle.io");
 assert.equal(mod.resolveFunnelLandDomain("slc.dihola.io"), null);
 
