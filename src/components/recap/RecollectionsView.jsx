@@ -6,6 +6,10 @@ import {
 } from "../arena/RestartFinale.jsx";
 import { useAgentLabels } from "../../hooks/useAgentLabels.js";
 import { PassportCta } from "../PassportCta.jsx";
+import {
+  agentTypeLabel,
+  normalizeAgentType,
+} from "../../utils/agentRuntime.js";
 
 const TOPIC_LABELS = [
   ["overview", "Overview"],
@@ -75,6 +79,36 @@ function survivorBadge(title) {
   return `${honor} — Winner`;
 }
 
+function firstText(...values) {
+  for (const value of values) {
+    const text = String(value ?? "").trim();
+    if (text) return text;
+  }
+  return "";
+}
+
+function indexAgents(agents = []) {
+  const byId = new Map();
+  const byRodit = new Map();
+  for (const agent of agents) {
+    if (!agent) continue;
+    if (agent.id) byId.set(agent.id, agent);
+    if (agent.roditId) byRodit.set(String(agent.roditId).toLowerCase(), agent);
+  }
+  return { byId, byRodit };
+}
+
+function runtimeFor(rec, index) {
+  const agent =
+    (rec?.agentId && index.byId.get(rec.agentId)) ||
+    (rec?.roditId && index.byRodit.get(String(rec.roditId).toLowerCase())) ||
+    null;
+  return {
+    agentType: firstText(rec?.agentType, agent?.agentType),
+    llmModel: firstText(rec?.llmModel, agent?.llmModel),
+  };
+}
+
 export function RecollectionsView({
   gameId,
   agents = [],
@@ -88,6 +122,7 @@ export function RecollectionsView({
     () => mergeLabelAgents(agents, recollections),
     [agents, recollections],
   );
+  const agentsByKey = useMemo(() => indexAgents(agents), [agents]);
   const { avatarOf, labelOf } = useAgentLabels(labelAgents);
   const [brokenAvatars, setBrokenAvatars] = useState(() => new Set());
 
@@ -158,6 +193,10 @@ export function RecollectionsView({
         const showAvatar = Boolean(avatarUrl) && !brokenAvatars.has(avatarKey);
         const honorTitle = rec.agentId ? titlesById.get(rec.agentId) : null;
         const winBadge = rec.won ? survivorBadge(honorTitle) : null;
+        const { agentType, llmModel } = runtimeFor(rec, agentsByKey);
+        const typeLabel = agentTypeLabel(agentType);
+        const typeKey = normalizeAgentType(agentType);
+        const typeClass = typeKey && /^[a-z0-9]+$/.test(typeKey) ? ` type-${typeKey}` : "";
         return (
           <article key={rec.id || rec.agentId} className="panel recap-card recollection-card">
             <div className="recollection-head">
@@ -185,7 +224,25 @@ export function RecollectionsView({
                   )}
                 </span>
                 <div>
-                  <h2 className="recollection-name">{name}</h2>
+                  <div className="recollection-name-row">
+                    <h2 className="recollection-name">{name}</h2>
+                    {typeLabel || llmModel ? (
+                      <span className="recollection-runtime">
+                        {typeLabel ? (
+                          <span
+                            className={`recollection-agent-type${typeClass}`}
+                          >
+                            {typeLabel}
+                          </span>
+                        ) : null}
+                        {llmModel ? (
+                          <span className="recollection-llm" title={llmModel}>
+                            {llmModel}
+                          </span>
+                        ) : null}
+                      </span>
+                    ) : null}
+                  </div>
                   <div className="tiny recollection-meta">
                     {contextLabel(rec.context)}
                     {honorTitle ? ` · ${honorTitle}` : rec.won ? " · survivor" : ""}
