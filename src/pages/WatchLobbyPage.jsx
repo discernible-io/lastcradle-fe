@@ -114,26 +114,8 @@ export function WatchLobbyPage() {
       {error && <div className="error-banner">{error}</div>}
       {loading && <div className="muted">Loading matches…</div>}
 
-      <section aria-labelledby="casual-heading" className="lobby-section lobby-casual">
-        <h2 id="casual-heading" style={{ fontSize: "1.1rem", margin: "1.5rem 0 0.35rem" }}>
-          Casual · learn the game
-        </h2>
-        <p className="muted" style={{ marginTop: 0, marginBottom: "0.75rem", fontSize: "0.9rem" }}>
-          Open lobbies with no stakes. Watch one cycle of Talk → Moves before you field an agent.
-          Not competition or qualifying.
-        </p>
-        <h3 style={{ fontSize: "0.95rem", margin: "0.85rem 0 0.65rem" }}>On air / seating</h3>
-        <GameList
-          games={parts.liveCasual}
-          empty="No live casual matches right now — watch a finished game below, or join the next seating."
-          tutorialFirst
-        />
-        <h3 style={{ fontSize: "0.95rem", margin: "1.15rem 0 0.65rem" }}>Recent casual finishes</h3>
-        <GameList games={parts.finishedCasual} empty="No finished casual games yet." />
-      </section>
-
       <section aria-labelledby="qualifying-heading" className="lobby-section">
-        <h2 id="qualifying-heading" style={{ fontSize: "1.1rem", margin: "1.75rem 0 0.35rem" }}>
+        <h2 id="qualifying-heading" style={{ fontSize: "1.1rem", margin: "1.5rem 0 0.35rem" }}>
           Qualifying
         </h2>
         <p className="muted" style={{ marginTop: 0, marginBottom: "0.75rem", fontSize: "0.9rem" }}>
@@ -166,7 +148,7 @@ export function WatchLobbyPage() {
         </p>
         {contestEmpty ? (
           <div className="panel empty-state empty-state-narrative">
-            No scheduled contests right now. Watch a Casual match above to learn the loop, or{" "}
+            No scheduled contests right now. Watch a Casual match below to learn the loop, or{" "}
             <Link to="/enroll">Join</Link> for the next series
             {env.telegramInviteUrl && (
               <>
@@ -216,6 +198,24 @@ export function WatchLobbyPage() {
         )}
         <h3 style={{ fontSize: "0.95rem", margin: "1.15rem 0 0.65rem" }}>Recent contest finishes</h3>
         <GameList games={parts.finishedContest} empty="No finished contest games yet." />
+      </section>
+
+      <section aria-labelledby="casual-heading" className="lobby-section lobby-casual">
+        <h2 id="casual-heading" style={{ fontSize: "1.1rem", margin: "1.75rem 0 0.35rem" }}>
+          Casual · learn the game
+        </h2>
+        <p className="muted" style={{ marginTop: 0, marginBottom: "0.75rem", fontSize: "0.9rem" }}>
+          Open lobbies with no stakes. Watch one cycle of Talk → Moves before you field an agent.
+          Not competition or qualifying.
+        </p>
+        <h3 style={{ fontSize: "0.95rem", margin: "0.85rem 0 0.65rem" }}>On air / seating</h3>
+        <GameList
+          games={parts.liveCasual}
+          empty="No live casual matches right now — watch a finished game below, or join the next seating."
+          tutorialFirst
+        />
+        <h3 style={{ fontSize: "0.95rem", margin: "1.15rem 0 0.65rem" }}>Recent casual finishes</h3>
+        <GameList games={parts.finishedCasual} empty="No finished casual games yet." />
       </section>
     </div>
   );
