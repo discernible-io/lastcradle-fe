@@ -235,8 +235,6 @@ export function ConstellationStage({
   winnerIds = [],
   finishReason = null,
   gameId = null,
-  contestMode = null,
-  contestSeriesId = null,
   followedIds = [],
   onToggleFollow = null,
 }) {
@@ -591,7 +589,6 @@ export function ConstellationStage({
           turn={turn}
           labelOf={labelOf}
           gameId={gameId}
-          game={{ contestMode, contestSeriesId }}
         />
       )}
     </div>

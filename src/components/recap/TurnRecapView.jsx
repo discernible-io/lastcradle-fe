@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAgentLabels } from "../../hooks/useAgentLabels.js";
-import { contestModeLabel } from "../../utils/gameLabel.js";
+import { gameModeLabel } from "../../utils/gameLabel.js";
 import { isQuietLiveTurn } from "../../utils/visibleTurns.js";
 import { PassportCta } from "../PassportCta.jsx";
 import { ShareActions } from "../campaign/ShareActions.jsx";
@@ -154,7 +154,7 @@ export function TurnRecapView({
         <h1>{report.headline}</h1>
         <p className="muted" style={{ margin: "0 0 1rem" }}>
           {report.livingCount} cradles remaining
-          {` · ${contestModeLabel({ contestMode: report.contestMode })}`}
+          {` · ${gameModeLabel()}`}
           {quietLive ? " · current cycle (no public activity yet)" : ""}
           {isFinishingTurn ? " · finishing cycle" : ""}
         </p>

@@ -4,12 +4,7 @@ import { getGameState } from "../../api/client.js";
 import { useAgentLabels } from "../../hooks/useAgentLabels.js";
 import { participantInitials } from "../../utils/agentLabel.js";
 import { JoiningMeta } from "../campaign/JoiningMeta.jsx";
-import { contestModeLabel, contestModeTagClass, formatGameStartedAt, statusLabel } from "../../utils/gameLabel.js";
-
-function modeTag(game) {
-  const label = contestModeLabel(game);
-  return <span className={`tag ${contestModeTagClass(game)}`}>{label}</span>;
-}
+import { formatGameStartedAt, gameModeLabel, gameModeTagClass, statusLabel } from "../../utils/gameLabel.js";
 
 function watchCta(status) {
   const s = String(status || "").toLowerCase();
@@ -51,7 +46,7 @@ function GameRow({ game: g, tutorial = false }) {
     <div className={`panel game-row${tutorial ? " game-row-tutorial" : ""}${seating ? " game-row-seating" : ""}`} title={`Game ${g.id}`}>
       <div>
         <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginBottom: "0.25rem", flexWrap: "wrap" }}>
-          {modeTag(g)}
+          <span className={`tag ${gameModeTagClass()}`}>{gameModeLabel()}</span>
           <span className="tag">{statusLabel(g.status)}</span>
           {tutorial && <span className="tag tutorial-tag">Best first watch</span>}
         </div>
@@ -78,9 +73,14 @@ function GameRow({ game: g, tutorial = false }) {
           </Link>
         )}
         {g.status === "finished" && (
-          <Link className="btn btn-ghost" to={`/watch/${g.id}/recollections`}>
-            Recollections
-          </Link>
+          <>
+            <Link className="btn btn-ghost" to={`/watch/${g.id}/recollections`}>
+              Recollections
+            </Link>
+            <Link className="btn btn-ghost" to="/ranking">
+              Ranking
+            </Link>
+          </>
         )}
         {tutorial && (
           <Link className="btn btn-ghost" to="/enroll">

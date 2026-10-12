@@ -21,8 +21,8 @@ export function buildRecapHeadline(
   return headline;
 }
 
-export function recapOgDescription(turn, { season = 1, siteName = "Synthetics' Last Cradle" } = {}) {
-  return `Shareable recap of cycle ${turn} — ${siteName}, Season ${season}.`;
+export function recapOgDescription(turn, { siteName = "Synthetics' Last Cradle" } = {}) {
+  return `Shareable recap of cycle ${turn} — ${siteName}. Finished games update the always-on ranking.`;
 }
 
 export function recapDocumentTitle(headline, siteTitle) {

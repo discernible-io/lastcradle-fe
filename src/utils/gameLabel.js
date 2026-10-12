@@ -27,54 +27,23 @@ export function statusLabel(status) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-/**
- * Display labels are Casual | Qualifying | Contest.
- * Wire contestMode: null/absent → Casual, practice → Qualifying, definitive|contest → Contest.
- */
-export function wireContestMode(game) {
-  const raw = game?.contestMode;
-  if (raw == null || raw === "") return null;
-  return String(raw).toLowerCase();
-}
-
-export function isContestGame(game) {
-  const mode = wireContestMode(game);
-  return mode === "definitive" || mode === "contest" || Boolean(game?.contestSeriesId);
-}
-
-export function isQualifyingGame(game) {
-  return wireContestMode(game) === "practice";
-}
-
-export function isCasualGame(game) {
-  return !isContestGame(game) && !isQualifyingGame(game);
-}
-
-export function contestModeLabel(game) {
-  if (isContestGame(game)) return "Contest";
-  if (isQualifyingGame(game)) return "Qualifying";
+/** Always-on casual games — mode badge is optional Casual only. */
+export function gameModeLabel() {
   return "Casual";
 }
 
-export function contestModeTagClass(game) {
-  if (isContestGame(game)) return "definitive";
-  if (isQualifyingGame(game)) return "qualifying";
+export function gameModeTagClass() {
   return "casual";
-}
-
-/** Best-effort live game id on a contest series payload. */
-export function contestLiveGameId(contest) {
-  if (!contest || typeof contest !== "object") return null;
-  return (
-    contest.gameId ||
-    contest.currentGameId ||
-    contest.liveGameId ||
-    contest.game?.id ||
-    contest.games?.[0]?.id ||
-    null
-  );
 }
 
 export function joiningWindowOf(entity) {
   return entity?.joiningWindow || entity?.game?.joiningWindow || null;
+}
+
+/** Guests are per-session ladder rows — not stable player profiles. */
+export function isGuestRankingEntry(entry) {
+  if (!entry || typeof entry !== "object") return false;
+  if (entry.isGuest === true) return true;
+  const id = String(entry.roditId || "").toLowerCase();
+  return id.startsWith("guest_");
 }

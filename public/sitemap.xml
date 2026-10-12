@@ -21,8 +21,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://lastcradle.io/prizes</loc>
-    <changefreq>weekly</changefreq>
+    <loc>https://lastcradle.io/ranking</loc>
+    <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
 </urlset>

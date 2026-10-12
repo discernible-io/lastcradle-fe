@@ -1,4 +1,4 @@
-import { gameStartedAt, isContestGame } from "./gameLabel.js";
+import { gameStartedAt } from "./gameLabel.js";
 
 const LIVE_STATUS_RANK = { running: 0, joining: 1, lobby: 2 };
 
@@ -11,8 +11,8 @@ function timeMs(game) {
 }
 
 /**
- * Prefer a live arena (contest over qualifying; running > joining > lobby),
- * else the most recent finished game. Optional fallback id when the list is empty.
+ * Prefer a live arena (running > joining > lobby), else the most recent finished game.
+ * Optional fallback id when the list is empty.
  */
 export function pickFeaturedWatchGame(games, { fallbackId = null } = {}) {
   const list = Array.isArray(games) ? games.filter((g) => g?.id) : [];
@@ -20,8 +20,6 @@ export function pickFeaturedWatchGame(games, { fallbackId = null } = {}) {
   const live = list
     .filter((g) => LIVE_STATUS_RANK[String(g.status || "")] != null)
     .sort((a, b) => {
-      const contestDiff = Number(isContestGame(b)) - Number(isContestGame(a));
-      if (contestDiff) return contestDiff;
       const statusDiff =
         LIVE_STATUS_RANK[String(a.status)] - LIVE_STATUS_RANK[String(b.status)];
       if (statusDiff) return statusDiff;

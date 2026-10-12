@@ -13,7 +13,7 @@ import { WatchGuide, WatchHelpButton } from "../components/arena/WatchGuide.jsx"
 import { PassportCta } from "../components/PassportCta.jsx";
 import { getHonors } from "../api/client.js";
 import { useEffect, useState } from "react";
-import { contestModeLabel, contestModeTagClass } from "../utils/gameLabel.js";
+import { gameModeLabel, gameModeTagClass } from "../utils/gameLabel.js";
 import {
   gameStatusLabel,
   gameStatusSubtitle,
@@ -77,9 +77,7 @@ export function ArenaPage() {
           {statusTitle}
         </span>
         {state?.game && (
-          <span className={`tag ${contestModeTagClass(state.game)}`}>
-            {contestModeLabel(state.game)}
-          </span>
+          <span className={`tag ${gameModeTagClass()}`}>{gameModeLabel()}</span>
         )}
         <span
           className={`tiny live-pill${sseConnected ? " is-live" : " is-reconnect"}`}
@@ -165,8 +163,6 @@ export function ArenaPage() {
             winnerIds={state.game?.winnerIds || []}
             finishReason={state.game?.finishReason || honors?.finishReason}
             gameId={gameId}
-            contestMode={state.game?.contestMode}
-            contestSeriesId={state.game?.contestSeriesId}
             followedIds={followedIds}
             onToggleFollow={finished ? null : toggleFollow}
           />

@@ -14,7 +14,6 @@ export function useArenaData(gameId) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [flashTrades, setFlashTrades] = useState([]);
-  const [prizeSettlement, setPrizeSettlement] = useState(null);
   const abortRef = useRef(null);
 
   const refresh = useCallback(async () => {
@@ -54,17 +53,13 @@ export function useArenaData(gameId) {
   const { connected, lastEvent, error: sseError } = useGameEvents(gameId, {
     enabled: Boolean(gameId),
     onEvent: (ev) => {
-      if (ev.type === "prize_settlement") {
-        setPrizeSettlement(ev.data);
-      }
       if (
         ev.type === "phase_change" ||
         ev.type === "turn_advanced" ||
         ev.type === "game_started" ||
         ev.type === "game_cancelled" ||
         ev.type === "game_finished" ||
-        ev.type === "recollection_submitted" ||
-        ev.type === "prize_settlement"
+        ev.type === "recollection_submitted"
       ) {
         refresh();
       }
@@ -73,7 +68,6 @@ export function useArenaData(gameId) {
 
   useEffect(() => {
     setLoading(true);
-    setPrizeSettlement(null);
     refresh();
     return () => abortRef.current?.abort();
   }, [refresh]);
@@ -106,7 +100,6 @@ export function useArenaData(gameId) {
     error: error || sseError,
     sseConnected: connected,
     lastEvent,
-    prizeSettlement,
     refresh,
   };
 }

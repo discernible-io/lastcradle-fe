@@ -2,15 +2,10 @@ export function serializeJsonLd(data) {
   return JSON.stringify(data).replace(/</g, "\\u003c");
 }
 
-export function buildSeasonJsonLd({
+export function buildSiteJsonLd({
   origin,
   siteTitle,
   ogDescription,
-  seasonName = "Season 1",
-  season = 1,
-  equalSplit,
-  startDate = "2026-10-09T12:00:00.000Z",
-  endDate = "2026-10-24",
   sameAs,
 }) {
   const root = String(origin || "").replace(/\/$/, "");
@@ -32,31 +27,24 @@ export function buildSeasonJsonLd({
       },
       org,
       {
-        "@type": "Event",
-        name: `${siteTitle} — ${seasonName}`,
+        "@type": "WebApplication",
+        name: siteTitle,
         description: ogDescription,
         url: `${root}/`,
-        eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
-        eventStatus: "https://schema.org/EventScheduled",
-        startDate,
-        endDate,
-        location: {
-          "@type": "VirtualLocation",
-          url: `${root}/watch`,
-        },
-        organizer: {
-          "@type": "Organization",
-          name: "Discernible",
-          url: "https://www.discernible.io",
-        },
+        applicationCategory: "GameApplication",
+        operatingSystem: "Web",
         offers: {
           "@type": "Offer",
-          name: `Season ${season} contest pool`,
-          description: equalSplit,
-          url: `${root}/prizes`,
-          availability: "https://schema.org/InStock",
+          price: "0",
+          priceCurrency: "USD",
+          url: `${root}/enroll`,
         },
       },
     ],
   };
+}
+
+/** @deprecated Prefer buildSiteJsonLd — season/contest Event schema retired. */
+export function buildSeasonJsonLd(opts) {
+  return buildSiteJsonLd(opts);
 }

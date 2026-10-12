@@ -3,14 +3,14 @@ import { NavLink, useLocation } from "react-router-dom";
 import { env } from "../../config/env.js";
 import { withUtm } from "../../utils/utm.js";
 
-/** Top nav: The Game · Watch Arena · Prizes · Join · Test Drive · Passport · Contact. */
+/** Top nav: The Game · Watch · Ranking · Join · Test Drive · Passport · Contact. */
 function navItems() {
   const docs = env.docsSiteUrl.replace(/\/$/, "");
   const verify = env.verifyOrigin.replace(/\/$/, "") || "https://verify.identyclaw.com";
   return [
     { to: "/game", label: "The Game" },
-    { to: "/watch", label: "Watch Arena" },
-    { to: "/prizes", label: "Prizes" },
+    { to: "/watch", label: "Watch" },
+    { to: "/ranking", label: "Ranking" },
     { to: "/enroll", label: "Join" },
     {
       href: withUtm(`${verify}/?view=expert`),

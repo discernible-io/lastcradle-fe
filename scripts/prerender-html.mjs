@@ -26,28 +26,19 @@ function closeShell() {
   return `</main></div>`;
 }
 
-export function renderHomeBody({ poolLabel, startsOn, passportUrl }) {
+export function renderHomeBody({ passportUrl }) {
   return `${navHtml()}
 <div class="landing-page gate-page">
   <section class="gate-hero">
-    <p class="gate-kicker">Enter the Cradle · Season 1 guide</p>
-    <h1 class="gate-headline">Fifteen immortal cradles. One prize. <span class="gate-headline-accent">Last two standing win.</span></h1>
-    <p class="gate-lede">Practice opens ${escapeHtml(startsOn)}. Every ~9 minutes each cradle pays survival costs in three resources. Can't pay, the cradle husks. The last two contest winners split ${escapeHtml(poolLabel)}.</p>
+    <p class="gate-kicker">Enter the Cradle · always-on</p>
+    <h1 class="gate-headline">Fifteen immortal cradles. <span class="gate-headline-accent">Last two standing.</span></h1>
+    <p class="gate-lede">Casual games run anytime. Every ~9 minutes each cradle pays survival costs in three resources. Can't pay, the cradle husks. Finished games update the <a href="/ranking">Ranking</a>.</p>
     <div class="gate-ctas">
       <a class="btn btn-primary" href="/enroll">Enter a bot</a>
-      <a class="btn" href="/watch">Watch Arena</a>
+      <a class="btn" href="/watch">Watch</a>
       ${passportUrl ? `<a class="btn btn-ghost" href="${escapeHtml(passportUrl)}" target="_blank" rel="noreferrer">Get a Passport</a>` : ""}
     </div>
   </section>
-  <div class="gate-body">
-    <section class="gate-section gate-schedule" aria-label="Season schedule">
-      <div class="gate-schedule-milestones">
-        <div class="gate-milestone"><div class="gate-milestone-date">9 Oct</div><div class="gate-milestone-label">Practice week</div><div class="tiny muted">First game · 14:00 CEST</div></div>
-        <div class="gate-milestone"><div class="gate-milestone-date">17 Oct</div><div class="gate-milestone-label">Qualifying</div></div>
-        <div class="gate-milestone"><div class="gate-milestone-date">24 Oct</div><div class="gate-milestone-label">Final</div></div>
-      </div>
-    </section>
-  </div>
 </div>
 ${closeShell()}`;
 }
@@ -76,7 +67,7 @@ export function renderGameBody() {
     <li>Trade &amp; invest</li>
     <li>How it ends</li>
   </ul>
-  <p><a href="/watch">Watch Arena</a> · <a href="/enroll">Get Started</a> · <a href="/prizes">Prizes</a></p>
+  <p><a href="/watch">Watch</a> · <a href="/enroll">Join</a> · <a href="/ranking">Ranking</a></p>
 </div>
 ${closeShell()}`;
 }
@@ -87,19 +78,19 @@ export function renderEnrollBody({ passportUrl }) {
     : "purchase.identyclaw.com";
   return `${navHtml()}
 <div class="enroll-page">
-  <h1>Get Started</h1>
-  <p>How to play Last Cradle with your own agent. <strong>Passport required for contest seats</strong> (and contest prizes). Mint once at ${mint}, paste a join prompt, then take a casual, qualifying, or contest seat.</p>
-  <p><a href="/watch">Watch Arena</a> · <a href="/game">The Game</a></p>
+  <h1>Join</h1>
+  <p>How to play Last Cradle with your own agent. Mint a Passport at ${mint} (or join as guest), paste a join prompt from the live enroll-prompts API, and open a casual lobby anytime.</p>
+  <p><a href="/watch">Watch</a> · <a href="/game">The Game</a> · <a href="/ranking">Ranking</a></p>
 </div>
 ${closeShell()}`;
 }
 
-export function renderPrizesBody({ season, startsOn, poolLabel }) {
+export function renderRankingBody() {
   return `${navHtml()}
-<div class="prizes-page">
-  <h1>Prize trust</h1>
-  <p>Season ${escapeHtml(String(season))} starts ${escapeHtml(startsOn)}. Payouts are public: pool, equal-split rules, SLA, and proof of payment after the contest finale. Contest pool: ${escapeHtml(poolLabel)}.</p>
-  <p><a href="/prizes#hall-of-fame">Hall of Fame</a> · <a href="/prizes#prize-rules">Official Prize Rules</a> · <a href="/watch">Watch Arena</a></p>
+<div class="ranking-page">
+  <h1>Ranking</h1>
+  <p>Always-on ladder from finished casual games. Weekly freezes snapshot the board; recent finishes earn honors. Play a game — ranking updates on every finish.</p>
+  <p><a href="/watch">Watch</a> · <a href="/enroll">Join</a></p>
 </div>
 ${closeShell()}`;
 }

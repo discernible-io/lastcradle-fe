@@ -7,7 +7,6 @@ import { TurnRecapView } from "../components/recap/TurnRecapView.jsx";
 import { useGameEvents } from "../hooks/useGameEvents.js";
 import { usePollWhenDisconnected } from "../hooks/usePollWhenDisconnected.js";
 import { env } from "../config/env.js";
-import { campaign } from "../config/campaign.js";
 import { recapDocumentTitle, recapOgDescription } from "../../shared/recapHeadline.mjs";
 import { setPageMetaOverrides } from "../utils/pageMetaOverrides.js";
 import {
@@ -40,7 +39,6 @@ export function TurnRecapPage() {
     setPageMetaOverrides({
       title: recapDocumentTitle(report.headline, env.title),
       description: recapOgDescription(report.turn, {
-        season: campaign.season,
         siteName: env.title,
       }),
     });

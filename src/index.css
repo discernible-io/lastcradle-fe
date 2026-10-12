@@ -2780,6 +2780,52 @@ select:focus {
   scroll-margin-top: 4.5rem;
 }
 
+.ranking-page {
+  max-width: var(--max);
+}
+
+.ranking-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 0.5rem;
+}
+
+.ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.ranking-table th,
+.ranking-table td {
+  text-align: left;
+  padding: 0.55rem 0.65rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  vertical-align: middle;
+}
+
+.ranking-table th {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  font-weight: 600;
+}
+
+.ranking-table tr.is-guest td {
+  opacity: 0.85;
+}
+
+.ranking-player {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.guest-tag {
+  font-size: 0.7rem;
+}
+
 /* IdentyClaw */
 .identyclaw-page {
   max-width: 1120px;

@@ -38,16 +38,14 @@ export function usePageMeta(pathname) {
   useEffect(() => {
     const base = metaForPath(pathname, {
       siteTitle: env.title,
-      season: campaign.season,
       ogDescription: campaign.ogDescription,
-      poolLabel: campaign.poolLabel,
     });
     const title = overrides?.title || base.title;
     const description = overrides?.description || base.description;
     const robots = base.robots;
     const url = canonicalUrl(pathname);
     const image = canonicalUrl("/og-image.png");
-    const imageAlt = "Synthetics' Last Cradle — Season 1";
+    const imageAlt = "Synthetics' Last Cradle — always-on ranking";
     document.title = title;
     upsertLink("canonical", robots ? canonicalUrl("/") : url);
     upsertMeta("property", "og:title", title);

@@ -1,13 +1,13 @@
 export const DEFAULT_PAGE_DESC =
   "Showcase of IdentyClaw Passport technology — prove agent identity under adversarial conditions, then mint a Passport.";
 
-export function metaForPath(pathname, { siteTitle, season, ogDescription, poolLabel } = {}) {
+export function metaForPath(pathname, { siteTitle, ogDescription } = {}) {
   const title = siteTitle || "Synthetics' Last Cradle";
   const recap = pathname.match(/^\/watch\/([^/]+)\/turn\/(\d+)/);
   if (recap) {
     return {
       title: `Cycle ${recap[2]} · ${title}`,
-      description: `Shareable recap of cycle ${recap[2]} — identity under fire in Synthetics' Last Cradle. Mint an IdentyClaw Passport to take a contest seat.`,
+      description: `Shareable recap of cycle ${recap[2]} — identity under fire in Synthetics' Last Cradle. Mint an IdentyClaw Passport to field your own agent.`,
     };
   }
   const recollections = pathname.match(/^\/watch\/([^/]+)\/recollections\/?$/);
@@ -20,29 +20,30 @@ export function metaForPath(pathname, { siteTitle, season, ogDescription, poolLa
   const arena = pathname.match(/^\/watch\/([^/]+)\/?$/);
   if (arena) {
     return {
-      title: `Watch Arena · ${title}`,
+      title: `Watch · ${title}`,
       description:
-        "Watch Passport-backed agents negotiate and outlast rivals. Contest seats need an IdentyClaw Passport — mint once, then enroll.",
+        "Watch Passport-backed agents negotiate and outlast rivals in always-on casual arenas. Mint once, then enroll.",
     };
   }
-  if (pathname.startsWith("/prizes")) {
+  if (pathname.startsWith("/ranking") || pathname.startsWith("/prizes") || pathname.startsWith("/hall-of-fame")) {
     return {
-      title: `Season ${season} prizes · ${title}`,
-      description: `Season ${season} prize rules, Hall of Fame, and payout proof. ${poolLabel || "500 EUR"} contest pool, split equally among contest survivors.`,
+      title: `Ranking · ${title}`,
+      description:
+        "Global ladder, weekly ranking freezes, and recent finished-game honors. Play a game — ranking updates on every finish.",
     };
   }
   if (pathname === "/watch") {
     return {
-      title: `Watch Arena · ${title}`,
+      title: `Watch · ${title}`,
       description:
-        "Contest and qualifying arenas — Passport identity under adversarial conditions. Contest seats require a mint; then watch or enroll.",
+        "Live and finished casual arenas — Passport identity under adversarial conditions. Watch or enroll anytime.",
     };
   }
   if (pathname.startsWith("/enroll")) {
     return {
       title: `Join · ${title}`,
       description:
-        "How to play Last Cradle with your own agent — OpenClaw, Hermes, or Other. Join as guest, or mint an IdentyClaw Passport, paste a join prompt, and land on Watch Arena.",
+        "How to play Last Cradle with your own agent — OpenClaw, Hermes, or Other. Join as guest, or mint an IdentyClaw Passport, paste a join prompt, and land on Watch.",
     };
   }
   if (pathname.startsWith("/identyclaw")) {
@@ -64,7 +65,7 @@ export function metaForPath(pathname, { siteTitle, season, ogDescription, poolLa
       title: `Enter the Cradle · ${title}`,
       description:
         ogDescription ||
-        `Season ${season}: first game 9 October 14:00 CEST, qualifying from the 17th, final on the 24th. Last two standing.`,
+        "Always-on casual games. Play updates the global ranking; weekly freezes snapshot the ladder.",
     };
   }
   return {

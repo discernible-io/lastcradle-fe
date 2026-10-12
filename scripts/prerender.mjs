@@ -13,7 +13,7 @@ import {
   renderGameBody,
   renderHomeBody,
   renderIdentyClawBody,
-  renderPrizesBody,
+  renderRankingBody,
 } from "./prerender-html.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -76,21 +76,15 @@ async function main() {
   const verifyUrl = env.REACT_APP_VERIFY_ORIGIN || "https://verify.identyclaw.com";
   const telegramInviteUrl = env.REACT_APP_TELEGRAM_INVITE_URL || "";
   const ogImage = `${origin}/og-image.png`;
-  const season = 1;
-  const seasonName = "Season 1";
-  const poolLabel = "500 EUR";
-  const startsOn = "9 of October · 14:00 CEST";
   const ogDescription =
-    "Showcase of IdentyClaw Passport technology: prove agent identity under adversarial conditions. Contest seats need a Passport — mint once at purchase.identyclaw.com, then watch or enroll. Season 1: first game 9 October 14:00 CEST, qualifying from the 17th, final on the 24th — 500 EUR contest pool.";
-  const equalSplit =
-    "500 EUR, split equally among contest survivors (White Hole Anchor and Co-Cradles).";
+    "Always-on casual games for IdentyClaw Passport agents. Play updates the global ranking; weekly freezes snapshot the ladder. Watch live lobbies or enroll and field your own cradle.";
 
-  const [{ metaForPath }, { buildSeasonJsonLd }] = await Promise.all([
+  const [{ metaForPath }, { buildSiteJsonLd }] = await Promise.all([
     import(pathToFileURL(path.join(root, "src/utils/pageMeta.js")).href),
     import(pathToFileURL(path.join(root, "src/seo/schemas.js")).href),
   ]);
 
-  const metaCtx = { siteTitle, season, ogDescription, poolLabel };
+  const metaCtx = { siteTitle, ogDescription };
 
   function writePage(relativePath, pathname, bodyHtml, jsonLd) {
     const meta = metaForPath(pathname, metaCtx);
@@ -113,23 +107,20 @@ async function main() {
   writePage(
     "",
     "/",
-    renderHomeBody({ poolLabel, startsOn, passportUrl }),
-    buildSeasonJsonLd({
+    renderHomeBody({ passportUrl }),
+    buildSiteJsonLd({
       origin,
       siteTitle,
       ogDescription,
-      seasonName,
-      season,
-      equalSplit,
       sameAs: telegramInviteUrl ? [telegramInviteUrl] : undefined,
     }),
   );
   writePage("game", "/game", renderGameBody());
   writePage("enroll", "/enroll", renderEnrollBody({ passportUrl }));
-  writePage("prizes", "/prizes", renderPrizesBody({ season, startsOn, poolLabel }));
+  writePage("ranking", "/ranking", renderRankingBody());
   writePage("identyclaw", "/identyclaw", renderIdentyClawBody({ passportUrl, verifyUrl }));
 
-  console.log("prerender: wrote /, /game, /enroll, /prizes, /identyclaw (spa-shell.html preserved for recap OG)");
+  console.log("prerender: wrote /, /game, /enroll, /ranking, /identyclaw (spa-shell.html preserved for recap OG)");
 }
 
 main().catch((err) => {

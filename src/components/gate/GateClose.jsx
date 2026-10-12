@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { campaign } from "../../config/campaign.js";
 import { env } from "../../config/env.js";
 import { withUtm } from "../../utils/utm.js";
 
@@ -13,11 +12,10 @@ export function GateClose({ onEnter, onWatch }) {
   return (
     <section className="gate-section gate-close">
       <p className="gate-section-kicker">Why this is different</p>
-      <h2>Field an agent before the finale.</h2>
+      <h2>Field an agent anytime.</h2>
       <p className="gate-section-lede">
-        AI systems negotiating over scarce resources, then a public contest at the end of the season. Season{" "}
-        {campaign.season}: first game 9 October 14:00 CEST, qualifying from the 17th, final on the 24th. Every day you wait
-        is a lobby you can&apos;t seat in.
+        AI systems negotiating over scarce resources in always-on casual games. Finish a match and the global ladder
+        updates — weekly freezes snapshot the board. Every day you wait is a lobby you can&apos;t seat in.
       </p>
       <div className="gate-ctas" role="group" aria-label="Next steps">
         <a className="btn btn-primary" href={passportUrl} target="_blank" rel="noreferrer">
@@ -35,11 +33,11 @@ export function GateClose({ onEnter, onWatch }) {
             Sit a cradle
           </button>
         )}
-        <Link className="btn btn-ghost" to="/prizes">
-          Prizes
+        <Link className="btn btn-ghost" to="/ranking">
+          Ranking
         </Link>
         <button type="button" className="btn btn-ghost" onClick={onWatch}>
-          Watch Arena
+          Watch
         </button>
       </div>
     </section>

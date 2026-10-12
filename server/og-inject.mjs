@@ -17,7 +17,6 @@ function loadConfig() {
     apiBase: "",
     publicOrigin: "",
     siteTitle: "Synthetics' Last Cradle",
-    season: 1,
     htmlPath: "/usr/share/nginx/html/spa-shell.html",
     listenHost: "127.0.0.1",
     listenPort: 8080,
@@ -44,7 +43,6 @@ const HTML_PATH = cfg.htmlPath || "/usr/share/nginx/html/index.html";
 const API_BASE = String(cfg.apiBase || "").replace(/\/$/, "");
 const PUBLIC_ORIGIN = String(cfg.publicOrigin || "").replace(/\/$/, "");
 const SITE_TITLE = cfg.siteTitle || "Synthetics' Last Cradle";
-const SEASON = Number(cfg.season) || 1;
 const CACHE_TTL_MS = Number(cfg.cacheTtlMs) || 60000;
 const FETCH_TIMEOUT_MS = Number(cfg.fetchTimeoutMs) || 2500;
 
@@ -162,7 +160,7 @@ async function buildInjectedHtml(gameId, turn) {
   }
 
   const title = recapDocumentTitle(headline, SITE_TITLE);
-  const description = recapOgDescription(turn, { season: SEASON, siteName: SITE_TITLE });
+  const description = recapOgDescription(turn, { siteName: SITE_TITLE });
   const html = injectMeta(base, { title, description, url, image });
   cacheSet(cacheKey, html);
   return html;

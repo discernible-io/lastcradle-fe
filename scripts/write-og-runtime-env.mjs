@@ -39,7 +39,6 @@ const body = {
   apiBase,
   publicOrigin,
   siteTitle,
-  season: 1,
   htmlPath: "/usr/share/nginx/html/spa-shell.html",
   listenHost: "127.0.0.1",
   listenPort: 8080,

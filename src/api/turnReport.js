@@ -124,6 +124,5 @@ export function buildTurnReport({
     livingCount: living.length,
     previousLivingCount: previousLivingIds ? previousLivingIds.length : null,
     gameStatus: state?.game?.status,
-    contestMode: state?.game?.contestMode,
   };
 }

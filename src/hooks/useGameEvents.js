@@ -57,7 +57,6 @@ export function useGameEvents(gameId, { enabled = true, onEvent } = {}) {
       "game_finished",
       "game_started",
       "game_cancelled",
-      "prize_settlement",
       "recollection_submitted",
       "connected",
     ]) {

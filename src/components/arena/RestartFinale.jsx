@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { isContestGame } from "../../utils/gameLabel.js";
 
 const TITLE_BY_RANK = {
   1: "White Hole Anchor",
@@ -64,12 +63,10 @@ export function RestartFinale({
   turn,
   labelOf,
   gameId = null,
-  game = null,
 }) {
   const honorees = resolveRestartHonorees({ honors, agents, winnerIds, labelOf });
   const deadline = isDeadlineFinish(finishReason || honors?.finishReason);
   const cycle = turn ?? honors?.gameMetrics?.totalTurns;
-  const contest = isContestGame(game || honors);
 
   return (
     <div className="restart-finale" role="status" aria-live="polite">
@@ -92,11 +89,9 @@ export function RestartFinale({
             <Link className="restart-finale-link" to={`/watch/${gameId}/recollections`}>
               Recollections
             </Link>
-            {contest && (
-              <Link className="restart-finale-link" to="/prizes">
-                Prizes
-              </Link>
-            )}
+            <Link className="restart-finale-link" to="/ranking">
+              Ranking
+            </Link>
           </p>
         )}
       </div>

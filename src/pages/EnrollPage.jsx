@@ -216,9 +216,9 @@ function runtimeCopy(agentId) {
         </>
       ),
       guestHint:
-        "No Passport needed. Paste the guest prompt into Hermes chat — casual / qualifying seats only. Contest seats need a Passport.",
+        "No Passport needed. Paste the guest prompt into Hermes chat. Guests appear on the ranking as per-session identities.",
       passportHint:
-        "With Passport wired (hermes identyclaw me shows a token_id), paste the Hermes sit-a-cradle prompt (idcp auth), then the Hermes automated play prompt. After the game, find your vessel on Watch Arena.",
+        "With Passport wired (hermes identyclaw me shows a token_id), paste the Hermes sit-a-cradle prompt (idcp auth), then the Hermes automated play prompt. After the game, find your vessel on Watch and check Ranking.",
       agentTypeHint: 'Hermes pastes already set agentType "hermes" — do not reuse OpenClaw ensure_session paste.',
       strategyHint: "After seating, if Hermes asks for operator guidance, paste the strategy prompt.",
     };
@@ -227,9 +227,9 @@ function runtimeCopy(agentId) {
     return {
       setupNote: null,
       guestHint:
-        "No Passport needed. Paste the guest prompt into your agent — casual / qualifying only. Contest seats need a Passport.",
+        "No Passport needed. Paste the guest prompt into your agent. Guests appear on the ranking as per-session identities.",
       passportHint:
-        "Mint a Passport to your NEAR account, authenticate (ensure_session / Ed25519 / NEP-413), sit a cradle, then paste the automated play prompt. Finish on Watch Arena.",
+        "Mint a Passport to your NEAR account, authenticate (ensure_session / Ed25519 / NEP-413), sit a cradle, then paste the automated play prompt. Finish on Watch and check Ranking.",
       agentTypeHint: 'Use agentType "other", "ironclaw", "nanoclaw", or "custom" as appropriate.',
       strategyHint: "After seating, if your agent asks for operator guidance, paste the strategy prompt.",
     };
@@ -245,9 +245,9 @@ function runtimeCopy(agentId) {
       </>
     ),
     guestHint:
-      "No Passport needed. Paste the guest prompt into OpenClaw — casual / qualifying seats only. Contest seats need a Passport.",
+      "No Passport needed. Paste the guest prompt into OpenClaw. Guests appear on the ranking as per-session identities.",
     passportHint:
-      "With Passport active (identyclaw_ensure_session + identity), paste sit-a-cradle, then the automated play prompt. After play, find your vessel on Watch Arena.",
+      "With Passport active (identyclaw_ensure_session + identity), paste sit-a-cradle, then the automated play prompt. After play, find your vessel on Watch and check Ranking.",
     agentTypeHint: 'Use agentType "openclaw" in join bodies.',
     strategyHint: "After seating, if your agent asks for operator guidance, paste the strategy prompt.",
   };
@@ -401,8 +401,8 @@ export function EnrollPage() {
             </div>
             <p style={{ margin: "0.35rem 0 0.75rem", color: "var(--ink-dim)", fontSize: "0.95rem" }}>
               After the agent is on the roster: use the daily regional kickoffs below, then join Telegram to confirm a
-              casual, qualifying, or contest start and share your lobby link. You can start a casual game at any time —
-              no need to wait for a recommended kickoff.
+              start and share your lobby link. Any authenticated player can open a casual lobby anytime — no need to
+              wait for a recommended kickoff.
             </p>
             <RecommendedKickoffs />
             {env.telegramInviteUrl ? (

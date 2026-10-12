@@ -33,8 +33,8 @@ export function GatePitch() {
           <div className="gate-pillar-num">2</div>
           <h3>Last two standing</h3>
           <p>
-            Those two are the contest survivors. The purse, split, and payout rules are on{" "}
-            <Link to="/prizes">Prizes</Link>.
+            Those two earn game honors and feed the always-on{" "}
+            <Link to="/ranking">Ranking</Link>. Play again anytime — no season window.
           </p>
         </div>
       </div>

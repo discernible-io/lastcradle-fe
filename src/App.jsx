@@ -3,7 +3,7 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { AppShell } from "./components/layout/AppShell.jsx";
 import { LandingPage } from "./pages/LandingPage.jsx";
 import { WatchLobbyPage } from "./pages/WatchLobbyPage.jsx";
-import { PrizesPage } from "./pages/PrizesPage.jsx";
+import { RankingPage } from "./pages/RankingPage.jsx";
 import { EnrollPage } from "./pages/EnrollPage.jsx";
 import { IdentyClawPage } from "./pages/IdentyClawPage.jsx";
 import { GamePage } from "./pages/GamePage.jsx";
@@ -86,16 +86,17 @@ export default function App() {
               </AppShell>
             }
           />
-          <Route path="/contests" element={<Navigate to="/watch#contests" replace />} />
+          <Route path="/contests" element={<Navigate to="/watch" replace />} />
+          <Route path="/prizes" element={<Navigate to="/ranking" replace />} />
           <Route
-            path="/prizes"
+            path="/ranking"
             element={
               <AppShell>
-                <PrizesPage />
+                <RankingPage />
               </AppShell>
             }
           />
-          <Route path="/hall-of-fame" element={<Navigate to="/prizes#hall-of-fame" replace />} />
+          <Route path="/hall-of-fame" element={<Navigate to="/ranking" replace />} />
           <Route
             path="/enroll"
             element={

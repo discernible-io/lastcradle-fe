@@ -37,10 +37,9 @@ async function apiGet(path, { signal, headers: extraHeaders } = {}) {
   return data ?? {};
 }
 
-export function listGames({ status, contestMode, limit = 40, offset = 0, signal } = {}) {
+export function listGames({ status, limit = 40, offset = 0, signal } = {}) {
   const q = new URLSearchParams();
   if (status) q.set("status", status);
-  if (contestMode) q.set("contestMode", contestMode);
   q.set("limit", String(limit));
   q.set("offset", String(offset));
   return apiGet(`/api/game/games?${q}`, { signal });
@@ -131,19 +130,25 @@ export function getEnrollPrompts({ signal } = {}) {
   return apiGetCached(path, "slc-enroll-prompts-v1.6", { signal });
 }
 
-export function listContests({ status, limit = 20, offset = 0, signal } = {}) {
-  const q = new URLSearchParams();
-  if (status) q.set("status", status);
-  q.set("limit", String(limit));
-  q.set("offset", String(offset));
-  return apiGet(`/api/game/contests?${q}`, { signal });
+/** Always-on global ladder. Guests (`guest_*` / isGuest) are per-session identities. */
+export function getRanking({ limit = 50, offset = 0, signal } = {}) {
+  const q = new URLSearchParams({ limit: String(limit), offset: String(offset) });
+  return apiGet(`/api/game/ranking?${q}`, { signal });
 }
 
+/** Weekly ISO-week freezes. Prefer `latest`, else `snapshots[0]`. */
+export function getWeeklyRanking({ week, limit = 12, offset = 0, signal } = {}) {
+  const q = new URLSearchParams({ limit: String(limit), offset: String(offset) });
+  if (week) q.set("week", String(week));
+  return apiGet(`/api/game/ranking/weekly?${q}`, { signal });
+}
+
+/** Recent finished-game honors (no contestId). */
 export function getHallOfFame({ limit = 20, offset = 0, signal } = {}) {
   const q = new URLSearchParams({ limit: String(limit), offset: String(offset) });
   return apiGetCached(
     `/api/game/hall-of-fame?${q}`,
-    `slc-hall-of-fame-v1:${limit}:${offset}`,
+    `slc-hall-of-fame-v2:${limit}:${offset}`,
     { signal },
   );
 }

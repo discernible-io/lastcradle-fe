@@ -8,11 +8,10 @@ import { GateHowToEnter } from "../components/gate/GateHowToEnter.jsx";
 import { GateLiveSnapshot } from "../components/gate/GateLiveSnapshot.jsx";
 import { GatePhases } from "../components/gate/GatePhases.jsx";
 import { GatePitch } from "../components/gate/GatePitch.jsx";
-import { GateSchedule } from "../components/gate/GateSchedule.jsx";
 import { campaign, canonicalUrl, watchPath } from "../config/campaign.js";
 import { env } from "../config/env.js";
 import { useFeaturedWatchPath } from "../hooks/useFeaturedWatchPath.js";
-import { buildSeasonJsonLd, serializeJsonLd } from "../seo/schemas.js";
+import { buildSiteJsonLd, serializeJsonLd } from "../seo/schemas.js";
 import { pickFeaturedWatchGame } from "../utils/featuredWatch.js";
 import { toTelegramUniversalUrl } from "../utils/telegram.js";
 
@@ -70,13 +69,10 @@ export function LandingPage() {
       document.head.appendChild(el);
     }
     el.textContent = serializeJsonLd(
-      buildSeasonJsonLd({
+      buildSiteJsonLd({
         origin: env.publicOrigin || canonicalUrl("/"),
         siteTitle: env.title,
         ogDescription: campaign.ogDescription,
-        seasonName: campaign.name,
-        season: campaign.season,
-        equalSplit: campaign.equalSplit,
         sameAs: env.telegramInviteUrl ? [toTelegramUniversalUrl(env.telegramInviteUrl)] : undefined,
       }),
     );
@@ -140,7 +136,6 @@ export function LandingPage() {
     <div className="landing-page gate-page">
       <GateHero onEnter={goEnter} onWatch={goWatch} />
       <div className="gate-body">
-        <GateSchedule />
         <GatePitch />
         <GatePhases />
         <GateDeathExample onOpenRecollections={goRecollections} />
