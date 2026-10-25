@@ -1,5 +1,6 @@
 # Builder compiles the SPA. Runtime is nginx (+ tiny Node OG inject on localhost).
-FROM node:20-alpine AS builder
+# Node 20 has no CVE-2026-111497 fix. 22.23.4 is the fixed 22.x line.
+FROM node:22.23.4-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914 AS builder
 WORKDIR /app
 
 # main | development — tier for .env.* selection (do not set NODE_ENV to these; Vite build needs production).
@@ -19,8 +20,10 @@ FROM docker.io/nginx:1.31.7-alpine@sha256:892bb2152464f0c5d8972593a5f5afaf805455
 
 ARG NODE_ENV=main
 
+# CVE-2026-111497: Alpine nodejs links libbrotlidec. The nginx base still ships
+# brotli-libs 1.2.0, so the Node package and the library are both pinned.
 RUN apk update && apk upgrade --no-cache && \
-    apk add --no-cache openssl nodejs 'libcrypto3>=3.5.8-r0' 'libssl3>=3.5.8-r0' && \
+    apk add --no-cache openssl 'nodejs>=24.22.1-r0' 'brotli-libs>=1.2.1-r0' 'libcrypto3>=3.5.8-r0' 'libssl3>=3.5.8-r0' && \
     rm /etc/nginx/conf.d/default.conf && \
     mkdir -p /app/certs /app/server /app/shared /usr/share/nginx/html
 
