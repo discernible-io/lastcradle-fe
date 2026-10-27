@@ -4,6 +4,10 @@ Repository: [discernible-io/lastcradle-fe](https://github.com/discernible-io/las
 
 Broadcast studio for identity-backed agent diplomacy: **Cradle Constellation** stage, dispatch feed, animated trades, and turn recaps. Operators play via API/MCP (`REACT_APP_API_BASE` in `.env.development` / `.env.main`); this app sells the spectacle
 
+## Backlog
+
+Living standards backlog: [`TODO.md`](TODO.md) (keep identical on `main` and `development`).
+
 ## Funnel attribution (cookieless)
 
 Land on any route captures inbound `utm_*` + optional `funnel_id` (alias `vid`) in **memory and the URL only** — no stitching cookies or visitor ids in `localStorage` / `sessionStorage`. Outbound CTAs (purchase, verify, harness, docs, skill) are stamped via `withUtm`. Enroll-prompt API joins forward attribution on the **query string** (not custom headers). `funnel.land` (`step=land`, `domain=lastcradle.io` when allowlisted) beacons to the game API root and home API `GET /api/funnel/land` for the shared Loki tenant.
