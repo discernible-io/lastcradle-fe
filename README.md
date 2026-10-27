@@ -16,6 +16,8 @@ Land on any route captures inbound `utm_*` + optional `funnel_id` (alias `vid`) 
 
 **SoT:** [`docs/funnel-standard.md`](https://github.com/discernible-io/docs/blob/main/docs/funnel-standard.md) · narrative targets only: [`idclawserver-idc` developer-growth-plan.md](https://github.com/discernible-io/idclawserver-idc/blob/main/content/developer-growth-plan.md) · implementation: [`src/utils/utm.js`](src/utils/utm.js).
 
+Organization standards (reference-only): follow [discernible-io/docs](https://github.com/discernible-io/docs) `main` (or a stated pin). Open work: [`TODO.md`](TODO.md).
+
 ## Routes
 
 | Path | Surface |
