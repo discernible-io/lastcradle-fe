@@ -13,8 +13,6 @@ Living backlog for this spectator SPA. Index: [`README.md`](README.md). Scored a
 | --- | --- | --- |
 | Missing root backlog (closed by this file) | documentation principle **21** | Index from README |
 | Floating Actions | cicd **PI 16** (image/deploy hygiene) | **Done 2026-10-27** — `deploy.yml` actions SHA-pinned |
-| Image scan / npm audit | cicd adoption checklist | No Trivy / `npm audit` gate observed in deploy workflow |
-| Docs consumption statement | distribution | README links funnel SoT on GitHub; add an explicit “follow discernible-io/docs `main`” (or pin) for coding/vocabulary/frontend-env |
 | Frontend env | [`frontend-branch-env-migration.md`](https://github.com/discernible-io/docs/blob/main/docs/frontend-branch-env-migration.md) | Confirm `.env.development` / `.env.main` + build copy logging of public keys |
 | Funnel privacy | [`funnel-standard.md`](https://github.com/discernible-io/docs/blob/main/docs/funnel-standard.md) | `utm.js` is cookieless for stitching; `sessionTtlCache` / watch-guide `localStorage` are product UX — keep funnel ids out of storage (already the rule). Confirm no regression |
 | Coding **PI 12** | coding | Outcome tests beyond funnel smoke; apply when touching features |
